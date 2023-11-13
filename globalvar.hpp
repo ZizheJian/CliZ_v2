@@ -1,0 +1,337 @@
+#ifndef __GLOBALVAR_H__
+#define __GLOBALVAR_H__
+
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+#include "stdbool.h"
+#include "math.h"
+#include "functional"
+#include <vector>
+#include <set>
+#include <map>
+#include <iterator>
+#include <random>
+#include <limits>
+#include <chrono>
+#include <fftw3.h>
+
+using namespace std;
+
+namespace cliz
+{
+	#define FILE_NAME_LENGTH 1000
+	#define FUNC_NAME_LENGTH 100
+	#define TEST_RATE 1
+	#define TEST_ALL false
+	#define FFT_SAMPLE_NUM 10
+	#define FAST_SAMPLING false
+	#define MAX_DRAW_VALUE 1000000
+
+	const char *supported_data_type[]={"i32","f32","f64"};
+	const char *supported_dimension_type[]={"h","lat","lng","t","pert"};
+	const char *supported_err_type[]={"ABS","REL","LOCAL"};
+	const char *supported_draw_dimension_type[]={"h","w"};
+	random_device rd;
+	mt19937_64 gen(rd());
+
+	template<typename T>
+	class task_c;
+	template<typename T>
+	class huffman_tree_c;
+	class node_c;
+	class timer_c;
+
+	class timer_c
+	{
+		public:
+			double current=0;
+			double total=0;
+			vector<double> history;
+			int state=0;
+
+			double start_time=0;
+			double end_time=0;
+
+			void start();
+			void pause();
+			void collect();
+			void collect_pause();
+			void resume();
+			void reset();
+			void write_current();
+			void write_total();
+			void write_history();
+			void write_n();
+	};
+
+	class hyper_iterator_c
+	{
+		public:
+			class iterator_relationship_c
+			{
+				public:
+					bool active=true;
+					int *dim_seq=NULL;//从当前维度编号到相关迭代器维度编号的映射
+					int dim_fission_l=0;//维度分解时得到的维度中变化最慢的一个，同时也表示被分解的维度
+					int dim_fission_r=0;//维度分解时得到的维度中变化最快的一个+1
+					long long *pert=NULL;
+					char *mapping_name=NULL;
+			};
+
+			int n=0;
+			long long *mx=NULL;
+			long long *weight=NULL;
+			vector<iterator_relationship_c> relationship_chain;
+
+			hyper_iterator_c(int n);
+			void print();
+			void print_more(bool recursive=true);
+			void write(FILE *cfg_file);
+			void delete_iterator(bool recursive=true);
+	};
+
+	class node_c
+	{
+		public:
+			int self=0,father=0,lson=0,rson=0;//如果一个编号无效，记为这个节点自己的编号
+			int root=0;//仅在解压缩时，叶节点的root会被计算
+			int lmost=0;//以自身为根的子树的最左侧叶节点编号
+			int rmost=0;//以自身为根的子树的最右侧叶节点编号
+			long long count=0;//以自身为根的子树的所有叶节点对应的quant_bin出现次数之和
+			long long code=0;//哈夫曼码
+			int length=0;//哈夫曼码长度
+	};
+
+	struct node_compare
+	{
+		bool operator()(const node_c &a,const node_c &b)
+		{
+			return a.count<b.count;
+		}
+	};
+
+	template<typename T>
+	class huffman_tree_c
+	{
+		public:
+			multiset<node_c,node_compare> bin;//目前还需要连成一个树的节点集合
+			node_c *nodes=NULL;//前65536个node对应65536个quant_bin，后面的留给多个quant_bin组成的树的根节点。在压缩和解压时，前65536个一定相同，但后面的不一定相同
+			int max_length=0;//叶节点huffman编码的最大长度
+			unsigned short *cache=NULL;//用于记录huffman树叶节点分布的cache
+			int tree_cache_length=0;//cache中记录的叶节点编号的数量。每个非叶节点对应cache的两个叶节点编号，每个编号占2个字节
+			int cache_index=0;//用于将叶节点的编号添加进cache的index，不断增加
+
+			void generate_tree(long long *quant_bin_count);
+			void generate_code();
+			void rebuild();
+			void traversal(int id);
+			void append_cache(unsigned short x);
+	};
+
+	template<typename T>
+	class predictor_c
+	{
+		public:
+			function<T(int,long long)> f=function<T(int,long long)>();//和数据采集范围，mask有关
+			char *name=NULL;
+	};
+
+	class compress_framework_c
+	{
+		public:
+			function<void()> f=function<void()>();//和mask，test有关
+			char *name=NULL;
+	};
+
+	template<typename T>
+	class task_c
+	{
+		public:
+			char *in_file_path=NULL;
+			FILE *in_file=NULL;
+			char *out_file_path=NULL;
+			FILE *out_file=NULL;
+			unsigned char *out_bitstream=NULL;
+			long long *out_length=0;
+			char *cfg_file_mode=NULL;
+			char *cfg_file_path=NULL;
+			FILE *cfg_file=NULL;
+			char *map_file_mode=NULL;
+			char *map_file_path=NULL;
+			FILE *map_file=NULL;
+			unsigned char *map_bitstream=NULL;
+			char *mask_file_path=NULL;
+			FILE *mask_file=NULL;
+			char *data_name=NULL;
+			int dimension_num=0;
+			long long *dimension=NULL;
+			char **dimension_type=NULL;
+			long long data_num=0;
+			char *data_type=NULL;
+			char *err_type=NULL;
+			double err_bound=0;
+			bool debug=false;
+
+			bool complete=false;
+			T *data=NULL;
+			hyper_iterator_c *it1=NULL;
+			hyper_iterator_c *best_it1=NULL;
+			hyper_iterator_c *best_pert_it1=NULL;
+			hyper_iterator_c *it2=NULL;
+			hyper_iterator_c *pert_it2=NULL;
+			long long test_num=0;
+			long long *test_pos=NULL;
+			unsigned char *map=NULL;
+			int pertid=-1;
+			long long pert=0;
+			T *avg_data=NULL;
+			double best_average_bytes=numeric_limits<double>::max();
+			double best_avg_average_bytes=numeric_limits<double>::max();
+			short *quant_bin=NULL;
+			long long **quant_bin_count=NULL;
+			unsigned char *quant_bin_cache=NULL;
+			long long *sumbits=NULL;
+			long long *sumbytes=NULL;
+			huffman_tree_c<T> *huffman=NULL;
+			vector<T> irregular_data;
+
+			void read_iterator(hyper_iterator_c *&it);
+			void write_iterator(hyper_iterator_c *it);
+			void read_info();
+			void write_info();
+			void read_data();
+			void read_decompressed_data();
+			void write_data();
+			void read_huffman_tree_cache_size(int pid);
+			void read_huffman_tree(int pid);
+			void write_huffman_tree(int pid);
+			void write_quant_bin();
+			void write_quant_bin_freq(FILE *freq_file,int num);
+			void read_irr_data();
+			void write_irr_data();
+
+			void change_err_bound();
+			void change_err_bound_mask();
+			void change_err_bound_1D();
+			void change_err_bound_2D();
+			void change_err_bound_3D();
+			void change_err_bound_4D();
+
+			void choose_method();
+			void test_all_dimension_sequence(int begin_dim);
+			void test_all_dimension_fission();
+			void test_map();
+			void test_general();
+			void test_i32();
+			void test_mask();
+			void test_pert();
+			void test_pert_mask();
+			void assign_test_pos();
+			void assign_test_pos_with_map(hyper_iterator_c *map_it);
+			void calc_pert_mask(task_c<int> *mask_subtask);
+			void calc_avg_data();
+			void test_avg_data();
+			void calc_diff_data();
+			void calc_original_data();
+			void test_diff_data();
+
+			void compress();
+			void decompress();
+			void compress_predecessor();
+			void decompress_predecessor(hyper_iterator_c *it);
+
+			compress_framework_c compress_framework,best_compress_framework,best_avg_compress_framework;
+			void compress_framework_i32();
+			void transpose_data1(T *transposed_data,hyper_iterator_c *it1,hyper_iterator_c *it2);
+			void transpose_data2(T *transposed_data,hyper_iterator_c *ity,hyper_iterator_c *itx);
+			void anti_transpose(T *transposed_data,hyper_iterator_c *ity,hyper_iterator_c *itx);
+			void compress_framework_api_basic_fast();
+			void compress_framework_basic();
+			void compress_framework_basic_fast();
+			void compress_framework_test();
+			void compress_framework_mask(task_c<int> *mask_subtask);
+			void compress_framework_mask_test(task_c<int> *mask_subtask);
+			void compress_framework_map();
+			void compress_framework_map_test();
+			void compress_framework_map_mask(task_c<int> *mask_subtask);
+			void compress_framework_map_mask_fast(task_c<int> *mask_subtask);
+			void compress_framework_map_mask_test(task_c<int> *mask_subtask);
+			void count_quant_bin_basic();
+			void count_quant_bin_basic_fast();
+			void count_quant_bin_basic_fast_2D();
+			void count_quant_bin_basic_fast_3D();
+			void count_quant_bin_test();
+			void count_quant_bin_mask(task_c<int> *mask_subtask);
+			void count_quant_bin_mask_test(task_c<int> *mask_subtask);
+			void count_quant_bin_map(int lngid,int latid);
+			void count_quant_bin_map_test(int lngid,int latid);
+			void count_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
+			void count_quant_bin_map_mask_test(task_c<int> *mask_subtask,int lngid,int latid);
+			void assign_irr_data();
+			void assign_irr_data_mask(task_c<int> *mask_subtask);
+			void write_map(int lngid,int latid);
+			void write_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
+
+			compress_framework_c best_decompress_framework,best_avg_decompress_framework;
+			void decompress_framework_i32();
+			void decompress_framework_basic();
+			void decompress_framework_mask(task_c<int> *mask_subtask);
+			void decompress_framework_map();
+			void decompress_framework_map_mask(task_c<int> *mask_subtask);
+			void match_decompress_functions(compress_framework_c &best_decompress_framework,predictor_c<T> &best_predictor);
+			void read_map(int lngid,int latid);
+			void read_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
+
+			void quant_bin_DC();
+			void quant_bin_DC_fast();
+			void quant_bin_DC_fast_2D();
+			void quant_bin_DC_fast_3D();
+			void quant_bin_DC_test();
+			void dequant_bin_DC();
+
+			void generate_map(hyper_iterator_c *map_it);
+			void generate_map_test(hyper_iterator_c *map_it,int lngid,int latid);
+
+			predictor_c<T> predictor,best_predictor,best_avg_predictor;
+			T linear_interp_predictor(int direction,long long stride);
+			T linear_interp_predictor_mask(task_c<int> *mask_subtask,int direction,long long stride);
+			T cubic_interp_predictor(int direction,long long stride);
+			T cubic_interp_predictor_fast(int direction,long long stride);
+			T cubic_interp_predictor_mask(task_c<int> *mask_subtask,int direction,long long stride);
+			T cubic_interp_predictor_mask_fast(task_c<int> *mask_subtask,int direction,long long stride);
+
+			void quantize_basic(T predicted_value);
+			void quantize_basic_fast(T predicted_value);
+			void quantize_test(T predicted_value);
+
+			void dequantize_basic(T predicted_value);
+
+			void calc_quant_bin_cache_length(int peak_r);
+			void read_quant_bin_cache_length();
+			void read_quant_bin_cache();
+
+			void encode_quant_bin_basic();
+			void encode_quant_bin_basic_fast();
+			void encode_quant_bin_basic_fast_2D();
+			void encode_quant_bin_basic_fast_3D();
+			void encode_quant_bin_mask(task_c<int> *mask_subtask);
+			void encode_quant_bin_map(int lngid,int latid);
+			void encode_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
+			void decode_quant_bin_basic();
+			void decode_quant_bin_mask(task_c<int> *mask_subtask);
+			void decode_quant_bin_map(int lngid,int latid);
+			void decode_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
+			
+			void draw();
+			void draw(int derivative);
+			void draw(int derivative,int direction);
+			void draw_quant_bin(int lngid,int latid);
+			void draw_map(int lngid,int latid);
+			void printdetail();
+			void get_derivative(float *derivative);
+			int find_dim_name(char **name_list,const char *name);
+	};
+}
+
+#endif

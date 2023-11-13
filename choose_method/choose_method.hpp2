@@ -1,0 +1,6 @@
+#ifndef __CHOOSE_METHOD_HPP2__
+#define __CHOOSE_METHOD_HPP2__
+
+#include "../globalvar.hpp"
+
+#endif

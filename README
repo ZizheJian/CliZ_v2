@@ -1,0 +1,84 @@
+1. Use python to start cliz
+Follow the instructions in "starter.py".
+
+2. Use CLI to start cliz
+Type "cliz_{job_type} {something}" to start cliz.
+{job_type} can be "compress" or "decompress".
+{something} includes some of the following arguments:
+	A. input file path (necessary)
+		-in {input_file_path}
+		//E.g. "-in ~/compress/data.bin"
+	
+	B. output file path (optional)
+		-out {output_file_path}
+		//If output file is not given, the program will use "{input_file_path}.cliz" as the output file path.
+
+	C. configuration file path (optional)
+		//Configuration file contains the information about how data is interpreted and what compression algorithm is used. It can be set in the following form:
+		-set-cfg {config_file_path} (only for compressing)
+		-use-cfg {config_file_path}
+		//During compression, if given "-set-cfg", the program will choose the best algorithm, and store the information in the comfiguration file.
+		//Besides, some other information, including dimensions, data type and error bound will also be stored.
+		//If given "-use-cfg", the program will read the given file and use the specified algorithm to compress or decompress.
+		//If no command is provided, the program will simply use a cubic interpolation.
+	
+	D. map file (optional)
+		//Map is a table indicating quantization bin classification used in Huffman encoding. It can be set in the following form:
+			-set-map {map_file_path} (only for compressing)
+			-force-set-map {map_file_path} (only for compressing)
+			-use-map {map_file_path}
+			-force-use-map {map_file_path}
+		//During compressing, if given "-set-map", the program will test and decide whether to generate a vaild map file. If it decides not to generate a valid map file, it will still generate an enpty map file.
+		//During compressing, if given "-force-set-map", the program will generate a valid map file.
+		//During compressing, if given "-use-map", the program will test and decide whether to use the given map file.
+		//During compressing, if given "-force-use-map", the program will use the given map file.
+		//During decompressing, if given "-use-map" or "-force-use-map", the program will use the given map file.
+		//If no command is provided, the program will not try this optimization.
+	
+	E. mask file (optional)
+		//Mask file indicates the validness of data on horizontal positions.
+		-mask {mask_file_name}
+		//The program can get the information about mask file from the command line or the configuration file.
+		//If both are available, make sure that they match each other.
+	
+	F. dimension (optional)
+		-dim {dimension_name}{dimansion_length} {dimension_name}{dimension_length} ...
+		//Here inputs the dimensions indicating how the data should be interpreted.
+		//{dimension_name} indicates the physical meaning of this dimension.
+		//Current supported dimension names:
+		//	t (time)
+		//	h (height)
+		//	lat (latitude)
+		//	lng (longitude)
+		//	/*leave out dimension name*/ (no meaning)
+		//E.g. if given "-dim 12 t120 lat180 lng360", data[i0][i1][i2][i3]=data[i0*120*180*360+i1*180*360+i2*360+i3]
+		//The program can get the information about dimensions from the command line or the configuration file. At least one of them should be available.
+		//If both are available, make sure that they match each other.
+
+	G. data type (optional)
+		-type {typename}
+		//Here inputs the data type.
+		//current supported {typename}:
+		//	i32
+		//	f32
+		//	f64
+		//	/*leave out data type*/ (f32)
+		//The program can get the information about data type from the command line or the configuration file. If both of them are unavailable, the data type will be set as f32.
+		//If both are available, make sure that they match each other.
+	
+	H. error bound (optional when compressing)
+		-err {error_type} {error_bound}
+		//Current supported error type:
+		//	ABS
+		//	REL
+		//	LOCAL
+		//	/*leave out error type*/ (ABS)
+		//{error_bound} should be a value larger or equal to 0.
+		//If error bound is 0, cliz generally will convey a naive lossless compression.
+		//The program can get the information about error bound from the command line or the configuration file. If both of them are unavailable, the error type will be ABS and error bound will be 0.
+		//If both source of information are available, make sure that they match each other.
+	
+	I. intermediate result display (optional)
+		-debug
+		//This is a flag indicating whether cliz will output some additional file containing some intermediate results.
+		//If omited, the program won't generate these additional file.

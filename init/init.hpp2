@@ -1,0 +1,43 @@
+#ifndef __INIT_HPP2__
+#define __INIT_HPP2__
+
+#include "../globalvar.hpp"
+#include "../io/io.hpp1"
+#include "../debug/debug.hpp1"
+
+namespace cliz
+{
+	void init(task_c<int> &task_i32,task_c<float> &task_f32,task_c<double> &task_f64,int argc,char **argv);
+	void read_command(task_c<float> &task_f32,int argc,char **argv);
+	void read_in_file_command(task_c<float> &task_f32,int argc,char **argv,int &i);
+	void read_out_file_command(task_c<float> &task_f32,int argc,char **argv,int &i);
+	void read_cfg_file_command(task_c<float> &task_f32,int argc,char **argv,int &i);
+	void read_map_file_command(task_c<float> &task_f32,int argc,char **argv,int &i);
+	void read_mask_file_command(task_c<float> &task_f32,int argc,char **argv,int &i);
+	void read_dimension_command(task_c<float> &task_f32,int argc,char **argv,int &i);
+	void read_type_command(task_c<float> &task_f32,int argc,char **argv,int &i);
+	void read_err_command(task_c<float> &task_f32,int argc,char **argv,int &i);
+	void read_debug_command(task_c<float> &task_f32,int argc,char **argv,int &i);
+
+	void check(task_c<int> &task_i32,task_c<float> &task_f32,task_c<double> &task_f64);
+	void check_in_file(task_c<float> &task_f32);
+	void check_out_file(task_c<float> &task_f32);
+	void check_cfg_file(task_c<float> &task_f32);
+	void check_map_file(task_c<float> &task_f32);
+	void check_mask_file(task_c<float> &task_f32);
+	void check_dimension(task_c<float> &task_f32);
+	void check_type(task_c<float> &task_f32);
+	void check_err_bound(task_c<float> &task_f32);
+	void check_debug(task_c<float> &task_f32);
+	template<typename T>
+	void init_it2(task_c<T> &task);
+
+	void read_cfg(task_c<float> &task_f32);
+
+	template<typename T>
+	void move_task(task_c<T> &ty,task_c<float> &tx);
+	template<typename T>
+	hyper_iterator_c *read_iterator(FILE *cfg_file,map<long long int,hyper_iterator_c*> &it_list);
+}
+
+#endif

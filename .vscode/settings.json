@@ -1,0 +1,10 @@
+{
+	"files.associations": {
+		"*.hpp1": "cpp",
+		"*.hpp2": "cpp",
+		"README": "raw",
+		"*.tcc": "cpp",
+		"ios": "cpp",
+		"limits": "cpp"
+	}
+}

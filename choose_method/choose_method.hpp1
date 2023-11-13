@@ -1,0 +1,6 @@
+#ifndef __CHOOSE_METHOD1_HPP__
+#define __CHOOSE_METHOD1_HPP__
+
+#include "choose_method.cpp"
+
+#endif

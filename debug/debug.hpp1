@@ -1,0 +1,8 @@
+#ifndef __DEBUG_HPP1__
+#define __DEBUG_HPP1__
+
+#include "draw_quant_bin.cpp"
+#include "draw_map.cpp"
+#include "printdetail.cpp"
+
+#endif

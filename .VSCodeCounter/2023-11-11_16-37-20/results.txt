@@ -1,0 +1,49 @@
+Date : 2023-11-11 16:37:20
+Directory : /home/jzz/compress/CliZ_v2
+Total : 20 files,  1018 codes, 838 comments, 155 blanks, all 2011 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C++      |         17 |        958 |        628 |        129 |      1,715 |
+| Python   |          2 |         51 |        210 |         24 |        285 |
+| Makefile |          1 |          9 |          0 |          2 |         11 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                   |         20 |      1,018 |        838 |        155 |      2,011 |
+| . (Files)                                           |          6 |        402 |        553 |         84 |      1,039 |
+| init                                                |         10 |        527 |        275 |         55 |        857 |
+| io                                                  |          4 |         89 |         10 |         16 |        115 |
++-----------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                            | language | code       | comment    | blank      | total      |
++-----------------------------------------------------+----------+------------+------------+------------+------------+
+| /home/jzz/compress/CliZ_v2/globalvar.hpp            | C++      |        332 |          0 |         34 |        366 |
+| /home/jzz/compress/CliZ_v2/init/assign_iterator.cpp | C++      |         32 |          3 |          4 |         39 |
+| /home/jzz/compress/CliZ_v2/init/init.cpp            | C++      |         83 |          0 |          6 |         89 |
+| /home/jzz/compress/CliZ_v2/init/init.hpp1           | C++      |         11 |          0 |          2 |         13 |
+| /home/jzz/compress/CliZ_v2/init/init.hpp2           | C++      |         36 |          0 |          7 |         43 |
+| /home/jzz/compress/CliZ_v2/init/init_debug.cpp      | C++      |         12 |          0 |          4 |         16 |
+| /home/jzz/compress/CliZ_v2/init/init_dimension.cpp  | C++      |         95 |          0 |          4 |         99 |
+| /home/jzz/compress/CliZ_v2/init/init_err_bound.cpp  | C++      |         64 |          0 |          4 |         68 |
+| /home/jzz/compress/CliZ_v2/init/init_file.cpp       | C++      |        118 |          0 |         12 |        130 |
+| /home/jzz/compress/CliZ_v2/init/init_type.cpp       | C++      |         63 |          9 |          6 |         78 |
+| /home/jzz/compress/CliZ_v2/init/read_cfg.cpp        | C++      |         13 |        263 |          6 |        282 |
+| /home/jzz/compress/CliZ_v2/io/file.cpp              | C++      |         31 |          0 |          4 |         35 |
+| /home/jzz/compress/CliZ_v2/io/io.hpp1               | C++      |          4 |          0 |          2 |          6 |
+| /home/jzz/compress/CliZ_v2/io/io.hpp2               | C++      |          4 |          0 |          2 |          6 |
+| /home/jzz/compress/CliZ_v2/io/mem.cpp               | C++      |         50 |         10 |          8 |         68 |
+| /home/jzz/compress/CliZ_v2/io_delete.cpp            | C++      |          0 |        334 |         21 |        355 |
+| /home/jzz/compress/CliZ_v2/makefile                 | Makefile |          9 |          0 |          2 |         11 |
+| /home/jzz/compress/CliZ_v2/starter.py               | Python   |         17 |        210 |         24 |        251 |
+| /home/jzz/compress/CliZ_v2/sz_air_compress.cpp      | C++      |         10 |          9 |          3 |         22 |
+| /home/jzz/compress/CliZ_v2/task.py                  | Python   |         34 |          0 |          0 |         34 |
+| Total                                               |          |      1,018 |        838 |        155 |      2,011 |
++-----------------------------------------------------+----------+------------+------------+------------+------------+

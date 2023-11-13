@@ -1,0 +1,6 @@
+#ifndef __CHANGE_ERR_BOUND_HPP2__
+#define __CHANGE_ERR_BOUND_HPP2__
+
+#include "../globalvar.hpp"
+
+#endif
