@@ -17,17 +17,20 @@ namespace cliz
 			move_task(task_f64,task_f32);
 		if (task_i32.in_file_path!=NULL)
 		{
-			init_it2(task_i32);
+			if (task_i32.best_it1==NULL)
+				init_it(task_i32);
 			print_detail(task_i32);
 		}
 		if (task_f32.in_file_path!=NULL)
 		{
-			init_it2(task_f32);
+			if (task_f32.best_it1==NULL)
+				init_it(task_f32);
 			print_detail(task_f32);
 		}
 		if (task_f64.in_file_path!=NULL)
 		{
-			init_it2(task_f64);
+			if (task_f64.best_it1==NULL)
+				init_it(task_f64);
 			print_detail(task_f64);
 		}
 	}

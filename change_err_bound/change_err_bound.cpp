@@ -9,7 +9,14 @@ namespace cliz
 	void task_c<T>::change_err_bound()
 	{
 		if (mask_file_path!=NULL)
-			change_err_bound_mask();
+		{
+			if (dimension_num==2)
+				change_err_bound_mask_2D();
+			if (dimension_num==3)
+				change_err_bound_mask_3D();
+			if (dimension_num==4)
+				change_err_bound_mask_4D();
+		}
 		else
 		{
 			if (dimension_num==2)

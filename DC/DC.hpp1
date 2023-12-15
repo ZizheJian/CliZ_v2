@@ -1,0 +1,9 @@
+#ifndef __DC_HPP1__
+#define __DC_HPP1__
+
+#include "call_DC_functions.cpp"
+#include "DC_3D_linear.cpp"
+#include "DC_3D_cubic.cpp"
+#include "quantize.cpp"
+
+#endif

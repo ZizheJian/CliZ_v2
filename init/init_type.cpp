@@ -61,6 +61,7 @@ namespace cliz
 		ty.data_type=tx.data_type;
 		ty.err_type=tx.err_type;
 		ty.err_bound=tx.err_bound;
+		ty.err_bound_reciprocal=tx.err_bound_reciprocal;
 		ty.debug=tx.debug;
 		/*ty.pert=tx.pert;
 		ty.best_it1=tx.best_it1;

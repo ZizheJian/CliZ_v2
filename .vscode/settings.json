@@ -5,6 +5,7 @@
 		"README": "raw",
 		"*.tcc": "cpp",
 		"ios": "cpp",
-		"limits": "cpp"
+		"limits": "cpp",
+		"cmath": "cpp"
 	}
 }

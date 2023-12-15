@@ -1,0 +1,6 @@
+#ifndef __FITTING_HPP2__
+#define __FITTING_HPP2__
+
+#include "../globalvar.hpp"
+
+#endif

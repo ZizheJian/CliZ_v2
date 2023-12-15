@@ -6,7 +6,7 @@
 namespace cliz
 {
 	template<typename T>
-	void init_it2(task_c<T> &task)
+	void init_it(task_c<T> &task)
 	{
 		new_data(task.it1,task.dimension_num);
 		new_data(task.it2,task.dimension_num);

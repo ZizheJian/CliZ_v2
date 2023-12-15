@@ -30,7 +30,7 @@ namespace cliz
 	void check_err_bound(task_c<float> &task_f32);
 	void check_debug(task_c<float> &task_f32);
 	template<typename T>
-	void init_it2(task_c<T> &task);
+	void init_it(task_c<T> &task);
 
 	void read_cfg(task_c<float> &task_f32);
 

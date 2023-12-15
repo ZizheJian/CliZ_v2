@@ -45,8 +45,6 @@ namespace cliz
 	class timer_c
 	{
 		public:
-			double current=0;
-			double total=0;
 			vector<double> history;
 			int state=0;
 
@@ -55,14 +53,8 @@ namespace cliz
 
 			void start();
 			void pause();
-			void collect();
-			void collect_pause();
-			void resume();
 			void reset();
-			void write_current();
-			void write_total();
-			void write_history();
-			void write_n();
+			void write();
 	};
 
 	class hyper_iterator_c
@@ -71,11 +63,9 @@ namespace cliz
 			class iterator_relationship_c
 			{
 				public:
-					bool active=true;
 					int *dim_seq=NULL;//从当前维度编号到相关迭代器维度编号的映射
 					int dim_fission_l=0;//维度分解时得到的维度中变化最慢的一个，同时也表示被分解的维度
 					int dim_fission_r=0;//维度分解时得到的维度中变化最快的一个+1
-					long long *pert=NULL;
 					char *mapping_name=NULL;
 			};
 
@@ -86,9 +76,8 @@ namespace cliz
 
 			hyper_iterator_c(int n);
 			void print();
-			void print_more(bool recursive=true);
 			void write(FILE *cfg_file);
-			void delete_iterator(bool recursive=true);
+			void delete_iterator();
 	};
 
 	class node_c
@@ -137,13 +126,6 @@ namespace cliz
 			char *name=NULL;
 	};
 
-	class compress_framework_c
-	{
-		public:
-			function<void()> f=function<void()>();//和mask，test有关
-			char *name=NULL;
-	};
-
 	template<typename T>
 	class task_c
 	{
@@ -171,10 +153,13 @@ namespace cliz
 			char *data_type=NULL;
 			char *err_type=NULL;
 			double err_bound=0;
+			double err_bound_reciprocal=numeric_limits<double>::max();
 			bool debug=false;
 
 			bool complete=false;
 			T *data=NULL;
+			int *mask_data=NULL;
+			int latid=-1,lngid=-1,hid=-1,tid=-1;
 			hyper_iterator_c *it1=NULL;
 			hyper_iterator_c *best_it1=NULL;
 			hyper_iterator_c *best_pert_it1=NULL;
@@ -196,6 +181,7 @@ namespace cliz
 			huffman_tree_c<T> *huffman=NULL;
 			vector<T> irregular_data;
 
+			////////////////IO Functions////////////////
 			void read_iterator(hyper_iterator_c *&it);
 			void write_iterator(hyper_iterator_c *it);
 			void read_info();
@@ -211,13 +197,18 @@ namespace cliz
 			void read_irr_data();
 			void write_irr_data();
 
+			void identify_dimensions();
+			
+			////////////////Error Bound Functions////////////////
 			void change_err_bound();
-			void change_err_bound_mask();
-			void change_err_bound_1D();
 			void change_err_bound_2D();
 			void change_err_bound_3D();
 			void change_err_bound_4D();
+			void change_err_bound_mask_2D();
+			void change_err_bound_mask_3D();
+			void change_err_bound_mask_4D();
 
+			////////////////Testing Functions////////////////
 			void choose_method();
 			void test_all_dimension_sequence(int begin_dim);
 			void test_all_dimension_fission();
@@ -236,19 +227,17 @@ namespace cliz
 			void calc_original_data();
 			void test_diff_data();
 
-			void compress();
 			void decompress();
-			void compress_predecessor();
-			void decompress_predecessor(hyper_iterator_c *it);
 
-			compress_framework_c compress_framework,best_compress_framework,best_avg_compress_framework;
+			////////////////Compress Functions////////////////
+			void call_compress_functions();
+			char *best_compress_function=NULL;
+			void compress();
+			//compress_framework_c compress_framework,best_compress_framework,best_avg_compress_framework;
 			void compress_framework_i32();
 			void transpose_data1(T *transposed_data,hyper_iterator_c *it1,hyper_iterator_c *it2);
 			void transpose_data2(T *transposed_data,hyper_iterator_c *ity,hyper_iterator_c *itx);
 			void anti_transpose(T *transposed_data,hyper_iterator_c *ity,hyper_iterator_c *itx);
-			void compress_framework_api_basic_fast();
-			void compress_framework_basic();
-			void compress_framework_basic_fast();
 			void compress_framework_test();
 			void compress_framework_mask(task_c<int> *mask_subtask);
 			void compress_framework_mask_test(task_c<int> *mask_subtask);
@@ -273,22 +262,36 @@ namespace cliz
 			void write_map(int lngid,int latid);
 			void write_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
 
-			compress_framework_c best_decompress_framework,best_avg_decompress_framework;
+			//compress_framework_c best_decompress_framework,best_avg_decompress_framework;
 			void decompress_framework_i32();
 			void decompress_framework_basic();
 			void decompress_framework_mask(task_c<int> *mask_subtask);
 			void decompress_framework_map();
 			void decompress_framework_map_mask(task_c<int> *mask_subtask);
-			void match_decompress_functions(compress_framework_c &best_decompress_framework,predictor_c<T> &best_predictor);
+			//void match_decompress_functions(compress_framework_c &best_decompress_framework,predictor_c<T> &best_predictor);
 			void read_map(int lngid,int latid);
 			void read_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
 
+			////////////////DC Functions////////////////
+			void call_DC_functions();
+			void DC_2D();
+			void DC_3D_linear();
+			void DC_3D_cubic();
+			void DC_4D();
 			void quant_bin_DC();
 			void quant_bin_DC_fast();
 			void quant_bin_DC_fast_2D();
 			void quant_bin_DC_fast_3D();
 			void quant_bin_DC_test();
 			void dequant_bin_DC();
+
+			unsigned short quantize(long long i,T pred);
+			////////////////Fitting Functions////////////////
+			char *best_fitting_function=NULL;
+			T linear_fitting_dpd(long long i,long long stride);
+			T linear_fitting_dp(long long i,long long stride);
+			T linear_fitting_ddp(long long i,long long stride);
+			T cubic_fitting(long long mini,long long i,long long maxi,long long stride);
 
 			void generate_map(hyper_iterator_c *map_it);
 			void generate_map_test(hyper_iterator_c *map_it,int lngid,int latid);

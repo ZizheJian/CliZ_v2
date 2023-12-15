@@ -33,6 +33,7 @@ namespace cliz
 					task_f32.err_type[j]=0;
 				}
 				task_f32.err_bound=stod(argv[i]+j);
+				task_f32.err_bound_reciprocal=1/task_f32.err_bound;
 				break;
 			}
 	}
@@ -44,6 +45,7 @@ namespace cliz
 			new_data(task_f32.err_type,4);
 			strcpy(task_f32.err_type,"ABS");
 			task_f32.err_bound=0;
+			task_f32.err_bound_reciprocal=numeric_limits<double>::max();
 			return;
 		}
 		if (task_f32.err_type==NULL)

@@ -29,6 +29,8 @@ namespace cliz
 							data_mx=data[pos];
 					}
 			err_bound=(data_mx-data_mn)*err_bound;
+			err_bound_reciprocal=1/err_bound;
+			delete_data(data);
 		}
 	}
 }

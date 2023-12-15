@@ -56,14 +56,15 @@ namespace cliz
 		r=NULL;
 	}
 
-	void delete_data(hyper_iterator_c *&r,bool recursive=true)
+	template<>
+	void delete_data(hyper_iterator_c *&r)
 	{
-		// if ((r!=NULL) && (!r->base_iterator))
-		// {
-		// 	r->delete_iterator(recursive);
-		// 	delete r;
-		// }
-		// r=NULL;
+		if (r!=NULL)
+		{
+			r->delete_iterator();
+			delete r;
+		}
+		r=NULL;
 	}
 }
 

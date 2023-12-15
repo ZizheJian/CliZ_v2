@@ -1,0 +1,7 @@
+#ifndef __LINEAR_FITTING_HPP1__
+#define __LINEAR_FITTING_HPP1__
+
+#include "linear_fitting.cpp"
+#include "cubic_fitting.cpp"
+
+#endif

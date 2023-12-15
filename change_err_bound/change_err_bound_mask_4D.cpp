@@ -1,19 +1,24 @@
-#ifndef __CHANGE_ERR_BOUND_MASK_CPP__
-#define __CHANGE_ERR_BOUND_MASK_CPP__
+#ifndef __CHANGE_ERR_BOUND_MASK_4D_CPP__
+#define __CHANGE_ERR_BOUND_MASK_4D_CPP__
 
 #include "change_err_bound.hpp2"
 
 namespace cliz
 {
 	template<typename T>
-	void task_c<T>::change_err_bound_mask()
+	void task_c<T>::change_err_bound_mask_4D()
 	{
+		printf("Error: change_err_bound_4D_mask incomplete.\n");
+		exit(0);
 		if (strcmp(err_type,"REL")==0)
 		{
 			new_data(data,data_num);
 			in_file=fopen(in_file_path,"rb");
 			fread(data,sizeof(T),data_num,in_file);
 			fclose(in_file);
+			new_data(mask_data,dimension[latid]*dimension[lngid]);
+			mask_file=fopen(mask_file_path,"rb");
+			fread(mask_data,sizeof(int),dimension[latid]*dimension[lngid],mask_file);
 			T data_mn=numeric_limits<T>::max();
 			T data_mx=numeric_limits<T>::min();
 			long long *mx=it2->mx;

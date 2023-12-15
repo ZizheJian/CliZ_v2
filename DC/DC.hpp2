@@ -1,0 +1,7 @@
+#ifndef __DC_HPP2__
+#define __DC_HPP2__
+
+#include "../globalvar.hpp"
+#include "../fitting/fitting.hpp1"
+
+#endif

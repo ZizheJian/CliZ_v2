@@ -13,73 +13,32 @@ namespace cliz
 		new_data(weight,n);
 	}
 
-	void hyper_iterator_c::print_more(bool recursive)
+	void hyper_iterator_c::print()
 	{
-		/*printf("address=%p\n",this);
-		if (base_iterator)
-			printf("name=%s\n",name);
-		printf("mn=      ");
-		for (int i=0;i<n;i++)
-			printf("[%d]=%lld ",i,mn[i]);
-		printf("\nmx=      ");
-		for (int i=0;i<n;i++)
-			printf("[%d]=%lld ",i,mx[i]);
-		printf("\ngap=     ");
-		for (int i=0;i<n;i++)
-			printf("[%d]=%lld ",i,gap[i]);
-		printf("\ncurrent= ");
-		for (int i=0;i<n;i++)
-			printf("[%d]=%lld ",i,current[i]);
-		printf("\nweight=  ");
-		for (int i=0;i<n;i++)
-			printf("[%d]=%lld ",i,weight[i]);
-		printf("\npos=%lld\n",pos);
-		for (auto rel_it=related_iterator_vec.begin();rel_it!=related_iterator_vec.end();rel_it++)
+		printf("mx=(");
+		for (int i=0;i<n-1;i++)
+			printf("%lld, ",mx[i]);
+		printf("%lld)\n",mx[n-1]);
+		printf("weight=(");
+		for (int i=0;i<n-1;i++)
+			printf("%lld, ",weight[i]);
+		printf("%lld)\n",weight[n-1]);
+		for (auto rel_it=relationship_chain.begin();rel_it!=relationship_chain.end();rel_it++)
 		{
-			printf("    father_it=%p\n",rel_it->father_it);
-			printf("    son_it=%p\n",rel_it->son_it);
-			printf("    mapping_f_name=%s",rel_it->mapping_f_name);
-			if (rel_it->active)
-				printf("\n");
-			else
-				printf(" (deactivated)\n");
-			if (strcmp(rel_it->mapping_f_name,"seq_mapping")==0)
+			printf("    mapping_f_name=%s",rel_it->mapping_name);
+			if (strcmp(rel_it->mapping_name,"seq_mapping")==0)
 			{
-				printf("    dim_seq=");
-				for (int did=0;did<n;did++)
-					printf("%d ",rel_it->dim_seq[did]);
-				printf("\n");
+				printf("    dim_seq=(");
+				for (int did=0;did<n-1;did++)
+					printf("%d, ",rel_it->dim_seq[did]);
+				printf("%d)\n",rel_it->dim_seq[n-1]);
 			}
-			if (strcmp(rel_it->mapping_f_name,"fission_mapping")==0)
+			if (strcmp(rel_it->mapping_name,"fission_mapping")==0)
 			{
 				printf("    dim_fission_l=%d\n",rel_it->dim_fission_l);
 				printf("    dim_fission_r=%d\n",rel_it->dim_fission_r);
 			}
-			if (strcmp(rel_it->mapping_f_name,"linear_mapping")==0)
-			{
-				printf("    mul=");
-				for (int did=0;did<n;did++)
-					printf("%lld ",rel_it->mul[did]);
-				printf("\n    div=");
-				for (int did=0;did<n;did++)
-					printf("%lld ",rel_it->div[did]);
-				printf("\n    plus=");
-				for (int did=0;did<n;did++)
-					printf("%lld ",rel_it->plus[did]);
-				printf("\n");
-			}
-			if (strcmp(rel_it->mapping_f_name,"pert_mapping")==0)
-			{
-				printf("    pert=");
-				for (int did=0;did<n;did++)
-					printf("%lld ",rel_it->pert[did]);
-				printf("\n");
-			}
 		}
-		printf("\n");
-		for (auto rel_it=related_iterator_vec.begin();rel_it!=related_iterator_vec.end();rel_it++)
-			if (rel_it->active)
-				rel_it->son_it->print_more(recursive);*/
 	}
 
 	void hyper_iterator_c::write(FILE *cfg_file)
@@ -143,73 +102,29 @@ namespace cliz
 	}
 
 	//释放这个hyper_iterator中数组占用的内存
-	void hyper_iterator_c::delete_iterator(bool recursive)
+	void hyper_iterator_c::delete_iterator()
 	{
-		/*for (auto rel_it=related_iterator_vec.begin();rel_it!=related_iterator_vec.end();rel_it=related_iterator_vec.begin())
-		{
-			if (recursive)
-				if (rel_it->active)
-					delete_data(rel_it->son_it,recursive);
-			delete_data(rel_it->dim_seq);
-			delete_data(rel_it->mul);
-			delete_data(rel_it->div);
-			delete_data(rel_it->plus);
-			delete_data(rel_it->mapping_f_name);
-			related_iterator_vec.erase(rel_it);
-		}
-		delete_data(mn);
 		delete_data(mx);
-		delete_data(gap);
-		delete_data(current);
-		delete_data(weight);*/
+		delete_data(weight);
+		for (auto rel_it=relationship_chain.begin();rel_it!=relationship_chain.end();rel_it=relationship_chain.begin())
+		{
+			delete_data(rel_it->dim_seq);
+			delete_data(rel_it->mapping_name);
+			relationship_chain.erase(rel_it);
+		}
 	}
 
-	void copy_iterator(hyper_iterator_c *&ity,hyper_iterator_c *itx,bool recursive=true)
+	void copy_iterator(hyper_iterator_c *&ity,hyper_iterator_c *itx)
 	{
-		/*delete_data(ity);
-		if (itx->base_iterator)
-		{
-			ity=itx;
-			return;
-		}
+		delete_data(ity);
 		new_data(ity,itx->n);
-		memcpy(ity->mn,itx->mn,sizeof(long long)*itx->n);
-		memcpy(ity->mx,itx->mx,sizeof(long long)*itx->n);
-		memcpy(ity->gap,itx->gap,sizeof(long long)*itx->n);
-		memcpy(ity->current,itx->current,sizeof(long long)*itx->n);
-		memcpy(ity->weight,itx->weight,sizeof(long long)*itx->n);
-		if (!recursive)
-			return;
-		for (auto rel_it=itx->related_iterator_vec.begin();rel_it!=itx->related_iterator_vec.end();rel_it++)
+		memcpy(ity->mx,itx->mx,itx->n*sizeof(long long));
+		memcpy(ity->weight,itx->weight,itx->n*sizeof(long long));
+		for (auto rel_it=itx->relationship_chain.begin();rel_it!=itx->relationship_chain.end();rel_it++)
 		{
-			hyper_iterator_c *temp_it1=NULL;
-			if (rel_it->son_it->base_iterator)
-				temp_it1=rel_it->son_it;
-			else
-				copy_iterator(temp_it1,rel_it->son_it);
-			if (strcmp(rel_it->mapping_f_name,"seq_mapping")==0)
-			{
-				ity->append_related_iterator_seq(temp_it1);
-				memcpy(ity->related_iterator_vec[ity->related_iterator_vec.size()-1].dim_seq,rel_it->dim_seq,
-					itx->n*sizeof(int));
-			}
-			if (strcmp(rel_it->mapping_f_name,"fission_mapping")==0)
-			{
-				ity->append_related_iterator_fission(temp_it1);
-				ity->related_iterator_vec[ity->related_iterator_vec.size()-1].dim_fission_l=rel_it->dim_fission_l;
-				ity->related_iterator_vec[ity->related_iterator_vec.size()-1].dim_fission_r=rel_it->dim_fission_r;
-			}
-			if (strcmp(rel_it->mapping_f_name,"linear_mapping")==0)
-			{
-				ity->append_related_iterator_linear(temp_it1);
-				memcpy(ity->related_iterator_vec[ity->related_iterator_vec.size()-1].mul,rel_it->mul,
-					itx->n*sizeof(long long));
-				memcpy(ity->related_iterator_vec[ity->related_iterator_vec.size()-1].div,rel_it->div,
-					itx->n*sizeof(long long));
-				memcpy(ity->related_iterator_vec[ity->related_iterator_vec.size()-1].div,rel_it->div,
-					itx->n*sizeof(long long));
-			}
-		}*/
+			ity->relationship_chain.push_back(hyper_iterator_c::iterator_relationship_c());
+			memcpy(&*(ity->relationship_chain.rbegin()),&*(rel_it),sizeof(hyper_iterator_c::iterator_relationship_c));
+		}
 	}
 }
 

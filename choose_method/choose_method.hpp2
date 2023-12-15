@@ -2,5 +2,6 @@
 #define __CHOOSE_METHOD_HPP2__
 
 #include "../globalvar.hpp"
+#include "../hyper_iterator.cpp"
 
 #endif

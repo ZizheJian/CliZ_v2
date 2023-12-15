@@ -1,5 +1,5 @@
 for dimension_num in [2,3,4]:
-	file=open(f"change_err_bound_{dimension_num}D.cpp","w")
+	file=open(f"DC_{dimension_num}D.cpp","w")
 	file.write(f"#ifndef __CHANGE_ERR_BOUND_{dimension_num}D_CPP__\n")
 	file.write(f"#define __CHANGE_ERR_BOUND_{dimension_num}D_CPP__\n")
 	file.write("\n")
@@ -34,7 +34,6 @@ for dimension_num in [2,3,4]:
 	file.write(tabs+"		data_mx=data[pos];\n")
 	file.write(tabs+"}\n")
 	file.write("			err_bound=(data_mx-data_mn)*err_bound;\n")
-	file.write("			err_bound_reciprocal=1/err_bound;\n")
 	file.write("			delete_data(data);\n")
 	file.write("		}\n")
 	file.write("	}\n")

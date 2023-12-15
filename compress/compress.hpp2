@@ -1,0 +1,9 @@
+#ifndef __COMPRESS_HPP2__
+#define __COMPRESS_HPP2__
+
+#include "../globalvar.hpp"
+#include "../hyper_iterator.cpp"
+#include "../DC/DC.hpp1"
+#include "../timer.cpp"
+
+#endif

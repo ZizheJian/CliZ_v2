@@ -2,5 +2,6 @@
 #define __CHOOSE_METHOD1_HPP__
 
 #include "choose_method.cpp"
+#include "identify_dimensions.cpp"
 
 #endif

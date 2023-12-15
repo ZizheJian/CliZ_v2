@@ -1,0 +1,6 @@
+#ifndef __COMPRESS_HPP1__
+#define __COMPRESS_HPP1__
+
+#include "compress.cpp"
+
+#endif
