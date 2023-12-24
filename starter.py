@@ -35,7 +35,7 @@ if testname=="compress hurricane_T":
 		,config=["set","~/compress/SDRBENCH-Hurricane-ISABEL-100x500x500/TCf48.bin.f32.cliz.cfg"]
 		,map=["set","~/compress/SDRBENCH-Hurricane-ISABEL-100x500x500/TCf48.bin.f32.cliz.map"]
 	    ,dimension=[["h",100],["lat",500],["lng",500]]
-	    ,err=["REL",1e-2]
+	    ,err=["REL",1e-3]
 		,debug=True
 	)
 os.system("make")

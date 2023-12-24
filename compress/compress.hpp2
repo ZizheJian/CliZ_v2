@@ -2,8 +2,11 @@
 #define __COMPRESS_HPP2__
 
 #include "../globalvar.hpp"
+#include "../huffman_tree/huffman_tree.hpp1"
+#include "../huffman_encode/huffman_encode.hpp1"
 #include "../hyper_iterator.cpp"
 #include "../DC/DC.hpp1"
 #include "../timer.cpp"
+#include "../zstd/zstd.h"
 
 #endif

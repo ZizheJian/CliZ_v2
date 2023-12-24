@@ -66,6 +66,25 @@ namespace cliz
 		}
 		r=NULL;
 	}
+
+	template<typename T1>
+	template<typename T2>
+	void task_c<T1>::align_cache()
+	{
+		if (out_length%sizeof(T2)==0)
+			return;
+		long long zeros=sizeof(T2)-out_length%sizeof(T2);
+		memset(out_bitstream+out_length,0,zeros);
+		out_length+=zeros;
+	}
+
+	template<typename T1>
+	template<typename T2>
+	void task_c<T1>::append_cache(T2 x)
+	{
+		*(reinterpret_cast<T2*>(out_bitstream+out_length))=x;
+	    out_length+=sizeof(T2);
+	}
 }
 
 #endif

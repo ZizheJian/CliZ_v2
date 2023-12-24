@@ -6,6 +6,8 @@
 		"*.tcc": "cpp",
 		"ios": "cpp",
 		"limits": "cpp",
-		"cmath": "cpp"
+		"cmath": "cpp",
+		"chrono": "cpp",
+		"string_view": "cpp"
 	}
 }

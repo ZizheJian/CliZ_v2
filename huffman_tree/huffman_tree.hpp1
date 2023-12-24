@@ -1,0 +1,7 @@
+#ifndef __HUFFMAN_TREE_HPP1__
+#define __HUFFMAN_TREE_HPP1__
+
+#include "huffman_tree.cpp"
+#include "count_quant_bin.cpp"
+
+#endif

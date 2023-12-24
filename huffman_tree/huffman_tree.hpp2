@@ -1,0 +1,6 @@
+#ifndef __HUFFMAN_TREE_HPP2__
+#define __HUFFMAN_TREE_HPP2__
+
+#include "../globalvar.hpp"
+
+#endif

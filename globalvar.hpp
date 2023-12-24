@@ -10,6 +10,7 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <unordered_map>
 #include <iterator>
 #include <random>
 #include <limits>
@@ -34,6 +35,12 @@ namespace cliz
 	const char *supported_draw_dimension_type[]={"h","w"};
 	random_device rd;
 	mt19937_64 gen(rd());
+	struct simple_hash{
+    	size_t operator()(const int &key) const
+		{
+			return key;
+    	}
+	};
 
 	template<typename T>
 	class task_c;
@@ -83,10 +90,10 @@ namespace cliz
 	class node_c
 	{
 		public:
-			int self=0,father=0,lson=0,rson=0;//如果一个编号无效，记为这个节点自己的编号
+			int self=0,father=0,lson=0,rson=0;
 			int root=0;//仅在解压缩时，叶节点的root会被计算
-			int lmost=0;//以自身为根的子树的最左侧叶节点编号
-			int rmost=0;//以自身为根的子树的最右侧叶节点编号
+			short lmost=0;//以自身为根的子树的最左侧叶节点编号
+			short rmost=0;//以自身为根的子树的最右侧叶节点编号
 			long long count=0;//以自身为根的子树的所有叶节点对应的quant_bin出现次数之和
 			long long code=0;//哈夫曼码
 			int length=0;//哈夫曼码长度
@@ -94,9 +101,9 @@ namespace cliz
 
 	struct node_compare
 	{
-		bool operator()(const node_c &a,const node_c &b)
+		bool operator()(const node_c *a,const node_c *b)
 		{
-			return a.count<b.count;
+			return a->count<b->count;
 		}
 	};
 
@@ -104,18 +111,14 @@ namespace cliz
 	class huffman_tree_c
 	{
 		public:
-			multiset<node_c,node_compare> bin;//目前还需要连成一个树的节点集合
-			node_c *nodes=NULL;//前65536个node对应65536个quant_bin，后面的留给多个quant_bin组成的树的根节点。在压缩和解压时，前65536个一定相同，但后面的不一定相同
-			int max_length=0;//叶节点huffman编码的最大长度
-			unsigned short *cache=NULL;//用于记录huffman树叶节点分布的cache
-			int tree_cache_length=0;//cache中记录的叶节点编号的数量。每个非叶节点对应cache的两个叶节点编号，每个编号占2个字节
-			int cache_index=0;//用于将叶节点的编号添加进cache的index，不断增加
+			multiset<node_c*,node_compare> unarranged_nodes;//目前还需要连成一个树的节点集合
+			unordered_map<int,node_c,simple_hash> nodes;//前65536个node对应65536个quant_bin，后面的留给多个quant_bin组成的树的根节点。在压缩和解压时，前65536个一定相同，但后面的不一定相同
 
-			void generate_tree(long long *quant_bin_count);
-			void generate_code();
+			void generate_tree();
+			void generate_code(task_c<T> *task);
 			void rebuild();
-			void traversal(int id);
-			void append_cache(unsigned short x);
+			void traversal(int id,task_c<T> *task);
+			//void append_cache(unsigned short x);
 	};
 
 	template<typename T>
@@ -135,7 +138,7 @@ namespace cliz
 			char *out_file_path=NULL;
 			FILE *out_file=NULL;
 			unsigned char *out_bitstream=NULL;
-			long long *out_length=0;
+			long long out_length=0;
 			char *cfg_file_mode=NULL;
 			char *cfg_file_path=NULL;
 			FILE *cfg_file=NULL;
@@ -174,11 +177,7 @@ namespace cliz
 			double best_average_bytes=numeric_limits<double>::max();
 			double best_avg_average_bytes=numeric_limits<double>::max();
 			short *quant_bin=NULL;
-			long long **quant_bin_count=NULL;
-			unsigned char *quant_bin_cache=NULL;
-			long long *sumbits=NULL;
-			long long *sumbytes=NULL;
-			huffman_tree_c<T> *huffman=NULL;
+			vector<huffman_tree_c<T>> huffman;
 			vector<T> irregular_data;
 
 			////////////////IO Functions////////////////
@@ -246,17 +245,6 @@ namespace cliz
 			void compress_framework_map_mask(task_c<int> *mask_subtask);
 			void compress_framework_map_mask_fast(task_c<int> *mask_subtask);
 			void compress_framework_map_mask_test(task_c<int> *mask_subtask);
-			void count_quant_bin_basic();
-			void count_quant_bin_basic_fast();
-			void count_quant_bin_basic_fast_2D();
-			void count_quant_bin_basic_fast_3D();
-			void count_quant_bin_test();
-			void count_quant_bin_mask(task_c<int> *mask_subtask);
-			void count_quant_bin_mask_test(task_c<int> *mask_subtask);
-			void count_quant_bin_map(int lngid,int latid);
-			void count_quant_bin_map_test(int lngid,int latid);
-			void count_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
-			void count_quant_bin_map_mask_test(task_c<int> *mask_subtask,int lngid,int latid);
 			void assign_irr_data();
 			void assign_irr_data_mask(task_c<int> *mask_subtask);
 			void write_map(int lngid,int latid);
@@ -285,7 +273,6 @@ namespace cliz
 			void quant_bin_DC_test();
 			void dequant_bin_DC();
 
-			unsigned short quantize(long long i,T pred);
 			////////////////Fitting Functions////////////////
 			char *best_fitting_function=NULL;
 			T linear_fitting_dpd(long long i,long long stride);
@@ -293,6 +280,41 @@ namespace cliz
 			T linear_fitting_ddp(long long i,long long stride);
 			T cubic_fitting(long long mini,long long i,long long maxi,long long stride);
 
+			////////////////Quantization Functions////////////////
+			short quantize(long long i,T pred);
+
+			////////////////Count Quant_Bin Functions////////////////
+			void count_quant_bin();
+			void count_quant_bin_basic_fast();
+			void count_quant_bin_basic_fast_2D();
+			void count_quant_bin_basic_fast_3D();
+			void count_quant_bin_test();
+			void count_quant_bin_mask(task_c<int> *mask_subtask);
+			void count_quant_bin_mask_test(task_c<int> *mask_subtask);
+			void count_quant_bin_map(int lngid,int latid);
+			void count_quant_bin_map_test(int lngid,int latid);
+			void count_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
+			void count_quant_bin_map_mask_test(task_c<int> *mask_subtask,int lngid,int latid);
+			
+			/////////////////Encode Quant_Bin Functions////////////////
+			void encode();
+			void encode_quant_bin_basic_fast();
+			void encode_quant_bin_basic_fast_2D();
+			void encode_quant_bin_basic_fast_3D();
+			void encode_quant_bin_mask(task_c<int> *mask_subtask);
+			void encode_quant_bin_map(int lngid,int latid);
+			void encode_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
+			void decode_quant_bin_basic();
+			void decode_quant_bin_mask(task_c<int> *mask_subtask);
+			void decode_quant_bin_map(int lngid,int latid);
+			void decode_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
+			
+			////////////////Out Functions////////////////
+			template<typename T2>
+			void align_cache();
+			template<typename T2>
+			void append_cache(T2 x);
+			
 			void generate_map(hyper_iterator_c *map_it);
 			void generate_map_test(hyper_iterator_c *map_it,int lngid,int latid);
 
@@ -313,18 +335,7 @@ namespace cliz
 			void calc_quant_bin_cache_length(int peak_r);
 			void read_quant_bin_cache_length();
 			void read_quant_bin_cache();
-
-			void encode_quant_bin_basic();
-			void encode_quant_bin_basic_fast();
-			void encode_quant_bin_basic_fast_2D();
-			void encode_quant_bin_basic_fast_3D();
-			void encode_quant_bin_mask(task_c<int> *mask_subtask);
-			void encode_quant_bin_map(int lngid,int latid);
-			void encode_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
-			void decode_quant_bin_basic();
-			void decode_quant_bin_mask(task_c<int> *mask_subtask);
-			void decode_quant_bin_map(int lngid,int latid);
-			void decode_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
+			
 			
 			void draw();
 			void draw(int derivative);

@@ -1,0 +1,6 @@
+#ifndef __HUFFMAN_ENCODE_HPP1__
+#define __HUFFMAN_ENCODE_HPP1__
+
+#include "encode.cpp"
+
+#endif
