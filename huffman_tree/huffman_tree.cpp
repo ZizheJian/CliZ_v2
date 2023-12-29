@@ -20,6 +20,8 @@ namespace cliz
 			unarranged_nodes.insert(&nodes[i]);
 		}
 		int next_node=32768;
+		for (auto it=unarranged_nodes.begin();it!=unarranged_nodes.end();it++)
+			printf("%d %d\n",(*it)->self,(*it)->count);
 		while (unarranged_nodes.size()>1)
 		{
 			auto it1=unarranged_nodes.begin();
@@ -42,16 +44,6 @@ namespace cliz
 		}
 	}
 
-	//按照后续遍历的顺序，把以每个非叶节点为根的树的最左侧和最右侧叶节点的编号填进cache
-	//因为叶节点一定代表一个真实存在quant_bin，quant_bin在-32768～32767之间，所以cache的值在0～65535之间
-	// template<typename T>
-	// void huffman_tree_c<T>::append_cache(unsigned short x)
-	// {
-	// 	cache[cache_index]=x;
-	// 	cache_index++;
-	// }
-
-	//按照后续遍历的顺序，生成每个节点的huffman编码和编码长度
 	template<typename T>
 	void huffman_tree_c<T>::traversal(int id,task_c<T> *task)
 	{
@@ -73,8 +65,6 @@ namespace cliz
 			traversal(nodes[id].lson,task);
 			traversal(nodes[id].rson,task);
 			#ifdef JOB_TYPE_COMPRESS
-				//printf("%d %d %d\n",id,nodes[id].lmost,nodes[id].rmost);
-				//getchar();
 				task->append_cache(nodes[id].lmost);
 				task->append_cache(nodes[id].rmost);
 			#endif
@@ -88,7 +78,7 @@ namespace cliz
 		if (nodes.size()>=2)
 		{
 			task->template align_cache<int>();
-			task->append_cache(nodes.size()-1);
+			task->append_cache((int)(nodes.size()-1));
 			task->template align_cache<short>();
 			auto root=*(unarranged_nodes.begin());
 			traversal(root->self,task);
@@ -114,61 +104,64 @@ namespace cliz
 	}
 
 
-	//将非叶节点垒在叶节点上，重构huffman树
-	//最后销毁读入的huffman树的结构（delete[] cache）
 	template<typename T>
-	void huffman_tree_c<T>::rebuild()
+	void huffman_tree_c<T>::rebuild(task_c<T> *task)
 	{
-		// if (tree_cache_length==1)
-		// {
-		// 	int nid=cache[0];
-		// 	nodes[nid].self=nid;
-		// 	nodes[nid].father=nid;
-		// 	nodes[nid].root=nid;
-		// 	nodes[nid].lson=nid;
-		// 	nodes[nid].rson=nid;
-		// 	nodes[nid].lmost=nid;
-		// 	nodes[nid].rmost=nid;
-		// 	return;
-		// }
-		// printf("tree_cache_length=%d\n",tree_cache_length);
-		// for (int i=0;i<tree_cache_length/2;i++)
-		// {
-		// 	int nid=i+65536;
-		// 	nodes[nid].self=nid;
-		// 	nodes[nid].father=nid;
-		// 	nodes[nid].root=nid;
-		// 	nodes[nid].lmost=cache[2*i];
-		// 	nodes[nid].rmost=cache[2*i+1];
-		// 	int lmost=nodes[nid].lmost;
-		// 	int rmost=nodes[nid].rmost;
-		// 	if (nodes[lmost].self!=lmost)
-		// 	{
-		// 		nodes[lmost].self=lmost;
-		// 		nodes[lmost].father=nid;
-		// 		nodes[lmost].root=lmost;
-		// 		nodes[lmost].lson=lmost;
-		// 		nodes[lmost].rson=lmost;
-		// 		nodes[lmost].lmost=lmost;
-		// 		nodes[lmost].rmost=lmost;
-		// 	}
-		// 	nodes[nid].lson=nodes[lmost].root;
-		// 	nodes[lmost].root=nid;
-		// 	nodes[nodes[nid].lson].father=nid;
-		// 	if (nodes[rmost].self!=rmost)
-		// 	{
-		// 		nodes[rmost].self=rmost;
-		// 		nodes[rmost].father=nid;
-		// 		nodes[rmost].root=rmost;
-		// 		nodes[rmost].lson=rmost;
-		// 		nodes[rmost].rson=rmost;
-		// 		nodes[rmost].lmost=rmost;
-		// 		nodes[rmost].rmost=rmost;
-		// 	}
-		// 	nodes[nid].rson=nodes[rmost].root;
-		// 	nodes[rmost].root=nid;
-		// 	nodes[nodes[nid].rson].father=nid;
-		// }
+		task->template align_cache<int>();
+		int tree_cache_length=task->template read_cache<int>();
+		if (tree_cache_length>=2)
+		{
+			for (int i=0;i<tree_cache_length/2;i++)
+			{
+				int nid=i+32768;
+				nodes[nid].self=nid;
+				nodes[nid].father=nid;
+				nodes[nid].root=nid;
+				task->read_cache(nodes[nid].lmost);
+				task->read_cache(nodes[nid].rmost);
+				int lmost=nodes[nid].lmost;
+				int rmost=nodes[nid].rmost;
+				if (nodes.find(lmost)==nodes.end())
+				{
+					nodes[lmost].self=lmost;
+					nodes[lmost].father=nid;
+					nodes[lmost].root=lmost;
+					nodes[lmost].lson=lmost;
+					nodes[lmost].rson=lmost;
+					nodes[lmost].lmost=lmost;
+					nodes[lmost].rmost=lmost;
+				}
+				nodes[nid].lson=nodes[lmost].root;
+				nodes[lmost].root=nid;
+				nodes[nodes[nid].lson].father=nid;
+				if (nodes.find(rmost)==nodes.end())
+				{
+					nodes[rmost].self=rmost;
+					nodes[rmost].father=nid;
+					nodes[rmost].root=rmost;
+					nodes[rmost].lson=rmost;
+					nodes[rmost].rson=rmost;
+					nodes[rmost].lmost=rmost;
+					nodes[rmost].rmost=rmost;
+				}
+				nodes[nid].rson=nodes[rmost].root;
+				nodes[rmost].root=nid;
+				nodes[nodes[nid].rson].father=nid;
+			}
+		}
+		else
+			if (tree_cache_length==1)
+			{
+				task->template align_cache<short>();
+				int nid=task->template read_cache<short>();
+				nodes[nid].self=nid;
+				nodes[nid].father=nid;
+				nodes[nid].lson=nid;
+				nodes[nid].rson=nid;
+				nodes[nid].lmost=nid;
+				nodes[nid].rmost=nid;
+				nodes[nid].root=nid;
+			}
 	}
 }
 

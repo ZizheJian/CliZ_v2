@@ -66,16 +66,17 @@ namespace cliz
 				printf("Error: Dimension must be positive integers.\n");
 				exit(0);
 			}
-			int appear=0;
-			for (int j=0;j<sizeof(supported_dimension_type)/sizeof(char*);j++)
+			if (task_f32.dimension_type[i]!=NULL)
 			{
-				if (strcmp(task_f32.dimension_type[i],supported_dimension_type[j])==0)
-					appear++;
-			}
-			if (appear==0)
-			{
-				printf("Error: Invalid dimension.\n");
-				exit(0);
+				int appear=0;
+				for (int j=0;j<sizeof(supported_dimension_type)/sizeof(char*);j++)
+					if (strcmp(task_f32.dimension_type[i],supported_dimension_type[j])==0)
+						appear++;
+				if (appear==0)
+				{
+					printf("Error: Invalid dimension.\n");
+					exit(0);
+				}
 			}
 			task_f32.data_num*=task_f32.dimension[i];
 		}
@@ -83,10 +84,8 @@ namespace cliz
 		{
 			int appear=0;
 			for (int j=0;j<task_f32.dimension_num;j++)
-			{
-				if (strcmp(supported_dimension_type[i],task_f32.dimension_type[j])==0)
+				if ((task_f32.dimension_type[j]!=NULL) && (strcmp(supported_dimension_type[i],task_f32.dimension_type[j])==0))
 					appear++;
-			}
 			if (appear>1)
 			{
 				printf("Error: Invalid dimension\n");

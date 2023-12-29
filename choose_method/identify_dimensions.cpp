@@ -10,13 +10,13 @@ namespace cliz
 	{
 		for (int i=0;i<dimension_num;i++)
 		{
-			if (strcmp(dimension_type[i],"lat")==0)
+			if ((dimension_type[i]!=NULL) && (strcmp(dimension_type[i],"lat")==0))
 				latid=i;
-			if (strcmp(dimension_type[i],"lng")==0)
+			if ((dimension_type[i]!=NULL) && (strcmp(dimension_type[i],"lng")==0))
 				lngid=i;
-			if (strcmp(dimension_type[i],"h")==0)
+			if ((dimension_type[i]!=NULL) && (strcmp(dimension_type[i],"h")==0))
 				hid=i;
-			if (strcmp(dimension_type[i],"t")==0)
+			if ((dimension_type[i]!=NULL) && (strcmp(dimension_type[i],"t")==0))
 				tid=i;
 		}
 		if (mask_file_path!=NULL)

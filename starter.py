@@ -1,15 +1,12 @@
-from task import generate_command
 import os
+from starter_setting.Hurricane_T import Hurricane_T
 
 os.chdir("change_err_bound")
 os.system("python3 code_generation.py")
 os.chdir("..")
 
-testname=""
 command=""
 
-testname="compress hurricane_T"
-#testname="decompress hurricane_T"
 #testname="compress CESM_ATM_RELHUM"
 #testname="decompress CESM_ATM_RELHUM"
 #testname="compress SOILLIQ+mask"
@@ -29,15 +26,7 @@ testname="compress hurricane_T"
 #testname="compress b.nday1.SST+mask"
 #testname="api test"
 
-if testname=="compress hurricane_T":
-	command=generate_command(job_type="compress"
-		,input_path="~/compress/SDRBENCH-Hurricane-ISABEL-100x500x500/TCf48.bin.f32"
-		,config=["set","~/compress/SDRBENCH-Hurricane-ISABEL-100x500x500/TCf48.bin.f32.cliz.cfg"]
-		,map=["set","~/compress/SDRBENCH-Hurricane-ISABEL-100x500x500/TCf48.bin.f32.cliz.map"]
-	    ,dimension=[["h",100],["lat",500],["lng",500]]
-	    ,err=["REL",1e-3]
-		,debug=True
-	)
+command=Hurricane_T()
 os.system("make")
 print("command=",command)
 os.system(command)

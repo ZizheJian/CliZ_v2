@@ -32,8 +32,6 @@ namespace cliz
 	template<typename T>
 	void init_it(task_c<T> &task);
 
-	void read_cfg(task_c<float> &task_f32);
-
 	template<typename T>
 	void move_task(task_c<T> &ty,task_c<float> &tx);
 	template<typename T>

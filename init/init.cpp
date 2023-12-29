@@ -10,7 +10,7 @@ namespace cliz
 		read_command(task_f32,argc,argv);
 		check(task_i32,task_f32,task_f64);
 		if ((task_f32.cfg_file_mode!=NULL) && (strcmp(task_f32.cfg_file_mode,"use")==0))
-			read_cfg(task_f32);
+			task_f32.read_cfg();
 		if (strcmp(task_f32.data_type,"i32")==0)
 			move_task(task_i32,task_f32);
 		if (strcmp(task_f32.data_type,"f64")==0)

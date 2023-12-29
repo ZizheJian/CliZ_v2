@@ -1,0 +1,6 @@
+#ifndef __HUFFMAN_DECODE_HPP1__
+#define __HUFFMAN_DECODE_HPP1__
+
+#include "decode.cpp"
+
+#endif

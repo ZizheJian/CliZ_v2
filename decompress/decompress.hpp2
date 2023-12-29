@@ -1,0 +1,12 @@
+#ifndef __DECOMPRESS_HPP2__
+#define __DECOMPRESS_HPP2__
+
+#include "../globalvar.hpp"
+#include "../huffman_tree/huffman_tree.hpp1"
+#include "../huffman_decode/huffman_decode.hpp1"
+#include "../hyper_iterator.cpp"
+#include "../DC/DC.hpp1"
+#include "../timer.cpp"
+#include "../zstd/zstd.h"
+
+#endif

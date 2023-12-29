@@ -21,7 +21,7 @@ namespace cliz
             int length=this_node.length;
             int new_digit=min(8-cache_digit,length-code_digit);
             cache<<=new_digit;
-            cache+=((code>>(length-code_digit-new_digit))&(1LL<<new_digit-1));
+            cache+=((code>>(length-code_digit-new_digit))&((1LL<<new_digit)-1));
             cache_digit+=new_digit;
             code_digit+=new_digit;
             if (cache_digit==8)

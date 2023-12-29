@@ -16,7 +16,7 @@ def generate_command(job_type,input_path,output_path=None,config=None,map=None,m
 				if len(dimension[i])==2:
 					command+=" "+dimension[i][0]+str(dimension[i][1])
 				else:
-					command+=" "+str(dimension[i][1])
+					command+=" "+str(dimension[i][0])
 			else:
 				command+=" "+dimension[i]
 	if data_type!=None:

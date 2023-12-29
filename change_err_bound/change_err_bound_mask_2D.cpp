@@ -8,7 +8,7 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::change_err_bound_mask_2D()
 	{
-		printf("Error: change_err_bound_2D_mask incomplete.\n");
+		/*printf("Error: change_err_bound_2D_mask incomplete.\n");
 		exit(0);
 		if (strcmp(err_type,"REL")==0)
 		{
@@ -33,7 +33,7 @@ namespace cliz
 						data_mx=data[pos];
 				}
 			err_bound=(data_mx-data_mn)*err_bound;
-		}
+		}*/
 	}
 }
 

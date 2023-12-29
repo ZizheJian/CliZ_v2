@@ -15,6 +15,7 @@
 #include <random>
 #include <limits>
 #include <chrono>
+#include <sstream>
 #include <fftw3.h>
 
 using namespace std;
@@ -23,16 +24,15 @@ namespace cliz
 {
 	#define FILE_NAME_LENGTH 1000
 	#define FUNC_NAME_LENGTH 100
+	#define TEMP_STRING_LENGTH 1000
 	#define TEST_RATE 1
 	#define TEST_ALL false
 	#define FFT_SAMPLE_NUM 10
 	#define FAST_SAMPLING false
-	#define MAX_DRAW_VALUE 1000000
 
 	const char *supported_data_type[]={"i32","f32","f64"};
 	const char *supported_dimension_type[]={"h","lat","lng","t","pert"};
 	const char *supported_err_type[]={"ABS","REL","LOCAL"};
-	const char *supported_draw_dimension_type[]={"h","w"};
 	random_device rd;
 	mt19937_64 gen(rd());
 	struct simple_hash{
@@ -67,19 +67,12 @@ namespace cliz
 	class hyper_iterator_c
 	{
 		public:
-			class iterator_relationship_c
-			{
-				public:
-					int *dim_seq=NULL;//从当前维度编号到相关迭代器维度编号的映射
-					int dim_fission_l=0;//维度分解时得到的维度中变化最慢的一个，同时也表示被分解的维度
-					int dim_fission_r=0;//维度分解时得到的维度中变化最快的一个+1
-					char *mapping_name=NULL;
-			};
-
 			int n=0;
 			long long *mx=NULL;
 			long long *weight=NULL;
-			vector<iterator_relationship_c> relationship_chain;
+			int *dim_seq=NULL;//从当前维度编号到相关迭代器维度编号的映射
+			int dim_fission_l=0;//维度分解时得到的维度中变化最慢的一个，同时也表示被分解的维度
+			int dim_fission_r=0;//维度分解时得到的维度中变化最快的一个+1
 
 			hyper_iterator_c(int n);
 			void print();
@@ -116,7 +109,7 @@ namespace cliz
 
 			void generate_tree();
 			void generate_code(task_c<T> *task);
-			void rebuild();
+			void rebuild(task_c<T> *task);
 			void traversal(int id,task_c<T> *task);
 			//void append_cache(unsigned short x);
 	};
@@ -137,8 +130,9 @@ namespace cliz
 			FILE *in_file=NULL;
 			char *out_file_path=NULL;
 			FILE *out_file=NULL;
-			unsigned char *out_bitstream=NULL;
-			long long out_length=0;
+			unsigned char *bitstream=NULL;
+			long long bitstream_length=0;
+			long long bitstream_index=0;
 			char *cfg_file_mode=NULL;
 			char *cfg_file_path=NULL;
 			FILE *cfg_file=NULL;
@@ -155,6 +149,7 @@ namespace cliz
 			long long data_num=0;
 			char *data_type=NULL;
 			char *err_type=NULL;
+			double raw_err_bound=0;
 			double err_bound=0;
 			double err_bound_reciprocal=numeric_limits<double>::max();
 			bool debug=false;
@@ -183,18 +178,26 @@ namespace cliz
 			////////////////IO Functions////////////////
 			void read_iterator(hyper_iterator_c *&it);
 			void write_iterator(hyper_iterator_c *it);
-			void read_info();
-			void write_info();
-			void read_data();
-			void read_decompressed_data();
-			void write_data();
-			void read_huffman_tree_cache_size(int pid);
-			void read_huffman_tree(int pid);
-			void write_huffman_tree(int pid);
-			void write_quant_bin();
-			void write_quant_bin_freq(FILE *freq_file,int num);
-			void read_irr_data();
-			void write_irr_data();
+			void read_cfg();
+			void read_cfg_dimension_num(char *temp_string);
+			void read_cfg_dimension(char *temp_string);
+			void read_cfg_data_type(char *temp_string);
+			void read_cfg_err_bound(char *temp_string);
+			void read_cfg_best_compress_function(char *temp_string);
+			void read_cfg_best_decompress_function(char *temp_string);
+			void read_cfg_best_fitting_function(char *temp_string);
+			void read_cfg_it1_max(char *temp_string);
+			void read_cfg_seq_mapping(char *temp_string);
+			void read_cfg_fission_mapping(char *temp_string);
+			void write_cfg();
+			template<typename T2>
+			void align_cache();
+			template<typename T2>
+			void append_cache(T2 x);
+			template<typename T2>
+			void read_cache(T2 &x);
+			template<typename T2>
+			T2 read_cache();
 
 			void identify_dimensions();
 			
@@ -226,8 +229,6 @@ namespace cliz
 			void calc_original_data();
 			void test_diff_data();
 
-			void decompress();
-
 			////////////////Compress Functions////////////////
 			void call_compress_functions();
 			char *best_compress_function=NULL;
@@ -250,7 +251,10 @@ namespace cliz
 			void write_map(int lngid,int latid);
 			void write_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
 
-			//compress_framework_c best_decompress_framework,best_avg_decompress_framework;
+			////////////////Decompress Functions////////////////
+			void call_decompress_functions();
+			char *best_decompress_function=NULL;
+			void decompress();
 			void decompress_framework_i32();
 			void decompress_framework_basic();
 			void decompress_framework_mask(task_c<int> *mask_subtask);
@@ -309,11 +313,8 @@ namespace cliz
 			void decode_quant_bin_map(int lngid,int latid);
 			void decode_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
 			
-			////////////////Out Functions////////////////
-			template<typename T2>
-			void align_cache();
-			template<typename T2>
-			void append_cache(T2 x);
+			////////////////Decode Quant_Bin Functions////////////////
+			void decode();
 			
 			void generate_map(hyper_iterator_c *map_it);
 			void generate_map_test(hyper_iterator_c *map_it,int lngid,int latid);
@@ -336,10 +337,6 @@ namespace cliz
 			void read_quant_bin_cache_length();
 			void read_quant_bin_cache();
 			
-			
-			void draw();
-			void draw(int derivative);
-			void draw(int derivative,int direction);
 			void draw_quant_bin(int lngid,int latid);
 			void draw_map(int lngid,int latid);
 			void printdetail();

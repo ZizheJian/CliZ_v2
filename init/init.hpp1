@@ -1,13 +1,12 @@
 #ifndef __INIT_HPP1__
 #define __INIT_HPP1__
 
-#include "init_it2.cpp"
+#include "init_it.cpp"
 #include "init_dimension.cpp"
 #include "init_err_bound.cpp"
 #include "init_debug.cpp"
 #include "init_file.cpp"
 #include "init_type.cpp"
 #include "init.cpp"
-#include "read_cfg.cpp"
 
 #endif

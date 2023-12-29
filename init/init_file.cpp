@@ -122,7 +122,16 @@ namespace cliz
 		}
 	}
 
-	void check_cfg_file(task_c<float> &task_f32){}
+	void check_cfg_file(task_c<float> &task_f32)
+	{
+		#ifdef JOB_TYPE_DECOMPRESS
+			if ((task_f32.cfg_file_mode!=NULL) && (strcmp(task_f32.cfg_file_mode,"set")==0))
+			{
+				printf("Error: Setting configuration file is not supported in decompression.\n");
+				exit(0);
+			}
+		#endif
+	}
 
 	void check_map_file(task_c<float> &task_f32){}
 

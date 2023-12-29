@@ -1,0 +1,7 @@
+#ifndef __DECOMPRESS_HPP1__
+#define __DECOMPRESS_HPP1__
+
+#include "call_decompress_functions.cpp"
+#include "decompress.cpp"
+
+#endif

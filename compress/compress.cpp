@@ -22,10 +22,7 @@ namespace cliz
 		this_huffman.generate_tree();
 		this_huffman.generate_code(this);
 		timer->pause();
-		//printf("%lld\n",out_length);
-		//for (int i=0;i<out_length/2;i++)
-		//	printf("%d ",((short*)out_bitstream)[i]);
-		printf("%lld\n",out_length);
+		printf("%lld\n",bitstream_length);
 		////////////////Huffman Encode////////////////
 		timer->start();
 		encode();
@@ -33,21 +30,21 @@ namespace cliz
 		this_huffman.nodes.clear();
 		huffman.clear();
 		timer->pause();
-		printf("%lld\n",out_length);
+		printf("%lld\n",bitstream_length);
 		////////////////Irregular////////////////
 		timer->start();
-		memcpy(out_bitstream+out_length,irregular_data.data(),irregular_data.size()*sizeof(T));
+		memcpy(bitstream+bitstream_length,irregular_data.data(),irregular_data.size()*sizeof(T));
 		irregular_data.clear();
 		timer->pause();
-		printf("%lld\n",out_length);
+		printf("%lld\n",bitstream_length);
 		////////////////Zstd////////////////
 		timer->start();
-		unsigned char *temp_out_bitstream=out_bitstream;
-		new_data(out_bitstream,data_num*sizeof(T),false,false);
-		out_length=ZSTD_compress(out_bitstream,data_num*sizeof(T),temp_out_bitstream,out_length,3);
-		delete_data(temp_out_bitstream);
+		unsigned char *temp_bitstream=bitstream;
+		new_data(bitstream,data_num*sizeof(T),false,false);
+		bitstream_length=ZSTD_compress(bitstream,data_num*sizeof(T),temp_bitstream,bitstream_length,3);
+		delete_data(temp_bitstream);
 		timer->pause();
-		printf("%lld\n",out_length);
+		printf("%lld\n",bitstream_length);
 		timer->write();
 	}
 }

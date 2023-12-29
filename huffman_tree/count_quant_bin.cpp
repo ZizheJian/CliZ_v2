@@ -16,12 +16,8 @@ namespace cliz
 			this_nodes[quant_bin[i]].count++;
 			//printf("quant_bin_count[0][%d]=%lld\n",quant_bin[i],quant_bin_count[0][quant_bin[i]]);
 		}
-		//printf("%d\n",this_nodes.size());
 		//for (auto it=this_nodes.begin();it!=this_nodes.end();it++)
 		//	printf("%d %lld\n",it->first,it->second.count);
-		//for (int i=-32768;i<32768;i++)
-		//	if (this_nodes[i].count!=0)
-		//		printf("%d %lld\n",i,this_nodes[i].count);
 	}
 }
 

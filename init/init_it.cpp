@@ -1,5 +1,5 @@
-#ifndef __INIT_IT2_CPP__
-#define __INIT_IT2_CPP__
+#ifndef __INIT_IT_CPP__
+#define __INIT_IT_CPP__
 
 #include "init.hpp2"
 

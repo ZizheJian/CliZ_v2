@@ -32,8 +32,7 @@ namespace cliz
 					strncpy(task_f32.err_type,argv[i],j);
 					task_f32.err_type[j]=0;
 				}
-				task_f32.err_bound=stod(argv[i]+j);
-				task_f32.err_bound_reciprocal=1/task_f32.err_bound;
+				task_f32.raw_err_bound=stod(argv[i]+j);
 				break;
 			}
 	}
@@ -44,13 +43,12 @@ namespace cliz
 		{
 			new_data(task_f32.err_type,4);
 			strcpy(task_f32.err_type,"ABS");
-			task_f32.err_bound=0;
-			task_f32.err_bound_reciprocal=numeric_limits<double>::max();
+			task_f32.raw_err_bound=0;
 			return;
 		}
 		if (task_f32.err_type==NULL)
 			return;
-		if (task_f32.err_bound<0)
+		if (task_f32.raw_err_bound<0)
 		{
 			printf("Error: error bound must be non-negative.\n");
 			exit(0);

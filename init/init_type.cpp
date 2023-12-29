@@ -60,17 +60,18 @@ namespace cliz
 		ty.data_num=tx.data_num;
 		ty.data_type=tx.data_type;
 		ty.err_type=tx.err_type;
-		ty.err_bound=tx.err_bound;
-		ty.err_bound_reciprocal=tx.err_bound_reciprocal;
+		ty.raw_err_bound=tx.raw_err_bound;
 		ty.debug=tx.debug;
-		/*ty.pert=tx.pert;
+		ty.best_compress_function=tx.best_compress_function;
+		ty.best_decompress_function=tx.best_decompress_function;
+		ty.best_fitting_function=tx.best_fitting_function;
+		ty.it1=tx.it1;
 		ty.best_it1=tx.best_it1;
-		ty.best_avg_it1=tx.best_avg_it1;
 		ty.it2=tx.it2;
+		/*ty.pert=tx.pert;
+		ty.best_avg_it1=tx.best_avg_it1;
 		ty.avg_it2=tx.avg_it2;
-		ty.best_decompress_framework.name=tx.best_decompress_framework.name;
 		ty.best_avg_decompress_framework.name=tx.best_avg_decompress_framework.name;
-		ty.best_predictor.name=tx.best_predictor.name;
 		ty.best_avg_predictor.name=tx.best_avg_predictor.name;*/
 	}
 }
