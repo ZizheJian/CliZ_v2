@@ -24,8 +24,21 @@ namespace cliz
         this_huffman.rebuild(this);
         timer->pause();
         ////////////////Huffman Decode////////////////
+        timer->start();
         new_data(quant_bin,data_num);
         decode();
+        timer->pause();
+        ////////////////Irregular////////////////
+        timer->start();
+        irregular_data.resize((bitstream_length-bitstream_index)/sizeof(T));
+        memcpy(irregular_data.data(),bitstream+bitstream_index,irregular_data.size()*sizeof(T));
+        bitstream_index=bitstream_length;
+        timer->pause();
+        ////////////////Quant Bin////////////////
+        timer->start();
+        call_DC_functions();
+        delete_data(quant_bin);
+        timer->pause();
         timer->write();
 
 	}
