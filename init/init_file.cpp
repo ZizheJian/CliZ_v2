@@ -94,6 +94,40 @@ namespace cliz
 		strcpy(task_f32.mask_file_path,argv[i]);
 	}
 
+	void read_src_file_command(task_c<float> &task_f32,int argc,char **argv,int &i)
+	{
+		if (task_f32.src_file_path!=NULL)
+		{
+			printf("Error: Source file redefined.\n");
+			exit(0);
+		}
+		i++;
+		if (i>=argc)
+		{
+			printf("Error: Source file path missing.\n");
+			exit(0);
+		}
+		new_data(task_f32.src_file_path,strlen(argv[i])+1);
+		strcpy(task_f32.src_file_path,argv[i]);
+	}
+
+	void read_dec_file_command(task_c<float> &task_f32,int argc,char **argv,int &i)
+	{
+		if (task_f32.dec_file_path!=NULL)
+		{
+			printf("Error: Decompressed file redefined.\n");
+			exit(0);
+		}
+		i++;
+		if (i>=argc)
+		{
+			printf("Error: Decompressed file path missing.\n");
+			exit(0);
+		}
+		new_data(task_f32.dec_file_path,strlen(argv[i])+1);
+		strcpy(task_f32.dec_file_path,argv[i]);
+	}
+
 	void check_in_file(task_c<float> &task_f32)
 	{
 		for (int i=strlen(task_f32.in_file_path)-1;i>=0;i--)
@@ -133,9 +167,39 @@ namespace cliz
 		#endif
 	}
 
-	void check_map_file(task_c<float> &task_f32){}
+	void check_map_file(task_c<float> &task_f32)
+	{
+		#ifdef JOB_TYPE_DECOMPRESS
+			if ((task_f32.map_file_mode!=NULL) && ((strcmp(task_f32.map_file_mode,"set")==0) || (strcmp(task_f32.map_file_mode,"force-set")==0)))
+			{
+				printf("Error: Setting map file is not supported in decompression.\n");
+				exit(0);
+			}
+		#endif
+	}
 
 	void check_mask_file(task_c<float> &task_f32){}
+
+	void check_src_file(task_c<float> &task_f32)
+	{
+		for (int i=strlen(task_f32.src_file_path)-1;i>=0;i--)
+			if (task_f32.src_file_path[i]=='/')
+			{
+				new_data(task_f32.data_name,strlen(task_f32.src_file_path)-i);
+				strcpy(task_f32.data_name,task_f32.src_file_path+i+1);
+				break;
+			}
+	}
+
+	void check_dec_file(task_c<float> &task_f32)
+	{
+		if (task_f32.dec_file_path==NULL)
+		{
+			new_data(task_f32.dec_file_path,strlen(task_f32.src_file_path)+10);
+			strcpy(task_f32.dec_file_path,task_f32.src_file_path);
+			strcat(task_f32.dec_file_path,".cliz.bin");
+		}
+	}
 }
 
 #endif

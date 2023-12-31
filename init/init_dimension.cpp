@@ -51,11 +51,13 @@ namespace cliz
 
 	void check_dimension(task_c<float> &task_f32)
 	{
-		if ((task_f32.dimension==NULL) && ((task_f32.cfg_file_mode==NULL) || (strcmp(task_f32.cfg_file_mode,"set")==0)))
-		{
-			printf("Error: Dimension missing.\n");
-			exit(0);
-		}
+		#if defined(JOB_TYPE_COMPRESS) || defined(JOB_TYPE_DECOMPRESS)
+			if ((task_f32.dimension==NULL) && ((task_f32.cfg_file_mode==NULL) || (strcmp(task_f32.cfg_file_mode,"set")==0)))
+			{
+				printf("Error: Dimension missing.\n");
+				exit(0);
+			}
+		#endif
 		if (task_f32.dimension==NULL)
 			return;
 		task_f32.data_num=1;
@@ -91,6 +93,25 @@ namespace cliz
 				printf("Error: Invalid dimension\n");
 				exit(0);
 			}
+		}
+	}
+
+	void deduce_data_num(task_c<float> &task_f32)
+	{
+		if (task_f32.dimension==NULL)
+		{
+			task_f32.dimension_num=1;
+			new_data(task_f32.dimension,1);
+			new_data(task_f32.dimension_type,1,true);
+			task_f32.src_file=fopen(task_f32.src_file_path,"rb");
+			fseek(task_f32.src_file,0,SEEK_END);
+    		task_f32.dimension[0]=ftell(task_f32.src_file);
+			if ((strcmp(task_f32.data_type,"i32")==0) || (strcmp(task_f32.data_type,"f32")==0))
+				task_f32.dimension[0]/=4;
+			if (strcmp(task_f32.data_type,"f64")==0)
+				task_f32.dimension[0]/=8;
+		    fclose(task_f32.src_file);
+			task_f32.data_num=task_f32.dimension[0];
 		}
 	}
 }

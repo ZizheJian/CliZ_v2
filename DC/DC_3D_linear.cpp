@@ -14,7 +14,12 @@ namespace cliz
 		for (int i=0;i<3;i++)
 			interpolation_level=max(interpolation_level,(int)ceil(log2(mx[i])));
 		long long quant_bin_pos=0;
-		quant_bin[quant_bin_pos]=quantize(0,0);
+		#ifdef JOB_TYPE_COMPRESS
+			quant_bin[quant_bin_pos]=quantize(0,0);
+		#endif
+		#ifdef JOB_TYPE_DECOMPRESS
+			data[0]=dequantize(quant_bin_pos,0);
+		#endif
 		quant_bin_pos++;
 		double err_bound_backup=err_bound;
 		for (int lv=interpolation_level-1;lv>=0;lv--)
@@ -48,7 +53,12 @@ namespace cliz
 											pred=linear_fitting_ddp(pos+i0*weight[0],stride*weight[0]);
 										else
 											pred=linear_fitting_dp(pos+i0*weight[0],stride*weight[0]);
-									quant_bin[quant_bin_pos]=quantize(pos+i0*weight[0],pred);
+									#ifdef JOB_TYPE_COMPRESS
+										quant_bin[quant_bin_pos]=quantize(pos+i0*weight[0],pred);
+									#endif
+									#ifdef JOB_TYPE_DECOMPRESS
+										data[pos+i0*weight[0]]=dequantize(quant_bin_pos,pred);
+									#endif
 									quant_bin_pos++;
 								}
 							}
@@ -66,7 +76,12 @@ namespace cliz
 											pred=linear_fitting_ddp(pos+i1*weight[1],stride*weight[1]);
 										else
 											pred=linear_fitting_dp(pos+i1*weight[1],stride*weight[1]);
-									quant_bin[quant_bin_pos]=quantize(pos+i1*weight[1],pred);
+									#ifdef JOB_TYPE_COMPRESS
+										quant_bin[quant_bin_pos]=quantize(pos+i1*weight[1],pred);
+									#endif
+									#ifdef JOB_TYPE_DECOMPRESS
+										data[pos+i1*weight[1]]=dequantize(quant_bin_pos,pred);
+									#endif
 									quant_bin_pos++;
 								}
 							}
@@ -84,7 +99,12 @@ namespace cliz
 											pred=linear_fitting_ddp(pos+i2*weight[2],stride*weight[2]);
 										else
 											pred=linear_fitting_dp(pos+i2*weight[2],stride*weight[2]);
-									quant_bin[quant_bin_pos]=quantize(pos+i2*weight[2],pred);
+									#ifdef JOB_TYPE_COMPRESS
+										quant_bin[quant_bin_pos]=quantize(pos+i2*weight[2],pred);
+									#endif
+									#ifdef JOB_TYPE_DECOMPRESS
+										data[pos+i2*weight[2]]=dequantize(quant_bin_pos,pred);
+									#endif
 									quant_bin_pos++;
 								}
 							}
@@ -92,7 +112,6 @@ namespace cliz
 				}
 			}
 		}
-		printf("quant_bin_pos=%lld\n",quant_bin_pos);
 	}
 }
 

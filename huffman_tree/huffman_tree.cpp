@@ -20,8 +20,6 @@ namespace cliz
 			unarranged_nodes.insert(&nodes[i]);
 		}
 		int next_node=32768;
-		for (auto it=unarranged_nodes.begin();it!=unarranged_nodes.end();it++)
-			printf("%d %lld\n",(*it)->self,(*it)->count);
 		while (unarranged_nodes.size()>1)
 		{
 			auto it1=unarranged_nodes.begin();

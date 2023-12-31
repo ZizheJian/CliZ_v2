@@ -1,8 +1,8 @@
 1. Use python to start cliz
 Follow the instructions in "starter.py".
 
-2. Use CLI to start cliz
-Type "cliz_{job_type} {something}" to start cliz.
+2. Use CLI to start cliz compressor
+Type "cliz_{job_type} {something}" to start cliz compressor.
 {job_type} can be "compress" or "decompress".
 {something} includes some of the following arguments:
 	A. input file path (necessary)
@@ -51,7 +51,7 @@ Type "cliz_{job_type} {something}" to start cliz.
 		//	lat (latitude)
 		//	lng (longitude)
 		//	/*leave out dimension name*/ (no meaning)
-		//E.g. if given "-dim 12 t120 lat180 lng360", data[i0][i1][i2][i3]=data[i0*120*180*360+i1*180*360+i2*360+i3]
+		//E.g. if given "-dim 12 t120 lat180 lng360", data[i0][i1][i2][i3]=data[i0*120*180*360+i1*180*360+i2*360+i3].
 		//The program can get the information about dimensions from the command line or the configuration file. At least one of them should be available.
 		//If both are available, make sure that they match each other.
 
@@ -82,3 +82,46 @@ Type "cliz_{job_type} {something}" to start cliz.
 		-debug
 		//This is a flag indicating whether cliz will output some additional file containing some intermediate results.
 		//If omited, the program won't generate these additional file.
+
+3. Use CLI to start cliz validator
+Type "cliz_validate {something}" to start cliz validator.
+{something} includes some of the following arguments:
+	A. source file path (necessary)
+		-src {source_file_path}
+		//E.g. "-src ~/compress/data.bin"
+	
+	B. decompressed file path (optional)
+		-dec {decompressed_file_path}
+		//If decompressed file is not given, the program will use "{source_file_path}.cliz.bin" as the decompressed file path.
+	
+	C. dimension (optional)
+		-dim {dimension_name}{dimansion_length} {dimension_name}{dimension_length} ...
+		//Here inputs the dimensions indicating how the data should be interpreted.
+		//{dimension_name} indicates the physical meaning of this dimension.
+		//Current supported dimension names:
+		//	t (time)
+		//	h (height)
+		//	lat (latitude)
+		//	lng (longitude)
+		//	/*leave out dimension name*/ (no meaning)
+		//E.g. if given "-dim 12 t120 lat180 lng360", data[i0][i1][i2][i3]=data[i0*120*180*360+i1*180*360+i2*360+i3]
+		//If the dimension is not given, the program will deduce the amount of data from the source file size and data type.
+
+	D. data type (optional)
+		-type {typename}
+		//Here inputs the data type.
+		//current supported {typename}:
+		//	i32
+		//	f32
+		//	f64
+		//	/*leave out data type*/ (f32)
+
+	E. error bound (optional)
+		-err {error_type} {error_bound}
+		//Current supported error type:
+		//	ABS
+		//	REL
+		//	LOCAL
+		//	/*leave out error type*/ (ABS)
+		//{error_bound} should be a value larger or equal to 0.
+		//If error bound is 0 or not given, cliz validator will output the maximum absolute error.

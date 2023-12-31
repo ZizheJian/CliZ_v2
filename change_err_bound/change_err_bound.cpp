@@ -10,6 +10,8 @@ namespace cliz
 	{
 		if (mask_file_path!=NULL)
 		{
+			if (dimension_num==1)
+				change_err_bound_mask_1D();
 			if (dimension_num==2)
 				change_err_bound_mask_2D();
 			if (dimension_num==3)
@@ -19,6 +21,8 @@ namespace cliz
 		}
 		else
 		{
+			if (dimension_num==1)
+				change_err_bound_1D();
 			if (dimension_num==2)
 				change_err_bound_2D();
 			if (dimension_num==3)

@@ -8,6 +8,7 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::change_err_bound_3D()
 	{
+		char *decisive_file_path=((JOB_TYPE_ID<=1)?in_file_path:src_file_path);
 		if ((cfg_file_mode==NULL) || (strcmp(cfg_file_mode,"set")==0))
 		{
 			if (strcmp(err_type,"ABS")==0)
@@ -15,9 +16,9 @@ namespace cliz
 			if (strcmp(err_type,"REL")==0)
 			{
 				new_data(data,data_num);
-				in_file=fopen(in_file_path,"rb");
-				fread(data,sizeof(T),data_num,in_file);
-				fclose(in_file);
+				FILE *decisive_file=fopen(decisive_file_path,"rb");
+				fread(data,sizeof(T),data_num,decisive_file);
+				fclose(decisive_file);
 				T data_mn=numeric_limits<T>::max();
 				T data_mx=numeric_limits<T>::min();
 				long long *mx=it2->mx;
@@ -53,9 +54,9 @@ namespace cliz
 				if (strcmp(err_type,"REL")==0)
 				{
 					new_data(data,data_num);
-					in_file=fopen(in_file_path,"rb");
-					fread(data,sizeof(T),data_num,in_file);
-					fclose(in_file);
+					FILE *decisive_file=fopen(decisive_file_path,"rb");
+					fread(data,sizeof(T),data_num,decisive_file);
+					fclose(decisive_file);
 					T data_mn=numeric_limits<T>::max();
 					T data_mx=numeric_limits<T>::min();
 					long long *mx=it2->mx;

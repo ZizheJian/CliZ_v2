@@ -53,6 +53,8 @@ namespace cliz
 		ty.map_file_mode=tx.map_file_mode;
 		ty.map_file_path=tx.map_file_path;
 		ty.mask_file_path=tx.mask_file_path;
+		ty.src_file_path=tx.src_file_path;
+		ty.dec_file_path=tx.dec_file_path;
 		ty.data_name=tx.data_name;
 		ty.dimension_num=tx.dimension_num;
 		ty.dimension=tx.dimension;

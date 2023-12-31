@@ -18,6 +18,8 @@ namespace cliz
 	void read_type_command(task_c<float> &task_f32,int argc,char **argv,int &i);
 	void read_err_command(task_c<float> &task_f32,int argc,char **argv,int &i);
 	void read_debug_command(task_c<float> &task_f32,int argc,char **argv,int &i);
+	void read_src_file_command(task_c<float> &task_f32,int argc,char **argv,int &i);
+	void read_dec_command(task_c<float> &task_f32,int argc,char **argv,int &i);
 
 	void check(task_c<int> &task_i32,task_c<float> &task_f32,task_c<double> &task_f64);
 	void check_in_file(task_c<float> &task_f32);
@@ -29,6 +31,8 @@ namespace cliz
 	void check_type(task_c<float> &task_f32);
 	void check_err_bound(task_c<float> &task_f32);
 	void check_debug(task_c<float> &task_f32);
+	void check_src_file(task_c<float> &task_f32);
+	void check_dec_file(task_c<float> &task_f32);
 	template<typename T>
 	void init_it(task_c<T> &task);
 

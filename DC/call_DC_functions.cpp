@@ -22,7 +22,6 @@ namespace cliz
 		}
 		// if (dimension_num==4)
 		// 	DC_4D();
-		//printf("%d %d %d %d %d\n",quant_bin[0],quant_bin[1],quant_bin[2],quant_bin[3],quant_bin[4]);
 	}
 }
 

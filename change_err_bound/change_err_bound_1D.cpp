@@ -1,12 +1,12 @@
-#ifndef __CHANGE_ERR_BOUND_4D_CPP__
-#define __CHANGE_ERR_BOUND_4D_CPP__
+#ifndef __CHANGE_ERR_BOUND_1D_CPP__
+#define __CHANGE_ERR_BOUND_1D_CPP__
 
 #include "change_err_bound.hpp2"
 
 namespace cliz
 {
 	template<typename T>
-	void task_c<T>::change_err_bound_4D()
+	void task_c<T>::change_err_bound_1D()
 	{
 		char *decisive_file_path=((JOB_TYPE_ID<=1)?in_file_path:src_file_path);
 		if ((cfg_file_mode==NULL) || (strcmp(cfg_file_mode,"set")==0))
@@ -24,16 +24,13 @@ namespace cliz
 				long long *mx=it2->mx;
 				long long *weight=it2->weight;
 				for (long long i0=0;i0<mx[0];i0++)
-					for (long long i1=0;i1<mx[1];i1++)
-						for (long long i2=0;i2<mx[2];i2++)
-							for (long long i3=0;i3<mx[3];i3++)
-							{
-								long long pos=i0*weight[0]+i1*weight[1]+i2*weight[2]+i3;
-								if (data[pos]<data_mn)
-									data_mn=data[pos];
-								if (data[pos]>data_mx)
-									data_mx=data[pos];
-							}
+				{
+					long long pos=i0;
+					if (data[pos]<data_mn)
+						data_mn=data[pos];
+					if (data[pos]>data_mx)
+						data_mx=data[pos];
+				}
 				err_bound=(data_mx-data_mn)*raw_err_bound;
 				delete_data(data);
 			}
@@ -63,16 +60,13 @@ namespace cliz
 					long long *mx=it2->mx;
 					long long *weight=it2->weight;
 					for (long long i0=0;i0<mx[0];i0++)
-						for (long long i1=0;i1<mx[1];i1++)
-							for (long long i2=0;i2<mx[2];i2++)
-								for (long long i3=0;i3<mx[3];i3++)
-								{
-									long long pos=i0*weight[0]+i1*weight[1]+i2*weight[2]+i3;
-									if (data[pos]<data_mn)
-										data_mn=data[pos];
-									if (data[pos]>data_mx)
-										data_mx=data[pos];
-								}
+					{
+						long long pos=i0;
+						if (data[pos]<data_mn)
+							data_mn=data[pos];
+						if (data[pos]>data_mx)
+							data_mx=data[pos];
+					}
 					if (err_bound!=(data_mx-data_mn)*raw_err_bound)
 					{
 						printf("Error: Error bound mismatch.\n");

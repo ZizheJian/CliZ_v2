@@ -1,0 +1,7 @@
+#ifndef __VALIDATE_HPP1__
+#define __VALIDATE_HPP1__
+
+#include "call_validate_functions.cpp"
+#include "validate_ABS.cpp"
+
+#endif

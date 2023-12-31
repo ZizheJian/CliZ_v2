@@ -142,6 +142,10 @@ namespace cliz
 			unsigned char *map_bitstream=NULL;
 			char *mask_file_path=NULL;
 			FILE *mask_file=NULL;
+			char *src_file_path=NULL;
+			FILE *src_file=NULL;
+			char *dec_file_path=NULL;
+			FILE *dec_file=NULL;
 			char *data_name=NULL;
 			int dimension_num=0;
 			long long *dimension=NULL;
@@ -174,6 +178,8 @@ namespace cliz
 			short *quant_bin=NULL;
 			vector<huffman_tree_c<T>> huffman;
 			vector<T> irregular_data;
+			T *src_data=NULL;
+			T *dec_data=NULL;
 
 			////////////////IO Functions////////////////
 			void read_iterator(hyper_iterator_c *&it);
@@ -203,9 +209,11 @@ namespace cliz
 			
 			////////////////Error Bound Functions////////////////
 			void change_err_bound();
+			void change_err_bound_1D();
 			void change_err_bound_2D();
 			void change_err_bound_3D();
 			void change_err_bound_4D();
+			void change_err_bound_mask_1D();
 			void change_err_bound_mask_2D();
 			void change_err_bound_mask_3D();
 			void change_err_bound_mask_4D();
@@ -270,12 +278,6 @@ namespace cliz
 			void DC_3D_linear();
 			void DC_3D_cubic();
 			void DC_4D();
-			void quant_bin_DC();
-			void quant_bin_DC_fast();
-			void quant_bin_DC_fast_2D();
-			void quant_bin_DC_fast_3D();
-			void quant_bin_DC_test();
-			void dequant_bin_DC();
 
 			////////////////Fitting Functions////////////////
 			char *best_fitting_function=NULL;
@@ -286,6 +288,7 @@ namespace cliz
 
 			////////////////Quantization Functions////////////////
 			short quantize(long long i,T pred);
+			T dequantize(long long i,T pred);
 
 			////////////////Count Quant_Bin Functions////////////////
 			void count_quant_bin();
@@ -315,6 +318,10 @@ namespace cliz
 			
 			////////////////Decode Quant_Bin Functions////////////////
 			void decode();
+			void validate_ABS();
+
+			////////////////Validate Functions////////////////
+			void call_validate_functions();
 			
 			void generate_map(hyper_iterator_c *map_it);
 			void generate_map_test(hyper_iterator_c *map_it,int lngid,int latid);
