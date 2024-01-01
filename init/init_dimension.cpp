@@ -105,12 +105,12 @@ namespace cliz
 			new_data(task_f32.dimension_type,1,true);
 			task_f32.src_file=fopen(task_f32.src_file_path,"rb");
 			fseek(task_f32.src_file,0,SEEK_END);
-    		task_f32.dimension[0]=ftell(task_f32.src_file);
+			task_f32.dimension[0]=ftell(task_f32.src_file);
 			if ((strcmp(task_f32.data_type,"i32")==0) || (strcmp(task_f32.data_type,"f32")==0))
 				task_f32.dimension[0]/=4;
 			if (strcmp(task_f32.data_type,"f64")==0)
 				task_f32.dimension[0]/=8;
-		    fclose(task_f32.src_file);
+			fclose(task_f32.src_file);
 			task_f32.data_num=task_f32.dimension[0];
 		}
 	}

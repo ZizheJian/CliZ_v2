@@ -5,10 +5,10 @@
 
 namespace cliz
 {
-    template<typename T>
-    void task_c<T>::test_map_pert()
-    {
-    }
+	template<typename T>
+	void task_c<T>::test_map_pert()
+	{
+	}
 }
 
 #endif

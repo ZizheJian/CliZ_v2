@@ -5,9 +5,9 @@
 
 namespace cliz
 {
-    template<typename T>
-    void task_c<T>::compress_test()
-    {
+	template<typename T>
+	void task_c<T>::compress_test()
+	{
 		if (TEST_ALL)
 		{
 			hyper_iterator_c *best_it1_backup=best_it1;
@@ -26,7 +26,7 @@ namespace cliz
 			getchar();
 			return;
 		}
-        auto timer=new timer_c();
+		auto timer=new timer_c();
 		////////////////Quant Bin////////////////
 		timer->start();
 		new_data(quant_bin,test_num);
@@ -64,7 +64,7 @@ namespace cliz
 		timer->pause();
 		printf("%lld\n",bitstream_length);
 		timer->write();
-    }
+	}
 }
 
 

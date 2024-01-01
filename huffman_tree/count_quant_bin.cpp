@@ -5,7 +5,7 @@
 
 namespace cliz
 {
-    template<typename T>
+	template<typename T>
 	void task_c<T>::count_quant_bin()
 	{
 		huffman_tree_c<T> &this_huffman=huffman[0];

@@ -20,9 +20,9 @@ namespace cliz
 		if (strcmp(cfg_file_mode,"use")==0)
 			return;
 		new_data(data,data_num);
-        in_file=fopen(in_file_path,"rb");
-        fread(data,sizeof(T),data_num,in_file);
-        fclose(in_file);
+		in_file=fopen(in_file_path,"rb");
+		fread(data,sizeof(T),data_num,in_file);
+		fclose(in_file);
 		new_data(bitstream,data_num*sizeof(T));
 		if (strcmp(data_type,"i32")==0)
 			test_i32();

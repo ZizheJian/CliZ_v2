@@ -5,16 +5,16 @@
 
 namespace cliz
 {
-    template<typename T>
-    void task_c<T>::test_all_fitting_function()
-    {
-        new_data(fitting_function,FUNC_NAME_LENGTH);
-        strcpy(fitting_function,"linear");
-        call_compress_functions_test();
-        strcpy(fitting_function,"cubic");
-        call_compress_functions_test();
-        delete_data(fitting_function);
-    }
+	template<typename T>
+	void task_c<T>::test_all_fitting_function()
+	{
+		new_data(fitting_function,FUNC_NAME_LENGTH);
+		strcpy(fitting_function,"linear");
+		call_compress_functions_test();
+		strcpy(fitting_function,"cubic");
+		call_compress_functions_test();
+		delete_data(fitting_function);
+	}
 }
 
 

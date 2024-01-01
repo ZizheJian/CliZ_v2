@@ -90,7 +90,7 @@ namespace cliz
 	void task_c<T1>::append_cache(T2 x)
 	{
 		*(reinterpret_cast<T2*>(bitstream+bitstream_length))=x;
-	    bitstream_length+=sizeof(T2);
+		bitstream_length+=sizeof(T2);
 	}
 
 	template<typename T1>
@@ -98,7 +98,7 @@ namespace cliz
 	void task_c<T1>::read_cache(T2 &x)
 	{
 		x=*(reinterpret_cast<T2*>(bitstream+bitstream_index));
-	    bitstream_index+=sizeof(T2);
+		bitstream_index+=sizeof(T2);
 	}
 
 	template<typename T1>
@@ -106,7 +106,7 @@ namespace cliz
 	T2 task_c<T1>::read_cache()
 	{
 		T2 x=*(reinterpret_cast<T2*>(bitstream+bitstream_index));
-	    bitstream_index+=sizeof(T2);
+		bitstream_index+=sizeof(T2);
 		return x;
 	}
 }

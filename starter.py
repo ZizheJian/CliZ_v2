@@ -4,6 +4,9 @@ from starter_setting.Hurricane_T import Hurricane_T
 os.chdir("change_err_bound")
 os.system("python3 code_generation.py")
 os.chdir("..")
+os.chdir("DC")
+os.system("python3 code_generation.py")
+os.chdir("..")
 
 command=""
 
@@ -43,10 +46,10 @@ os.system(command)
 # 	task.add_file(input_path="~/compress/SDRBENCH-CESM-ATM-26x1800x3600/RELHUM/RELHUM_1_26_1800_3600.f32"
 # 		,config=["set","~/compress/SDRBENCH-CESM-ATM-26x1800x3600/RELHUM/RELHUM_1_26_1800_3600.f32.air.cfg"]
 # 		,map=["set","~/compress/SDRBENCH-CESM-ATM-26x1800x3600/RELHUM/RELHUM_1_26_1800_3600.f32.air.map"]
-# 	    ,dimension=[["h",26],["lat",1800],["lng",3600]]
-# 	    ,data_phy="RELHUM"
-# 	    ,err_type="ABS"
-# 	    ,err_bound=0.000996034
+# 		,dimension=[["h",26],["lat",1800],["lng",3600]]
+# 		,data_phy="RELHUM"
+# 		,err_type="ABS"
+# 		,err_bound=0.000996034
 # 		#,draw_dimension=[26,["h",1800],["w",3600]]
 # 		,freq=True
 # 	)
@@ -65,9 +68,9 @@ os.system(command)
 # 		,config=["set","~/compress/b40.1850.track1.2deg/SOILLIQ.bin.air.cfg"]
 # 		,map=["set","~/compress/b40.1850.track1.2deg/SOILLIQ.bin.air.map"]
 # 		,dimension=[["pert",360],["h",15],["lat",96],["lng",144]]
-# 	    ,data_phy="SOILLIQ"
-# 	    ,err_type="ABS"
-# 	    ,err_bound=1)
+# 		,data_phy="SOILLIQ"
+# 		,err_type="ABS"
+# 		,err_bound=1)
 # 	task.add_file(input_path="~/compress/b40.1850.track1.2deg/MASK.bin"
 # 		,config=["set","~/compress/b40.1850.track1.2deg/MASK.bin.air.cfg"]
 # 		,dimension=[["lat",96],["lng",144]]
@@ -87,17 +90,17 @@ os.system(command)
 # 	task.add_file(input_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin"
 # 		,config=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.air.cfg"]
 # 		,map=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.air.map"]
-# 	    ,dimension=[["t",1032],["lat",384],["lng",320]]
-# 	    ,data_phy="SSH"
-# 	    ,err_type="ABS"
-# 	    ,err_bound=0.4
+# 		,dimension=[["t",1032],["lat",384],["lng",320]]
+# 		,data_phy="SSH"
+# 		,err_type="ABS"
+# 		,err_bound=0.4
 # 		#,draw_dimension=[20,["h",384],["w",320]]
 # 		,freq=True
 # 	)
 
 # # if (testname=="decompress b.SSH"):
 # # 	task.add_file(job="decompress"
-# # 	    ,directory_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512"
+# # 		,directory_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512"
 # # 		,file_name="b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512.bin.air"
 # # 		#,draw_dimension=[["",24],["h",384],["w",320]]
 # # 	)
@@ -108,16 +111,16 @@ os.system(command)
 # 		,config=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.air.cfg"]
 # 		#,map=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.air.map"]
 # 		,dimension=[["pert",1032],["lat",384],["lng",320]]
-# 	    ,data_phy="SSH"
-# 	    ,err_type="ABS"
-# 	    ,err_bound=0.0000414172318
+# 		,data_phy="SSH"
+# 		,err_type="ABS"
+# 		,err_bound=0.0000414172318
 # 		#,draw_dimension=[20,["h",384],["w",320]]
 # 		#,freq=True
 # 	)
 # 	task.add_file(input_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/REGION_MASK.bin"
-# 	    ,config=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/REGION_MASK.bin.air.cfg"]
-# 	    ,dimension=[["lat",384],["lng",320]]
-# 	    ,data_type="i32"
+# 		,config=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/REGION_MASK.bin.air.cfg"]
+# 		,dimension=[["lat",384],["lng",320]]
+# 		,data_type="i32"
 # 		,data_phy="MASK"
 # 		#,draw_dimension=[["h",384],["w",320]]
 # 		#,freq=True
@@ -130,7 +133,7 @@ os.system(command)
 # 		,map=["use","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.air.map"]
 # 	)
 # 	task.add_file(input_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/REGION_MASK.bin.air"
-# 	    ,config=["use","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/REGION_MASK.bin.air.cfg"]
+# 		,config=["use","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/REGION_MASK.bin.air.cfg"]
 # 		#,draw_dimension=[["h",384],["w",320]]
 # 	)
 
@@ -146,7 +149,7 @@ os.system(command)
 
 # # if (testname=="decompress CLOUDf48.log10"):
 # # 	task.add_file(job="decompress"
-# # 	    ,directory_path="~/compress/SDRBENCH-Hurricane-ISABEL-100x500x500"
+# # 		,directory_path="~/compress/SDRBENCH-Hurricane-ISABEL-100x500x500"
 # # 		,file_name="CLOUDf48.log10.bin.f32.air"
 # # 		#,draw_dimension=[["",24],["h",384],["w",320]]
 # # 	)
@@ -155,10 +158,10 @@ os.system(command)
 # 	task.set_job("compress")
 # 	task.add_file(input_path="~/compress/SDRBENCH-CESM-ATM-26x1800x3600/T/T_1_26_1800_3600.f32"
 # 		,config=["set","~/compress/SDRBENCH-CESM-ATM-26x1800x3600/T/T_1_26_1800_3600.f32.air.cfg"]
-# 	    ,dimension=[["h",26],["lat",1800],["lng",3600]]
-# 	    ,data_phy="T"
-# 	    ,err_type="REL"
-# 	    ,err_bound=0.000001
+# 		,dimension=[["h",26],["lat",1800],["lng",3600]]
+# 		,data_phy="T"
+# 		,err_type="REL"
+# 		,err_bound=0.000001
 # 		#,draw_dimension=[26,["h",1800],["w",3600]]
 # 		,freq=True
 # 	)
@@ -171,28 +174,28 @@ os.system(command)
 
 # # if (testname=="compress CESM-ATM-CLDLOW_2D"):
 # # 	task.add_file(job="compress"
-# # 	    ,directory_path="~/compress/SDRBENCH-CESM-ATM-26x1800x3600/1800x3600-full"
-# # 	    ,file_name="CLDLOW_1_1800_3600.f32"
-# # 	    ,dimension=[["lat",1800],["lng",3600]]
-# # 	    ,data_phy="CLD"
-# # 	    ,err_bound=0.00001
+# # 		,directory_path="~/compress/SDRBENCH-CESM-ATM-26x1800x3600/1800x3600-full"
+# # 		,file_name="CLDLOW_1_1800_3600.f32"
+# # 		,dimension=[["lat",1800],["lng",3600]]
+# # 		,data_phy="CLD"
+# # 		,err_bound=0.00001
 # # 		,draw_dimension=[["h",1800],["w",3600]]
 # # 		,freq=True
 # # 	)
 
 # # if (testname=="decompress CESM-ATM-CLDLOW_2D"):
 # # 	task.add_file(job="decompress"
-# # 	    ,directory_path="~/compress/SDRBENCH-CESM-ATM-26x1800x3600/1800x3600-full"
-# # 	    ,file_name="CLDLOW_1_1800_3600.f32.air"
+# # 		,directory_path="~/compress/SDRBENCH-CESM-ATM-26x1800x3600/1800x3600-full"
+# # 		,file_name="CLDLOW_1_1800_3600.f32.air"
 # # 	)
 
 # # if (testname=="compress b.nday1.SST"):
 # # 	task.add_file(job="compress"
-# # 	    ,directory_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.nday1.SST.19200102-20051231"
-# # 	    ,file_name="b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.nday1.SST.19200102-20051231.bin"
-# # 	    ,dimension=[[31389],["lat",384],["lng",320]]
-# # 	    ,data_phy="SST"
-# # 	    ,err_bound=0.001
+# # 		,directory_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.nday1.SST.19200102-20051231"
+# # 		,file_name="b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.nday1.SST.19200102-20051231.bin"
+# # 		,dimension=[[31389],["lat",384],["lng",320]]
+# # 		,data_phy="SST"
+# # 		,err_bound=0.001
 # # 		,draw_dimension=[[20],["h",384],["w",320]]
 # # 		,freq=True
 # # 	)
@@ -203,15 +206,15 @@ os.system(command)
 # 		,config=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SST.192001-200512/SST.bin.air.cfg"]
 # 		,map=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SST.192001-200512/SST.bin.air.map"]
 # 		,dimension=[["pert",1032],["lat",384],["lng",320]]
-# 	    ,data_phy="SST"
-# 	    ,err_type="REL"
-# 	    ,err_bound=0.001
+# 		,data_phy="SST"
+# 		,err_type="REL"
+# 		,err_bound=0.001
 # 		,freq=True
 # 	)
 # 	task.add_file(input_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SST.192001-200512/REGION_MASK.bin"
-# 	    ,config=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SST.192001-200512/REGION_MASK.bin.air.cfg"]
-# 	    ,dimension=[["lat",384],["lng",320]]
-# 	    ,data_type="i32"
+# 		,config=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SST.192001-200512/REGION_MASK.bin.air.cfg"]
+# 		,dimension=[["lat",384],["lng",320]]
+# 		,data_type="i32"
 # 		,data_phy="MASK"
 # 		,freq=True
 # 	)
@@ -222,16 +225,16 @@ os.system(command)
 # 		,config=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.nday1.SST.19200102-20051231/SST.bin.air.cfg"]
 # 		,map=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.nday1.SST.19200102-20051231/SST.bin.air.map"]
 # 		,dimension=[["pert",31389],["lat",384],["lng",320]]
-# 	    ,data_phy="SST"
-# 	    ,err_type="REL"
-# 	    ,err_bound=0.001
+# 		,data_phy="SST"
+# 		,err_type="REL"
+# 		,err_bound=0.001
 # 		#,draw_dimension=[20,["h",384],["w",320]]
 # 		,freq=True
 # 	)
 # 	task.add_file(input_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.nday1.SST.19200102-20051231/REGION_MASK.bin"
-# 	    ,config=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.nday1.SST.19200102-20051231/REGION_MASK.bin.air.cfg"]
-# 	    ,dimension=[["lat",384],["lng",320]]
-# 	    ,data_type="i32"
+# 		,config=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.nday1.SST.19200102-20051231/REGION_MASK.bin.air.cfg"]
+# 		,dimension=[["lat",384],["lng",320]]
+# 		,data_type="i32"
 # 		,data_phy="MASK"
 # 		#,draw_dimension=[["h",384],["w",320]]
 # 		,freq=True

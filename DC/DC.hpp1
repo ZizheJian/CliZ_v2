@@ -2,7 +2,10 @@
 #define __DC_HPP1__
 
 #include "call_DC_functions.cpp"
+#include "DC_1D_linear.cpp"
+#include "DC_2D_linear.cpp"
 #include "DC_3D_linear.cpp"
+#include "DC_4D_linear.cpp"
 #include "DC_3D_cubic.cpp"
 #include "quantize.cpp"
 #include "dequantize.cpp"

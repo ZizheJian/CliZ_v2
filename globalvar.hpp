@@ -36,10 +36,10 @@ namespace cliz
 	random_device rd;
 	mt19937_64 gen(rd());
 	struct simple_hash{
-    	size_t operator()(const int &key) const
+		size_t operator()(const int &key) const
 		{
 			return key;
-    	}
+		}
 	};
 
 	template<typename T>
@@ -278,10 +278,11 @@ namespace cliz
 			////////////////DC Functions////////////////
 			void call_DC_functions();
 			void call_DC_functions_test();
-			void DC_2D();
+			void DC_1D_linear();
+			void DC_2D_linear();
 			void DC_3D_linear();
+			void DC_4D_linear();
 			void DC_3D_cubic();
-			void DC_4D();
 
 			////////////////Fitting Functions////////////////
 			char *best_fitting_function=NULL,*fitting_function=NULL;

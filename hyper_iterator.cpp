@@ -15,26 +15,26 @@ namespace cliz
 
 	void hyper_iterator_c::print()
 	{
-		printf("    mx=(");
+		printf("	mx=(");
 		for (int i=0;i<n-1;i++)
 			printf("%lld, ",mx[i]);
 		printf("%lld)\n",mx[n-1]);
-		printf("    weight=(");
+		printf("	weight=(");
 		for (int i=0;i<n-1;i++)
 			printf("%lld, ",weight[i]);
 		printf("%lld)\n",weight[n-1]);
 		if (dim_seq!=NULL)
 		{
 			int actual_n=((dim_fission_l==dim_fission_r)?n:(n+dim_fission_r-dim_fission_l-1));
-			printf("    dim_seq=(");
+			printf("	dim_seq=(");
 			for (int did=0;did<actual_n-1;did++)
 				printf("%d, ",dim_seq[did]);
 			printf("%d)\n",dim_seq[actual_n-1]);
 		}
 		if (dim_fission_l!=dim_fission_r)
 		{
-			printf("    dim_fission_l=%d\n",dim_fission_l);
-			printf("    dim_fission_r=%d\n",dim_fission_r);
+			printf("	dim_fission_l=%d\n",dim_fission_l);
+			printf("	dim_fission_r=%d\n",dim_fission_r);
 		}
 	}
 

@@ -5,11 +5,11 @@
 
 namespace cliz
 {
-    template<typename T>
-    void task_c<T>::test_i32()
-    {
-        //TODO: implement
-    }
+	template<typename T>
+	void task_c<T>::test_i32()
+	{
+		//TODO: implement
+	}
 }
 
 #endif

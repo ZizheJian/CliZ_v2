@@ -10,30 +10,30 @@ namespace cliz
 	{
 		auto timer=new timer_c();
 		////////////////Zstd////////////////
-        timer->start();
-        unsigned char *temp_bitstream=bitstream;
+		timer->start();
+		unsigned char *temp_bitstream=bitstream;
 		new_data(bitstream,data_num*sizeof(T),false,false);
 		bitstream_length=ZSTD_decompress(bitstream,data_num*sizeof(T),temp_bitstream,bitstream_length);
 		delete_data(temp_bitstream);
 		timer->pause();
-        ////////////////Huffman Tree////////////////
-        timer->start();
-        bitstream_index=0;
-        huffman.push_back(huffman_tree_c<T>());
-        huffman_tree_c<T> &this_huffman=huffman[0];
-        this_huffman.rebuild(this);
-        timer->pause();
-        ////////////////Huffman Decode////////////////
-        timer->start();
-        new_data(quant_bin,data_num);
-        decode();
-        timer->pause();
-        ////////////////Quant Bin & Irregular////////////////
-        timer->start();
-        call_DC_functions();
-        delete_data(quant_bin);
-        timer->pause();
-        timer->write();
+		////////////////Huffman Tree////////////////
+		timer->start();
+		bitstream_index=0;
+		huffman.push_back(huffman_tree_c<T>());
+		huffman_tree_c<T> &this_huffman=huffman[0];
+		this_huffman.rebuild(this);
+		timer->pause();
+		////////////////Huffman Decode////////////////
+		timer->start();
+		new_data(quant_bin,data_num);
+		decode();
+		timer->pause();
+		////////////////Quant Bin & Irregular////////////////
+		timer->start();
+		call_DC_functions();
+		delete_data(quant_bin);
+		timer->pause();
+		timer->write();
 
 	}
 }
