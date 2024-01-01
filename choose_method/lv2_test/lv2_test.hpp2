@@ -1,0 +1,6 @@
+#ifndef __LV2_TEST_HPP2__
+#define __LV2_TEST_HPP2__
+
+#include "../choose_method.hpp2"
+
+#endif

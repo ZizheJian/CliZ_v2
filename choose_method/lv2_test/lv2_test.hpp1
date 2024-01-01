@@ -1,0 +1,8 @@
+#ifndef __LV2_TEST_HPP1__
+#define __LV2_TEST_HPP1__
+
+#include "test_all_dimension_sequence.cpp"
+#include "test_all_dimension_fission.cpp"
+#include "test_all_fitting_function.cpp"
+
+#endif

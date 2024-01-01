@@ -8,8 +8,6 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::call_compress_functions()
 	{
-		if ((cfg_file_mode!=NULL) && (strcmp(cfg_file_mode,"set")==0))
-			write_cfg();
 		new_data(data,data_num);
 		in_file=fopen(in_file_path,"rb");
 		fread(data,sizeof(T),data_num,in_file);

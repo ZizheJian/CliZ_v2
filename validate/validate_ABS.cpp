@@ -8,6 +8,7 @@ namespace cliz
     template<typename T>
     void task_c<T>::validate_ABS()
     {
+        //TODO: add i32 condition
         T max_err=0;
         for (long long i=0;i<data_num;i++)
         {
@@ -16,9 +17,9 @@ namespace cliz
                 max_err=abs_err;
         }
         if (err_bound==0)
-            printf("Max absolute error=%f\n",max_err);
+            printf("Max absolute error=%f\n",(float)max_err);
         else
-            printf("Error Utilization=%f\n",max_err/err_bound);
+            printf("Error Utilization=%f\n",(float)(max_err/err_bound));
     }
 }
 

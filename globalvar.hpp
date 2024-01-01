@@ -26,7 +26,7 @@ namespace cliz
 	#define FUNC_NAME_LENGTH 100
 	#define TEMP_STRING_LENGTH 1000
 	#define TEST_RATE 1
-	#define TEST_ALL false
+	#define TEST_ALL true
 	#define FFT_SAMPLE_NUM 10
 	#define FAST_SAMPLING false
 
@@ -161,7 +161,7 @@ namespace cliz
 			bool complete=false;
 			T *data=NULL;
 			int *mask_data=NULL;
-			int latid=-1,lngid=-1,hid=-1,tid=-1;
+			int latid=-1,lngid=-1,hid=-1,tid=-1,pertid=-1;
 			hyper_iterator_c *it1=NULL;
 			hyper_iterator_c *best_it1=NULL;
 			hyper_iterator_c *best_pert_it1=NULL;
@@ -170,7 +170,6 @@ namespace cliz
 			long long test_num=0;
 			long long *test_pos=NULL;
 			unsigned char *map=NULL;
-			int pertid=-1;
 			long long pert=0;
 			T *avg_data=NULL;
 			double best_average_bytes=numeric_limits<double>::max();
@@ -220,15 +219,17 @@ namespace cliz
 
 			////////////////Testing Functions////////////////
 			void choose_method();
-			void test_all_dimension_sequence(int begin_dim);
-			void test_all_dimension_fission();
+			void test();
 			void test_map();
-			void test_general();
+			void test_pert();
+			void test_map_pert();
+			void test_all_dimension_sequence();
+			void test_all_dimension_fission();		
+			void test_all_fitting_function();	
 			void test_i32();
 			void test_mask();
-			void test_pert();
 			void test_pert_mask();
-			void assign_test_pos();
+			void print_test_condition();
 			void assign_test_pos_with_map(hyper_iterator_c *map_it);
 			void calc_pert_mask(task_c<int> *mask_subtask);
 			void calc_avg_data();
@@ -239,8 +240,10 @@ namespace cliz
 
 			////////////////Compress Functions////////////////
 			void call_compress_functions();
-			char *best_compress_function=NULL;
+			void call_compress_functions_test();
+			char *best_compress_function=NULL,*compress_function=NULL;
 			void compress();
+			void compress_test();
 			//compress_framework_c compress_framework,best_compress_framework,best_avg_compress_framework;
 			void compress_framework_i32();
 			void transpose_data1(T *transposed_data,hyper_iterator_c *it1,hyper_iterator_c *it2);
@@ -274,13 +277,14 @@ namespace cliz
 
 			////////////////DC Functions////////////////
 			void call_DC_functions();
+			void call_DC_functions_test();
 			void DC_2D();
 			void DC_3D_linear();
 			void DC_3D_cubic();
 			void DC_4D();
 
 			////////////////Fitting Functions////////////////
-			char *best_fitting_function=NULL;
+			char *best_fitting_function=NULL,*fitting_function=NULL;
 			T linear_fitting_dpd(long long i,long long stride);
 			T linear_fitting_dp(long long i,long long stride);
 			T linear_fitting_ddp(long long i,long long stride);

@@ -8,6 +8,7 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::change_err_bound_mask_1D()
 	{
+		//TODO: implement
 		/*printf("Error: change_err_bound_2D_mask incomplete.\n");
 		exit(0);
 		if (strcmp(err_type,"REL")==0)

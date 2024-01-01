@@ -18,6 +18,8 @@ namespace cliz
 				hid=i;
 			if ((dimension_type[i]!=NULL) && (strcmp(dimension_type[i],"t")==0))
 				tid=i;
+			if ((dimension_type[i]!=NULL) && (strcmp(dimension_type[i],"pert")==0))
+				pertid=i;
 		}
 		if (mask_file_path!=NULL)
 			if ((latid<0) || (lngid<0))

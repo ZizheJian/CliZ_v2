@@ -17,7 +17,7 @@ Type "cliz_{job_type} {something}" to start cliz compressor.
 		//Configuration file contains the information about how data is interpreted and what compression algorithm is used. It can be set in the following form:
 		-set-cfg {config_file_path} (only for compressing)
 		-use-cfg {config_file_path}
-		//During compression, if given "-set-cfg", the program will choose the best algorithm, and store the information in the comfiguration file.
+		//During compression, if given "-set-cfg", the program will choose the best algorithm, and store the information in the configuration file.
 		//Besides, some other information, including dimensions, data type and error bound will also be stored.
 		//If given "-use-cfg", the program will read the given file and use the specified algorithm to compress or decompress.
 		//If no command is provided, the program will simply use a cubic interpolation.
@@ -33,6 +33,7 @@ Type "cliz_{job_type} {something}" to start cliz compressor.
 		//During compressing, if given "-use-map", the program will test and decide whether to use the given map file.
 		//During compressing, if given "-force-use-map", the program will use the given map file.
 		//During decompressing, if given "-use-map" or "-force-use-map", the program will use the given map file.
+		//If given "-use-map" or "-force-use-map", configuration file must be missing or provided with "-use-cfg".
 		//If no command is provided, the program will not try this optimization.
 	
 	E. mask file (optional)

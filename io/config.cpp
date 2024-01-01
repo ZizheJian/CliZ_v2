@@ -8,6 +8,8 @@ namespace cliz
     template<typename T>
     void task_c<T>::write_cfg()
     {
+        if ((cfg_file_mode==NULL) || (strcmp(cfg_file_mode,"use")==0))
+            return;
         cfg_file=fopen(cfg_file_path,"w");
         fprintf(cfg_file,"Dimension num=%d\n",dimension_num);
         fprintf(cfg_file,"Dimension=");

@@ -29,5 +29,4 @@ int main(int argc,char **argv)
 		task_f64.identify_dimensions();
 		task_f64.call_decompress_functions();
 	}
-	//TODO：移植zstd
 }

@@ -29,5 +29,4 @@ int main(int argc,char **argv)
 		task_f64.change_err_bound();
 		task_f64.call_validate_functions();
 	}
-	//TODO：移植zstd
 }

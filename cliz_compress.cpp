@@ -19,6 +19,7 @@ int main(int argc,char **argv)
 		task_i32.identify_dimensions();
 		task_i32.change_err_bound();
 		task_i32.choose_method();
+		task_i32.write_cfg();
 		task_i32.call_compress_functions();
 	}
 	if (task_f32.in_file_path!=NULL)
@@ -26,6 +27,7 @@ int main(int argc,char **argv)
 		task_f32.identify_dimensions();
 		task_f32.change_err_bound();
 		task_f32.choose_method();
+		task_f32.write_cfg();
 		task_f32.call_compress_functions();
 	}
 	if (task_f64.in_file_path!=NULL)
@@ -33,7 +35,7 @@ int main(int argc,char **argv)
 		task_f64.identify_dimensions();
 		task_f64.change_err_bound();
 		task_f64.choose_method();
+		task_f64.write_cfg();
 		task_f64.call_compress_functions();
 	}
-	//TODO：移植zstd
 }

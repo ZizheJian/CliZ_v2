@@ -15,7 +15,6 @@ namespace cliz
 
 	void hyper_iterator_c::print()
 	{
-		printf("best_it1:\n");
 		printf("    mx=(");
 		for (int i=0;i<n-1;i++)
 			printf("%lld, ",mx[i]);
@@ -26,10 +25,11 @@ namespace cliz
 		printf("%lld)\n",weight[n-1]);
 		if (dim_seq!=NULL)
 		{
+			int actual_n=((dim_fission_l==dim_fission_r)?n:(n+dim_fission_r-dim_fission_l-1));
 			printf("    dim_seq=(");
-			for (int did=0;did<n-1;did++)
+			for (int did=0;did<actual_n-1;did++)
 				printf("%d, ",dim_seq[did]);
-			printf("%d)\n",dim_seq[n-1]);
+			printf("%d)\n",dim_seq[actual_n-1]);
 		}
 		if (dim_fission_l!=dim_fission_r)
 		{
@@ -46,8 +46,9 @@ namespace cliz
 		fprintf(cfg_file,"\n");
 		if (dim_seq!=NULL)
 		{
+			int actual_n=((dim_fission_l==dim_fission_r)?n:(n+dim_fission_r-dim_fission_l-1));
 			fprintf(cfg_file,"Dimension sequence=");
-			for (int did=0;did<n;did++)
+			for (int did=0;did<actual_n;did++)
 				fprintf(cfg_file,"%d ",dim_seq[did]);
 		}
 		if (dim_fission_l!=dim_fission_r)
@@ -70,9 +71,12 @@ namespace cliz
 		memcpy(ity->weight,itx->weight,itx->n*sizeof(long long));
 		if (itx->dim_seq!=NULL)
 		{
-			new_data(ity->dim_seq,itx->n);
-			memcpy(ity->dim_seq,itx->dim_seq,itx->n*sizeof(int));
+			int actual_n=((itx->dim_fission_l==itx->dim_fission_r)?itx->n:(itx->n+itx->dim_fission_r-itx->dim_fission_l-1));
+			new_data(ity->dim_seq,actual_n);
+			memcpy(ity->dim_seq,itx->dim_seq,actual_n*sizeof(int));
 		}
+		ity->dim_fission_l=itx->dim_fission_l;
+		ity->dim_fission_r=itx->dim_fission_r;
 	}
 }
 

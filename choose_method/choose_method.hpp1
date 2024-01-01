@@ -3,5 +3,8 @@
 
 #include "choose_method.cpp"
 #include "identify_dimensions.cpp"
+#include "print_test_condition.cpp"
+#include "lv1_test/lv1_test.hpp1"
+#include "lv2_test/lv2_test.hpp1"
 
 #endif
