@@ -6,22 +6,22 @@
 namespace cliz
 {
 	template<typename T>
-	void init_it(task_c<T> &task)
+	void task_c<T>::init_it()
 	{
-		new_data(task.it1,task.dimension_num);
-		new_data(task.it2,task.dimension_num);
-		memcpy(task.it1->mx,task.dimension,task.dimension_num*sizeof(long long));
-		for (int did=task.dimension_num-1;did>=0;did--)
-			if (did==task.dimension_num-1)
-				task.it1->weight[did]=1;
+		new_data(it1,dimension_num);
+		new_data(it2,dimension_num);
+		memcpy(it1->mx,dimension,dimension_num*sizeof(long long));
+		for (int did=dimension_num-1;did>=0;did--)
+			if (did==dimension_num-1)
+				it1->weight[did]=1;
 			else
-				task.it1->weight[did]=task.it1->weight[did+1]*task.it1->mx[did+1];
-		memcpy(task.it2->mx,task.dimension,task.dimension_num*sizeof(long long));
-		for (int did=task.dimension_num-1;did>=0;did--)
-			if (did==task.dimension_num-1)
-				task.it2->weight[did]=1;
+				it1->weight[did]=it1->weight[did+1]*it1->mx[did+1];
+		memcpy(it2->mx,dimension,dimension_num*sizeof(long long));
+		for (int did=dimension_num-1;did>=0;did--)
+			if (did==dimension_num-1)
+				it2->weight[did]=1;
 			else
-				task.it2->weight[did]=task.it2->weight[did+1]*task.it2->mx[did+1];
+				it2->weight[did]=it2->weight[did+1]*it2->mx[did+1];
 	}
 }
 

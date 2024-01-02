@@ -189,6 +189,15 @@ namespace cliz
 						exit(0);
 					}
 			}
+		new_data(it2,dimension_num);
+		memcpy(it2->mx,dimension,dimension_num*sizeof(long long));
+		for (int did=dimension_num-1;did>=0;did--)
+		{
+			if (did==dimension_num-1)
+				it2->weight[did]=1;
+			else
+				it2->weight[did]=it2->weight[did+1]*it2->mx[did+1];
+		}
 	}
 
 	template<typename T>
@@ -255,14 +264,6 @@ namespace cliz
 			else
 				best_it1->weight[did]=best_it1->weight[did+1]*best_it1->mx[did+1];
 		}
-		new_data(it2,dimension_num);
-		for (int did=dimension_num-1;did>=0;did--)
-		{
-			if (did==dimension_num-1)
-				it2->weight[did]=1;
-			else
-				it2->weight[did]=it2->weight[did+1]*it2->mx[did+1];
-		}
 	}
 
 	template<typename T>
@@ -275,7 +276,12 @@ namespace cliz
 		}
 		istringstream iss(temp_string);
 		string s;
-		if (iss.str().length()!=it2->n)
+		int temp_n=0;
+		while (iss>>s)
+			temp_n++;
+		iss.clear();
+		iss.seekg(0,ios::beg);
+		if (temp_n!=it2->n)
 		{
 			printf("Error: Length of dimension sequence != dimension num.\n");
 			exit(0);
@@ -295,7 +301,12 @@ namespace cliz
 		}
 		istringstream iss(temp_string);
 		string s;
-		if (iss.str().length()!=2)
+		int temp_n=0;
+		while (iss>>s)
+			temp_n++;
+		iss.clear();
+		iss.seekg(0,ios::beg);
+		if (temp_n!=2)
 		{
 			printf("Error: Length of dimension fission != 2.\n");
 			exit(0);

@@ -4,5 +4,6 @@
 #include "draw_quant_bin.cpp"
 #include "draw_map.cpp"
 #include "printdetail.cpp"
+#include "print_best_strategy.cpp"
 
 #endif

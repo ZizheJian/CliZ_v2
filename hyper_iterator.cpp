@@ -66,6 +66,8 @@ namespace cliz
 	void copy_iterator(hyper_iterator_c *&ity,hyper_iterator_c *itx)
 	{
 		delete_data(ity);
+		if (itx==NULL)
+			return;
 		new_data(ity,itx->n);
 		memcpy(ity->mx,itx->mx,itx->n*sizeof(long long));
 		memcpy(ity->weight,itx->weight,itx->n*sizeof(long long));

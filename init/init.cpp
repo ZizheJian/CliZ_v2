@@ -17,21 +17,21 @@ namespace cliz
 			move_task(task_f64,task_f32);
 		if (((JOB_TYPE_ID<=1) && (task_i32.in_file_path!=NULL)) || ((JOB_TYPE_ID==2) && (task_i32.src_file_path!=NULL)))
 		{
-			if (task_i32.best_it1==NULL)
-				init_it(task_i32);
-			print_detail(task_i32);
+			if (task_i32.it2==NULL)
+				task_i32.init_it();
+			task_i32.print_detail();
 		}
 		if (((JOB_TYPE_ID<=1) && (task_f32.in_file_path!=NULL)) || ((JOB_TYPE_ID==2) && (task_f32.src_file_path!=NULL)))
 		{
-			if (task_f32.best_it1==NULL)
-				init_it(task_f32);
-			print_detail(task_f32);
+			if (task_f32.it2==NULL)
+				task_f32.init_it();
+			task_f32.print_detail();
 		}
 		if (((JOB_TYPE_ID<=1) && (task_f64.in_file_path!=NULL)) || ((JOB_TYPE_ID==2) && (task_f64.src_file_path!=NULL)))
 		{
-			if (task_f64.best_it1==NULL)
-				init_it(task_f64);
-			print_detail(task_f64);
+			if (task_f64.it2==NULL)
+				task_f64.init_it();
+			task_f64.print_detail();
 		}
 	}
 

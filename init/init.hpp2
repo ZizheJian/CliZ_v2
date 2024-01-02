@@ -33,8 +33,6 @@ namespace cliz
 	void check_debug(task_c<float> &task_f32);
 	void check_src_file(task_c<float> &task_f32);
 	void check_dec_file(task_c<float> &task_f32);
-	template<typename T>
-	void init_it(task_c<T> &task);
 
 	template<typename T>
 	void move_task(task_c<T> &ty,task_c<float> &tx);

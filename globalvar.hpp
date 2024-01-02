@@ -132,6 +132,7 @@ namespace cliz
 			FILE *out_file=NULL;
 			unsigned char *bitstream=NULL;
 			long long bitstream_length=0;
+			long long best_bitstream_length=numeric_limits<long long>::max();
 			long long bitstream_index=0;
 			char *cfg_file_mode=NULL;
 			char *cfg_file_path=NULL;
@@ -204,7 +205,11 @@ namespace cliz
 			template<typename T2>
 			T2 read_cache();
 
+			////////////////Some Other Functions////////////////
+			void init_it();
+			void print_detail();
 			void identify_dimensions();
+			void print_best_strategy();
 			
 			////////////////Error Bound Functions////////////////
 			void change_err_bound();
@@ -334,24 +339,12 @@ namespace cliz
 			void generate_map(hyper_iterator_c *map_it);
 			void generate_map_test(hyper_iterator_c *map_it,int lngid,int latid);
 
-			predictor_c<T> predictor,best_predictor,best_avg_predictor;
-			T linear_interp_predictor(int direction,long long stride);
 			T linear_interp_predictor_mask(task_c<int> *mask_subtask,int direction,long long stride);
 			T cubic_interp_predictor(int direction,long long stride);
 			T cubic_interp_predictor_fast(int direction,long long stride);
 			T cubic_interp_predictor_mask(task_c<int> *mask_subtask,int direction,long long stride);
 			T cubic_interp_predictor_mask_fast(task_c<int> *mask_subtask,int direction,long long stride);
 
-			void quantize_basic(T predicted_value);
-			void quantize_basic_fast(T predicted_value);
-			void quantize_test(T predicted_value);
-
-			void dequantize_basic(T predicted_value);
-
-			void calc_quant_bin_cache_length(int peak_r);
-			void read_quant_bin_cache_length();
-			void read_quant_bin_cache();
-			
 			void draw_quant_bin(int lngid,int latid);
 			void draw_map(int lngid,int latid);
 			void printdetail();
