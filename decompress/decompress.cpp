@@ -42,7 +42,7 @@ namespace cliz
 			T *data_backup=data;
 			new_data(data,data_num,false,false);
 			anti_transpose(data_backup);
-			delete_data(data_backup)
+			delete_data(data_backup);
 		}
 
 	}

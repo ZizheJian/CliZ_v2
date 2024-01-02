@@ -8,5 +8,6 @@
 #include "../DC/DC.hpp1"
 #include "../timer.cpp"
 #include "../zstd/zstd.h"
+#include "../transform/transform.hpp1"
 
 #endif

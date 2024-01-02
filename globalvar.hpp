@@ -282,6 +282,11 @@ namespace cliz
 			void transpose_2D(T *data_backup);
 			void transpose_3D(T *data_backup);
 			void transpose_4D(T *data_backup);
+			void anti_transpose(T *data_backup);
+			void anti_transpose_1D(T *data_backup);
+			void anti_transpose_2D(T *data_backup);
+			void anti_transpose_3D(T *data_backup);
+			void anti_transpose_4D(T *data_backup);
 
 			////////////////DC Functions////////////////
 			void call_DC_functions();

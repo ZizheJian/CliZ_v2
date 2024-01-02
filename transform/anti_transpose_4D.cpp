@@ -1,17 +1,25 @@
-#ifndef __TRANSPOSE_4D_CPP__
-#define __TRANSPOSE_4D_CPP__
+#ifndef __ANTI_TRANSPOSE_4D_CPP__
+#define __ANTI_TRANSPOSE_4D_CPP__
 
 #include "transform.hpp2"
 
 namespace cliz
 {
 	template<typename T>
-	void task_c<T>::transpose_4D(T *data_backup)
+	void task_c<T>::anti_transpose_4D(T *data_backup)
 	{
-		long long *mx1=it1->mx;
-		long long *weight1=it1->weight;
+		int *dim_seq=best_it1->dim_seq;
+		long long *mx2=it2->mx;
 		long long *weight2=it2->weight;
-		int *dim_seq=it1->dim_seq;
+		long long *mx1=new_data<long long>(it2->n);
+		for (int did=0;did<it2->n;did++)
+			mx1[did]=mx2[dim_seq[did]];
+		long long *weight1=new_data<long long>(it2->n);
+		for (int did=it2->n-1;did>=0;did--)
+			if (did==it2->n-1)
+				weight1[did]=1;
+			else
+				weight1[did]=weight1[did+1]*mx1[did+1];
 		long long *i=new_data<long long>(it2->n);
 		long long *j=new_data<long long>(it2->n);
 		for (i[0]=0;i[0]<mx1[0];i[0]++)
@@ -33,6 +41,10 @@ namespace cliz
 				}
 			}
 		}
+		delete_data(mx1);
+		delete_data(weight1);
+		delete_data(i);
+		delete_data(j);
 	}
 }
 

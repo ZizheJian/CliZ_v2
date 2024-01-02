@@ -1,12 +1,12 @@
-#ifndef __TRANSPOSE_2D_CPP__
-#define __TRANSPOSE_2D_CPP__
+#ifndef __ANTI_TRANSPOSE_2D_CPP__
+#define __ANTI_TRANSPOSE_2D_CPP__
 
 #include "transform.hpp2"
 
 namespace cliz
 {
 	template<typename T>
-	void task_c<T>::transpose_2D(T *data_backup)
+	void task_c<T>::anti_transpose_2D(T *data_backup)
 	{
 		int *dim_seq=best_it1->dim_seq;
 		long long *mx2=it2->mx;

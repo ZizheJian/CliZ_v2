@@ -6,5 +6,10 @@
 #include "transpose_2D.cpp"
 #include "transpose_3D.cpp"
 #include "transpose_4D.cpp"
+#include "anti_transpose.cpp"
+#include "anti_transpose_1D.cpp"
+#include "anti_transpose_2D.cpp"
+#include "anti_transpose_3D.cpp"
+#include "anti_transpose_4D.cpp"
 
 #endif

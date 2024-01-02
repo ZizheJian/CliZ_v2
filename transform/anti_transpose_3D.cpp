@@ -1,12 +1,12 @@
-#ifndef __TRANSPOSE_2D_CPP__
-#define __TRANSPOSE_2D_CPP__
+#ifndef __ANTI_TRANSPOSE_3D_CPP__
+#define __ANTI_TRANSPOSE_3D_CPP__
 
 #include "transform.hpp2"
 
 namespace cliz
 {
 	template<typename T>
-	void task_c<T>::transpose_2D(T *data_backup)
+	void task_c<T>::anti_transpose_3D(T *data_backup)
 	{
 		int *dim_seq=best_it1->dim_seq;
 		long long *mx2=it2->mx;
@@ -28,9 +28,13 @@ namespace cliz
 			for (i[1]=0;i[1]<mx1[1];i[1]++)
 			{
 				j[dim_seq[1]]=i[1];
-				long long pos1=i[0]*weight1[0]+i[1]*weight1[1];
-				long long pos2=j[0]*weight2[0]+j[1]*weight2[1];
-				data[pos1]=data_backup[pos2];
+				for (i[2]=0;i[2]<mx1[2];i[2]++)
+				{
+					j[dim_seq[2]]=i[2];
+					long long pos1=i[0]*weight1[0]+i[1]*weight1[1]+i[2]*weight1[2];
+					long long pos2=j[0]*weight2[0]+j[1]*weight2[1]+j[2]*weight2[2];
+					data[pos2]=data_backup[pos1];
+				}
 			}
 		}
 		delete_data(mx1);
