@@ -57,7 +57,6 @@ for dimension_num in [1,2,3,4]:
 	file.write("\n")
 	file.write("#endif")
 
-exit()
 for dimension_num in [1,2,3,4]:
 	file=open(f"anti_transpose_{dimension_num}D.cpp","w")
 	file.write(f"#ifndef __ANTI_TRANSPOSE_{dimension_num}D_CPP__\n")
@@ -104,7 +103,7 @@ for dimension_num in [1,2,3,4]:
 		else:
 			file.write(f"+j[{did}]*weight2[{did}]")
 	file.write(";\n")
-	file.write("	"*tabnum+"data[pos1]=data_backup[pos2];\n")
+	file.write("	"*tabnum+"data[pos2]=data_backup[pos1];\n")
 	tabnum=2
 	for did in range(dimension_num)[::-1]:
 		file.write("	"*(tabnum+did)+"}\n")

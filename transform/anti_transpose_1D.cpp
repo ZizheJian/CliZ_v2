@@ -27,7 +27,7 @@ namespace cliz
 			j[dim_seq[0]]=i[0];
 			long long pos1=i[0]*weight1[0];
 			long long pos2=j[0]*weight2[0];
-			data[pos1]=data_backup[pos2];
+			data[pos2]=data_backup[pos1];
 		}
 		delete_data(mx1);
 		delete_data(weight1);

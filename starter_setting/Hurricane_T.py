@@ -8,8 +8,8 @@ def Hurricane_T():
 	map_path="~/compress/SDRBENCH-Hurricane-ISABEL-100x500x500/TCf48.bin.f32.cliz.map"
 	#test_name="Compress"
 	#test_name="Recompress"
-	test_name="Decompress"
-	#test_name="Validate"
+	#test_name="Decompress"
+	test_name="Validate"
 	command=None
 	if test_name=="Compress":
 		command=generate_command_compress(job_type="compress"
