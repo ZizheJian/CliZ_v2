@@ -246,10 +246,6 @@ namespace cliz
 			void compress_test();
 			//compress_framework_c compress_framework,best_compress_framework,best_avg_compress_framework;
 			void compress_framework_i32();
-			void transpose_data1(T *transposed_data,hyper_iterator_c *it1,hyper_iterator_c *it2);
-			void transpose_data2(T *transposed_data,hyper_iterator_c *ity,hyper_iterator_c *itx);
-			void anti_transpose(T *transposed_data,hyper_iterator_c *ity,hyper_iterator_c *itx);
-			void compress_framework_test();
 			void compress_framework_mask(task_c<int> *mask_subtask);
 			void compress_framework_mask_test(task_c<int> *mask_subtask);
 			void compress_framework_map();
@@ -274,6 +270,13 @@ namespace cliz
 			//void match_decompress_functions(compress_framework_c &best_decompress_framework,predictor_c<T> &best_predictor);
 			void read_map(int lngid,int latid);
 			void read_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
+
+			////////////////Transpose Functions////////////////
+			void transpose(T *data_backup);
+			void transpose_1D(T *data_backup);
+			void transpose_2D(T *data_backup);
+			void transpose_3D(T *data_backup);
+			void transpose_4D(T *data_backup);
 
 			////////////////DC Functions////////////////
 			void call_DC_functions();

@@ -9,5 +9,6 @@
 #include "../timer.cpp"
 #include "../zstd/zstd.h"
 #include "../choose_method/choose_method.hpp1"
+#include "../transform/transform.hpp1"
 
 #endif

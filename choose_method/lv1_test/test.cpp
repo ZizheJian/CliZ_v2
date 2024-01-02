@@ -8,12 +8,6 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::test()
 	{
-		new_data(best_compress_function,FUNC_NAME_LENGTH);
-		strcpy(best_compress_function,"compress");
-		new_data(best_fitting_function,FUNC_NAME_LENGTH);
-		strcpy(best_fitting_function,"linear");
-		copy_iterator(best_it1,it1);
-		return;
 		if (!TEST_ALL)
 		{
 			test_num=data_num*TEST_RATE;

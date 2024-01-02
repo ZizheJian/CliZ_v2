@@ -9,6 +9,18 @@ namespace cliz
 	void task_c<T>::compress()
 	{
 		auto timer=new timer_c();
+		////////////////Transpose////////////////
+		timer->start();
+		hyper_iterator_c *best_it1_backup=NULL;
+		if (it1->dim_seq!=NULL)
+		{
+			T *data_backup=data;
+			new_data(data,data_num,false,false);
+			transpose(data_backup);
+			copy_iterator(best_it1_backup,it1);
+			delete_data(best_it1->dim_seq);
+		}
+		timer->pause();
 		////////////////Quant Bin////////////////
 		timer->start();
 		new_data(quant_bin,data_num);
@@ -45,6 +57,11 @@ namespace cliz
 		delete_data(temp_bitstream);
 		timer->pause();
 		printf("%lld\n",bitstream_length);
+		timer->write();
+		////////////////Anti-Tanspose////////////////
+		timer->start();
+		if (it1->dim_seq!=NULL)
+			copy_iterator(best_it1,best_it1_backup);
 		timer->write();
 	}
 }

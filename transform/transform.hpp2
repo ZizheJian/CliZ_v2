@@ -1,0 +1,6 @@
+#ifndef __TRANSFORM_HPP2__
+#define __TRANSFORM_HPP2__
+
+#include "../globalvar.hpp"
+
+#endif
