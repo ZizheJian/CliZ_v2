@@ -7,6 +7,9 @@ os.chdir("..")
 os.chdir("DC")
 os.system("python3 code_generation.py")
 os.chdir("..")
+os.chdir("transform")
+os.system("python3 code_generation.py")
+os.chdir("..")
 
 command=""
 
