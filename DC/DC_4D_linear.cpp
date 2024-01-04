@@ -56,7 +56,7 @@ namespace cliz
 												if (i0-3*stride>=b0b)
 													pred=linear_fitting_ddp(pos+i0*weight[0],stride*weight[0]);
 												else
-													pred=linear_fitting_dp(pos+i0*weight[0],stride*weight[0]);
+													pred=constant_fitting_dp(pos+i0*weight[0],stride*weight[0]);
 											#ifdef JOB_TYPE_COMPRESS
 												quant_bin[quant_bin_pos]=quantize(pos+i0*weight[0],pred);
 											#endif
@@ -80,7 +80,7 @@ namespace cliz
 												if (i1-3*stride>=b1b)
 													pred=linear_fitting_ddp(pos+i1*weight[1],stride*weight[1]);
 												else
-													pred=linear_fitting_dp(pos+i1*weight[1],stride*weight[1]);
+													pred=constant_fitting_dp(pos+i1*weight[1],stride*weight[1]);
 											#ifdef JOB_TYPE_COMPRESS
 												quant_bin[quant_bin_pos]=quantize(pos+i1*weight[1],pred);
 											#endif
@@ -104,7 +104,7 @@ namespace cliz
 												if (i2-3*stride>=b2b)
 													pred=linear_fitting_ddp(pos+i2*weight[2],stride*weight[2]);
 												else
-													pred=linear_fitting_dp(pos+i2*weight[2],stride*weight[2]);
+													pred=constant_fitting_dp(pos+i2*weight[2],stride*weight[2]);
 											#ifdef JOB_TYPE_COMPRESS
 												quant_bin[quant_bin_pos]=quantize(pos+i2*weight[2],pred);
 											#endif
@@ -128,7 +128,7 @@ namespace cliz
 												if (i3-3*stride>=b3b)
 													pred=linear_fitting_ddp(pos+i3*weight[3],stride*weight[3]);
 												else
-													pred=linear_fitting_dp(pos+i3*weight[3],stride*weight[3]);
+													pred=constant_fitting_dp(pos+i3*weight[3],stride*weight[3]);
 											#ifdef JOB_TYPE_COMPRESS
 												quant_bin[quant_bin_pos]=quantize(pos+i3*weight[3],pred);
 											#endif

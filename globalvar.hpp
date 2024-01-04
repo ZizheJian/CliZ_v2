@@ -25,7 +25,7 @@ namespace cliz
 	#define FILE_NAME_LENGTH 1000
 	#define FUNC_NAME_LENGTH 100
 	#define TEMP_STRING_LENGTH 1000
-	#define SAMPLING_RATE 1e-7
+	#define SAMPLING_RATE 1e-6
 	#define TEST_ALL false
 	#define FFT_SAMPLE_NUM 10
 	#define FAST_SAMPLING false
@@ -159,7 +159,6 @@ namespace cliz
 			double err_bound_reciprocal=numeric_limits<double>::max();
 			bool debug=false;
 
-			bool complete=false;
 			T *data=NULL;
 			int *mask_data=NULL;
 			int latid=-1,lngid=-1,hid=-1,tid=-1,pertid=-1;
@@ -170,6 +169,7 @@ namespace cliz
 			hyper_iterator_c *pert_it2=NULL;
 			long long test_num=0;
 			long long *test_pos=NULL;
+			bool best_map=false;
 			unsigned char *map=NULL;
 			long long pert=0;
 			T *avg_data=NULL;
@@ -298,10 +298,14 @@ namespace cliz
 
 			////////////////Fitting Functions////////////////
 			char *best_fitting_function=NULL,*fitting_function=NULL;
+			T cubic_fitting_ddpdd(long long i,long long stride);
+			T cubic_fitting_dddpd(long long i,long long stride);
+			T cubic_fitting_ddddp(long long i,long long stride);
+			T quadratic_fitting_ddpd(long long i,long long stride);
+			T quadratic_fitting_dddp(long long i,long long stride);
 			T linear_fitting_dpd(long long i,long long stride);
-			T linear_fitting_dp(long long i,long long stride);
 			T linear_fitting_ddp(long long i,long long stride);
-			T cubic_fitting(long long mini,long long i,long long maxi,long long stride);
+			T constant_fitting_dp(long long i,long long stride);
 
 			////////////////Quantization Functions////////////////
 			short quantize(long long i,T pred);

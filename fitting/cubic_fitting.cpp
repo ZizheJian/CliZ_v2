@@ -6,24 +6,33 @@
 namespace cliz
 {
 	template<typename T>
-	T task_c<T>::cubic_fitting(long long mini,long long i,long long maxi,long long stride)
+	T task_c<T>::cubic_fitting_ddpdd(long long i,long long stride)
 	{
-		bool v[4];
-		T d[4],p[4],ans=0;
-		v[0]=(i-3*stride>=mini);
-		v[1]=(i-stride>=mini);
-		v[2]=(i+stride<maxi);
-		v[3]=(i+3*stride<maxi);
-		d[0]=v[0]?data[i-3*stride]:0;
-		d[1]=v[1]?data[i-stride]:0;
-		d[2]=v[2]?data[i+stride]:0;
-		d[3]=v[3]?data[i+3*stride]:0;
-		p[0]=v[0]*(v[1]?-0.5:1)*(v[2]?0.25:1)*(v[3]?0.5:1);
-		p[1]=(v[0]?1.5:1)*v[1]*(v[2]?0.5:1)*(v[3]?0.75:1);
-		p[2]=(v[0]?0.75:1)*(v[1]?0.5:1)*v[2]*(v[3]?1.5:1);
-		p[3]=(v[0]?0.5:1)*(v[1]?0.25:1)*(v[2]?-0.5:1)*v[3];
-		ans=p[0]*d[0]+p[1]*d[1]+p[2]*d[2]+p[3]*d[3];
-		return ans;
+		return (-data[i-3*stride]+9*data[i-stride]+9*data[i+stride]-data[i+3*stride])/16;
+	}
+
+	template<typename T>
+	T task_c<T>::cubic_fitting_dddpd(long long i,long long stride)
+	{
+		return (data[i-5*stride]-5*data[i-3*stride]+15*data[i-stride]+5*data[i+stride])/16;
+	}
+
+	template<typename T>
+	T task_c<T>::cubic_fitting_ddddp(long long i,long long stride)
+	{
+		return (-5*data[i-7*stride]+21*data[i-5*stride]-35*data[i-3*stride]+35*data[i-stride])/16;
+	}
+
+	template<typename T>
+	T task_c<T>::quadratic_fitting_ddpd(long long i,long long stride)
+	{
+		return (-data[i-3*stride]+6*data[i-stride]+3*data[i+stride])/8;
+	}
+
+	template<typename T>
+	T task_c<T>::quadratic_fitting_dddp(long long i,long long stride)
+	{
+		return (3*data[i-5*stride]-10*data[i-3*stride]+15*data[i-stride])/8;
 	}
 }
 

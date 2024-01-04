@@ -88,7 +88,7 @@ namespace cliz
 					long long pos2l=i2[0]*weight2[0]+i2[1]*weight2[1]+i2[2]*weight2[2];
 					data[2]=data_backup[pos2l];
 					data[3]=data_backup[pos2];
-					T pred=linear_fitting_dp(3,1);
+					T pred=constant_fitting_dp(3,1);
 					quant_bin[test_id]=quantize(3,pred);
 				}
 		}
