@@ -35,7 +35,6 @@ namespace cliz
 		this_huffman.generate_tree();
 		this_huffman.generate_code(this);
 		timer->pause();
-		printf("%lld\n",bitstream_length);
 		////////////////Huffman Encode////////////////
 		timer->start();
 		encode();
@@ -43,13 +42,11 @@ namespace cliz
 		this_huffman.nodes.clear();
 		huffman.clear();
 		timer->pause();
-		printf("%lld\n",bitstream_length);
 		////////////////Irregular////////////////
 		timer->start();
 		memcpy(bitstream+bitstream_length,irregular_data.data(),irregular_data.size()*sizeof(T));
 		irregular_data.clear();
 		timer->pause();
-		printf("%lld\n",bitstream_length);
 		////////////////Zstd////////////////
 		timer->start();
 		unsigned char *temp_bitstream=bitstream;
@@ -57,12 +54,11 @@ namespace cliz
 		bitstream_length=ZSTD_compress(bitstream,data_num*sizeof(T),temp_bitstream,bitstream_length,3);
 		delete_data(temp_bitstream);
 		timer->pause();
-		printf("%lld\n",bitstream_length);
-		timer->write();
 		////////////////Anti-Tanspose////////////////
 		timer->start();
 		if ((best_it1_backup!=NULL) && (best_it1_backup->dim_seq!=NULL))
 			copy_iterator(best_it1,best_it1_backup);
+		timer->pause();
 		timer->write();
 	}
 }

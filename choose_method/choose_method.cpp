@@ -29,6 +29,8 @@ namespace cliz
 		new_data(bitstream,data_num*sizeof(T));
 		new_data(best_compress_function,FUNC_NAME_LENGTH);
 		new_data(best_fitting_function,FUNC_NAME_LENGTH);
+		auto timer=new timer_c();
+		timer->start();
 		if (strcmp(data_type,"i32")==0)
 			test_i32();
 		else
@@ -45,6 +47,8 @@ namespace cliz
 			if ((map_file_mode==NULL) || (strcmp(map_file_mode,"set")==0) || (strcmp(map_file_mode,"use")==0))
 				test();
 		}
+		timer->pause();
+		timer->write();
 		print_best_strategy();
 		delete_data(data);
 		delete_data(bitstream);
