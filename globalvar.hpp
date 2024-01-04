@@ -25,8 +25,8 @@ namespace cliz
 	#define FILE_NAME_LENGTH 1000
 	#define FUNC_NAME_LENGTH 100
 	#define TEMP_STRING_LENGTH 1000
-	#define TEST_RATE 1
-	#define TEST_ALL true
+	#define TEST_RATE 0.001
+	#define TEST_ALL false
 	#define FFT_SAMPLE_NUM 10
 	#define FAST_SAMPLING false
 
@@ -182,8 +182,6 @@ namespace cliz
 			T *dec_data=NULL;
 
 			////////////////IO Functions////////////////
-			void read_iterator(hyper_iterator_c *&it);
-			void write_iterator(hyper_iterator_c *it);
 			void read_cfg();
 			void read_cfg_dimension_num(char *temp_string);
 			void read_cfg_dimension(char *temp_string);
@@ -296,6 +294,7 @@ namespace cliz
 			void DC_3D_linear();
 			void DC_4D_linear();
 			void DC_3D_cubic();
+			void DC_linear_test();
 
 			////////////////Fitting Functions////////////////
 			char *best_fitting_function=NULL,*fitting_function=NULL;
@@ -310,9 +309,6 @@ namespace cliz
 
 			////////////////Count Quant_Bin Functions////////////////
 			void count_quant_bin();
-			void count_quant_bin_basic_fast();
-			void count_quant_bin_basic_fast_2D();
-			void count_quant_bin_basic_fast_3D();
 			void count_quant_bin_test();
 			void count_quant_bin_mask(task_c<int> *mask_subtask);
 			void count_quant_bin_mask_test(task_c<int> *mask_subtask);
@@ -323,23 +319,20 @@ namespace cliz
 			
 			/////////////////Encode Quant_Bin Functions////////////////
 			void encode();
-			void encode_quant_bin_basic_fast();
-			void encode_quant_bin_basic_fast_2D();
-			void encode_quant_bin_basic_fast_3D();
+			void encode_test();
 			void encode_quant_bin_mask(task_c<int> *mask_subtask);
 			void encode_quant_bin_map(int lngid,int latid);
 			void encode_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
-			void decode_quant_bin_basic();
 			void decode_quant_bin_mask(task_c<int> *mask_subtask);
 			void decode_quant_bin_map(int lngid,int latid);
 			void decode_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
 			
 			////////////////Decode Quant_Bin Functions////////////////
 			void decode();
-			void validate_ABS();
 
 			////////////////Validate Functions////////////////
 			void call_validate_functions();
+			void validate_ABS();
 			
 			void generate_map(hyper_iterator_c *map_it);
 			void generate_map_test(hyper_iterator_c *map_it,int lngid,int latid);

@@ -10,7 +10,7 @@ namespace cliz
 	{
 		if (!TEST_ALL)
 		{
-			test_num=data_num*TEST_RATE;
+			test_num=ceil(data_num*TEST_RATE);
 			new_data(test_pos,test_num);
 			uniform_int_distribution<long long> dist(0,data_num-1);
 			for (long long i=0;i<test_num;i++)

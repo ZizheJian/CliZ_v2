@@ -34,15 +34,15 @@ namespace cliz
 			////////////////Huffman Tree////////////////
 			timer->start();
 			huffman.push_back(huffman_tree_c<T>());
-			count_quant_bin();
+			count_quant_bin_test();
 			huffman_tree_c<T> & this_huffman=huffman[0];
 			this_huffman.generate_tree();
 			this_huffman.generate_code(this);
 			timer->pause();
 			printf("%lld\n",bitstream_length);
-			////////////////Huffman Encode////////////////
+			// ////////////////Huffman Encode////////////////
 			timer->start();
-			encode();
+			encode_test();
 			delete_data(quant_bin);
 			this_huffman.nodes.clear();
 			huffman.clear();
@@ -74,8 +74,7 @@ namespace cliz
 			strcpy(best_fitting_function,fitting_function);
 		}
 		bitstream_length=0;
-		getchar();
-		return;
+		//getchar();
 	}
 }
 

@@ -14,7 +14,10 @@ namespace cliz
 		else
 			for (int did=0;did<it2->n;did++)
 				printf("%d",it1->dim_seq[did]);
-		printf("%d%d %f\n",it1->dim_fission_l,it1->dim_fission_r,((float)bitstream_length)/(data_num*sizeof(T)));
+		if (TEST_ALL)
+			printf("%d%d %f\n",it1->dim_fission_l,it1->dim_fission_r,((float)bitstream_length)/(data_num*sizeof(T)));
+		else
+			printf("%d%d %f\n",it1->dim_fission_l,it1->dim_fission_r,((float)bitstream_length)/(test_num*sizeof(T)));
 	}
 }
 
