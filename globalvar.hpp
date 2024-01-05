@@ -303,8 +303,6 @@ namespace cliz
 			////////////////Fitting Functions////////////////
 			char *best_fitting_function=NULL,*fitting_function=NULL;
 			T cubic_fitting_ddpdd(long long i,long long stride);
-			T cubic_fitting_dddpd(long long i,long long stride);
-			T cubic_fitting_ddddp(long long i,long long stride);
 			T quadratic_fitting_ddpd(long long i,long long stride);
 			T quadratic_fitting_dddp(long long i,long long stride);
 			T linear_fitting_dpd(long long i,long long stride);

@@ -12,7 +12,8 @@ os.chdir("transform")
 os.system("python3 code_generation.py")
 os.chdir("..")
 
-command=""
+datasets=[Hurricane_T,CESM_T]
+command=[]
 
 #testname="compress CESM_ATM_RELHUM"
 #testname="decompress CESM_ATM_RELHUM"
@@ -33,17 +34,14 @@ command=""
 #testname="compress b.nday1.SST+mask"
 #testname="api test"
 
-command=CESM_T()
+for dataset in datasets:
+	command.append(dataset())
+if (len(command)!=1):
+	print("Error: More than one tasks are selected.")
+	exit()
 os.system("make")
-print("command=",command)
-os.system(command)
-
-# if testname=="decompress hurricane_T":
-# 	task.set_job("decompress")
-# 	task.add_file(input_path="~/compress/SDRBENCH-Hurricane-ISABEL-100x500x500/TCf48.bin.f32.air"
-# 		,config=["use","~/compress/SDRBENCH-Hurricane-ISABEL-100x500x500/TCf48.bin.f32.air.cfg"]
-# 		,map=["use","~/compress/SDRBENCH-Hurricane-ISABEL-100x500x500/TCf48.bin.f32.air.map"]
-# 	)
+print("command=",command[0])
+os.system(command[0])
 
 # if testname=="compress CESM_ATM_RELHUM":
 # 	task.set_job("compress")
@@ -157,24 +155,6 @@ os.system(command)
 # # 		,file_name="CLOUDf48.log10.bin.f32.air"
 # # 		#,draw_dimension=[["",24],["h",384],["w",320]]
 # # 	)
-
-# if (testname=="compress CESM-ATM-T"):
-# 	task.set_job("compress")
-# 	task.add_file(input_path="~/compress/SDRBENCH-CESM-ATM-26x1800x3600/T/T_1_26_1800_3600.f32"
-# 		,config=["set","~/compress/SDRBENCH-CESM-ATM-26x1800x3600/T/T_1_26_1800_3600.f32.air.cfg"]
-# 		,dimension=[["h",26],["lat",1800],["lng",3600]]
-# 		,data_phy="T"
-# 		,err_type="REL"
-# 		,err_bound=0.000001
-# 		#,draw_dimension=[26,["h",1800],["w",3600]]
-# 		,freq=True
-# 	)
-
-# if (testname=="decompress CESM-ATM-T"):
-# 	task.set_job("decompress")
-# 	task.add_file(input_path="~/compress/SDRBENCH-CESM-ATM-26x1800x3600/T/T_1_26_1800_3600.f32.air"
-# 		,config=["use","~/compress/SDRBENCH-CESM-ATM-26x1800x3600/T/T_1_26_1800_3600.f32.air.cfg"]
-# 	)
 
 # # if (testname=="compress CESM-ATM-CLDLOW_2D"):
 # # 	task.add_file(job="compress"

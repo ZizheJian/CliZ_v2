@@ -58,30 +58,24 @@ namespace cliz
 				left_data--;
 			while (i1[direction]+(2*right_data-1)*stride>=mx1[direction])
 				right_data--;
-			//printf("left_data=%d, right_data=%d\n",left_data,right_data);
-			while ((i1[direction]-(2*left_data+1)*stride>=0) && (left_data+right_data<4))
+			while ((i1[direction]-(2*left_data+1)*stride>=0) && (left_data+right_data<3))
 				left_data++;
-			while ((i1[direction]+(2*right_data+1)*stride<mx1[direction]) && (left_data+right_data<4))
+			while ((i1[direction]+(2*right_data+1)*stride<mx1[direction]) && (left_data+right_data<3))
 				right_data++;
-			//printf("left_data=%d, right_data=%d\n",left_data,right_data);
 			long long i1_direction_backup=i1[direction];
 			long long pos2=i2[0]*weight2[0]+i2[1]*weight2[1]+i2[2]*weight2[2];
 			data[7]=data_backup[pos2];
 			for (int i=1;i<=left_data;i++)
 			{
 				i1[direction]=i1_direction_backup-(2*i-1)*stride;
-				//printf("i1[0]=%lld, i1[1]=%lld, i1[2]=%lld\n",i1[0],i1[1],i1[2]);
 				convert(i1,i2,it1,it2);
-				//printf("i2[0]=%lld, i2[1]=%lld, i2[2]=%lld\n",i2[0],i2[1],i2[2]);
 				long long pos2l=i2[0]*weight2[0]+i2[1]*weight2[1]+i2[2]*weight2[2];
 				data[8-2*i]=data_backup[pos2l];
 			}
 			for (int i=1;i<=right_data;i++)
 			{
 				i1[direction]=i1_direction_backup+(2*i-1)*stride;
-				//printf("i1[0]=%lld, i1[1]=%lld, i1[2]=%lld\n",i1[0],i1[1],i1[2]);
 				convert(i1,i2,it1,it2);
-				//printf("i2[0]=%lld, i2[1]=%lld, i2[2]=%lld\n",i2[0],i2[1],i2[2]);
 				long long pos2r=i2[0]*weight2[0]+i2[1]*weight2[1]+i2[2]*weight2[2];
 				data[6+2*i]=data_backup[pos2r];
 			}
@@ -94,8 +88,6 @@ namespace cliz
 					pred=linear_fitting_dpd(7,1);
 				if (right_data==2)
 					pred=quadratic_fitting_ddpd(7,-1);
-				if (right_data==3)
-					pred=cubic_fitting_dddpd(7,-1);
 			}
 			if (left_data==2)
 			{
@@ -110,13 +102,8 @@ namespace cliz
 			{
 				if (right_data==0)
 					pred=quadratic_fitting_dddp(7,1);
-				if (right_data==1)
-					pred=cubic_fitting_dddpd(7,1);
 			}
-			if (left_data==4)
-				pred=cubic_fitting_ddddp(7,1);
 			quant_bin[test_id]=quantize(7,pred);
-			//getchar();
 		}
 		delete_data(data);
 		data=data_backup;

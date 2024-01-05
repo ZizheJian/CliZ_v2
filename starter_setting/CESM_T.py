@@ -6,7 +6,7 @@ def CESM_T():
 	decompressed_path="~/compress/SDRBENCH-CESM-ATM-26x1800x3600/T/T_1_26_1800_3600.f32.cliz.bin"
 	config_path="~/compress/SDRBENCH-CESM-ATM-26x1800x3600/T/T_1_26_1800_3600.f32.cliz.cfg"
 	map_path="~/compress/SDRBENCH-CESM-ATM-26x1800x3600/T/T_1_26_1800_3600.f32.cliz.map"
-	test_name="Compress"
+	#test_name="Compress"
 	#test_name="Recompress"
 	#test_name="Decompress"
 	#test_name="Validate"
