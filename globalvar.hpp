@@ -26,7 +26,7 @@ namespace cliz
 	#define FUNC_NAME_LENGTH 100
 	#define TEMP_STRING_LENGTH 1000
 	#define SAMPLING_RATE 1
-	#define TEST_ALL false
+	#define TEST_ALL true
 	#define FFT_SAMPLE_NUM 10
 	#define FAST_SAMPLING false
 

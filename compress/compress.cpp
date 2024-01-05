@@ -8,8 +8,6 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::compress()
 	{
-		if ((best_it1->dim_seq!=NULL) || (best_it1->dim_fission_l!=best_it1->dim_fission_r))
-			return;
 		auto timer=new timer_c();
 		////////////////Transpose////////////////
 		timer->start();

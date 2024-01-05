@@ -8,6 +8,8 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::compress_test()
 	{
+		if ((it1->dim_seq!=NULL) || (it1->dim_fission_l!=it1->dim_fission_r))
+			return;
 		if (TEST_ALL)
 		{
 			hyper_iterator_c *best_it1_backup=NULL;
@@ -25,7 +27,7 @@ namespace cliz
 		}
 		else
 		{
-			if ((it1->dim_seq!=NULL) || (it1->dim_fission_l!=it1->dim_fission_r) || (SAMPLING_RATE!=1))
+			if (SAMPLING_RATE!=1)
 				return;
 			////////////////Quant Bin////////////////
 			new_data(quant_bin,test_num);
