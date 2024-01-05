@@ -21,8 +21,14 @@ namespace cliz
 		}
 		if (strcmp(best_fitting_function,"cubic")==0)
 		{
+			if (best_it1->n==1)
+				DC_1D_cubic();
+			if (best_it1->n==2)
+				DC_2D_cubic();
 			if (best_it1->n==3)
 				DC_3D_cubic();
+			if (best_it1->n==4)
+				DC_4D_cubic();
 		}
 	}
 }

@@ -189,15 +189,6 @@ namespace cliz
 						exit(0);
 					}
 			}
-		new_data(it2,dimension_num);
-		memcpy(it2->mx,dimension,dimension_num*sizeof(long long));
-		for (int did=dimension_num-1;did>=0;did--)
-		{
-			if (did==dimension_num-1)
-				it2->weight[did]=1;
-			else
-				it2->weight[did]=it2->weight[did+1]*it2->mx[did+1];
-		}
 	}
 
 	template<typename T>
@@ -281,12 +272,13 @@ namespace cliz
 			temp_n++;
 		iss.clear();
 		iss.seekg(0,ios::beg);
-		if (temp_n!=it2->n)
-		{
-			printf("Error: Length of dimension sequence != dimension num.\n");
-			exit(0);
-		}
-		new_data(best_it1->dim_seq,it2->n);
+		if (dimension_num!=0)
+			if (temp_n!=dimension_num)
+			{
+				printf("Error: Length of dimension sequence != dimension num.\n");
+				exit(0);
+			}
+		new_data(best_it1->dim_seq,dimension_num);
 		for (int did=0;iss>>s;did++)
 			sscanf(s.c_str(),"%d",&best_it1->dim_seq[did]);
 	}

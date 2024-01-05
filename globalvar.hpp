@@ -293,8 +293,12 @@ namespace cliz
 			void DC_2D_linear();
 			void DC_3D_linear();
 			void DC_4D_linear();
+			void DC_1D_cubic();
+			void DC_2D_cubic();
 			void DC_3D_cubic();
+			void DC_4D_cubic();
 			void DC_linear_test();
+			void DC_cubic_test();
 
 			////////////////Fitting Functions////////////////
 			char *best_fitting_function=NULL,*fitting_function=NULL;

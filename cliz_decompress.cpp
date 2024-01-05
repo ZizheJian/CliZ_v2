@@ -16,16 +16,22 @@ int main(int argc,char **argv)
 	init(task_i32,task_f32,task_f64,argc,argv);
 	if (task_i32.in_file_path!=NULL)
 	{
+		if (task_i32.cfg_file_mode!=NULL)
+			task_i32.print_best_strategy();
 		task_i32.identify_dimensions();
 		task_i32.call_decompress_functions();
 	}
 	if (task_f32.in_file_path!=NULL)
 	{
+		if (task_f32.cfg_file_mode!=NULL)
+			task_f32.print_best_strategy();
 		task_f32.identify_dimensions();
 		task_f32.call_decompress_functions();
 	}
 	if (task_f64.in_file_path!=NULL)
 	{
+		if (task_f64.cfg_file_mode!=NULL)
+			task_f64.print_best_strategy();
 		task_f64.identify_dimensions();
 		task_f64.call_decompress_functions();
 	}

@@ -14,11 +14,8 @@ namespace cliz
 		}
 		if (strcmp(fitting_function,"cubic")==0)
 		{
-			// if (best_it1->n==3)
-			// 	DC_3D_cubic_test();
+			DC_cubic_test();
 		}
-		// if (dimension_num==4)
-		// 	DC_4D();
 	}
 }
 
