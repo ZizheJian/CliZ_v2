@@ -13,7 +13,7 @@ os.system("python3 code_generation.py")
 os.chdir("..")
 
 datasets=[Hurricane_T,CESM_T]
-command=[]
+commands=[]
 
 #testname="compress CESM_ATM_RELHUM"
 #testname="decompress CESM_ATM_RELHUM"
@@ -35,13 +35,15 @@ command=[]
 #testname="api test"
 
 for dataset in datasets:
-	command.append(dataset())
-if (len(command)!=1):
+	command=dataset()
+	if command!=None:
+		commands.append(command)
+if (len(commands)!=1):
 	print("Error: More than one tasks are selected.")
 	exit()
 os.system("make")
-print("command=",command[0])
-os.system(command[0])
+print("command=",commands[0])
+os.system(commands[0])
 
 # if testname=="compress CESM_ATM_RELHUM":
 # 	task.set_job("compress")

@@ -1,15 +1,16 @@
 from task import generate_command_compress,generate_command_validate
 
 def Hurricane_T():
+	test_name=None
 	source_path="~/compress/SDRBENCH-Hurricane-ISABEL-100x500x500/TCf48.bin.f32"
 	compressed_path="~/compress/SDRBENCH-Hurricane-ISABEL-100x500x500/TCf48.bin.f32.cliz"
 	decompressed_path="~/compress/SDRBENCH-Hurricane-ISABEL-100x500x500/TCf48.bin.f32.cliz.bin"
 	config_path="~/compress/SDRBENCH-Hurricane-ISABEL-100x500x500/TCf48.bin.f32.cliz.cfg"
 	map_path="~/compress/SDRBENCH-Hurricane-ISABEL-100x500x500/TCf48.bin.f32.cliz.map"
 	#test_name="Compress"
-	test_name="Recompress"
+	#test_name="Recompress"
 	#test_name="Decompress"
-	#test_name="Validate"
+	test_name="Validate"
 	command=None
 	if test_name=="Compress":
 		command=generate_command_compress(job_type="compress"

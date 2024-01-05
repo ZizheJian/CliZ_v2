@@ -1,6 +1,7 @@
 from task import generate_command_compress,generate_command_validate
 
 def CESM_T():
+	test_name=None
 	source_path="~/compress/SDRBENCH-CESM-ATM-26x1800x3600/T/T_1_26_1800_3600.f32"
 	compressed_path="~/compress/SDRBENCH-CESM-ATM-26x1800x3600/T/T_1_26_1800_3600.f32.cliz"
 	decompressed_path="~/compress/SDRBENCH-CESM-ATM-26x1800x3600/T/T_1_26_1800_3600.f32.cliz.bin"

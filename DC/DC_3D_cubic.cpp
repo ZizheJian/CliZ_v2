@@ -76,7 +76,7 @@ namespace cliz
 							if (i1-3*stride>=0)
 								pred=cubic_fitting_ddpdd(pos+i1*weight[1],stride*weight[1]);
 							else
-									pred=quadratic_fitting_ddpd(pos+i1*weight[1],-stride*weight[1]);
+								pred=quadratic_fitting_ddpd(pos+i1*weight[1],-stride*weight[1]);
 						else
 							if (i1+stride<mx[1])
 								if (i1-3*stride>=0)
