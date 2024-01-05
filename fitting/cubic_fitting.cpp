@@ -8,6 +8,8 @@ namespace cliz
 	template<typename T>
 	T task_c<T>::cubic_fitting_ddpdd(long long i,long long stride)
 	{
+		//printf("i=%lld, stride=%lld, data[%lld]=%f, data[%lld]=%f, data[%lld]=%f, data[%lld]=%f\n",i,stride,i-3*stride,data[i-3*stride],i-stride,data[i-stride],i+stride,data[i+stride]
+		//	,i+3*stride,data[i+3*stride]);
 		return (-data[i-3*stride]+9*data[i-stride]+9*data[i+stride]-data[i+3*stride])/16;
 	}
 

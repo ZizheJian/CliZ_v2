@@ -25,7 +25,7 @@ namespace cliz
 	#define FILE_NAME_LENGTH 1000
 	#define FUNC_NAME_LENGTH 100
 	#define TEMP_STRING_LENGTH 1000
-	#define SAMPLING_RATE 1e-6
+	#define SAMPLING_RATE 1
 	#define TEST_ALL false
 	#define FFT_SAMPLE_NUM 10
 	#define FAST_SAMPLING false
@@ -351,6 +351,7 @@ namespace cliz
 			T cubic_interp_predictor_mask(task_c<int> *mask_subtask,int direction,long long stride);
 			T cubic_interp_predictor_mask_fast(task_c<int> *mask_subtask,int direction,long long stride);
 
+			void write_quant_bin_freq(int num);
 			void draw_quant_bin(int lngid,int latid);
 			void draw_map(int lngid,int latid);
 			void printdetail();

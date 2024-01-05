@@ -1,3 +1,4 @@
+exit()
 for dimension_num in [1,2,3,4]:
 	for fitting_function in ["linear","cubic"]:
 		file=open(f"DC_{dimension_num}D_{fitting_function}.cpp","w")

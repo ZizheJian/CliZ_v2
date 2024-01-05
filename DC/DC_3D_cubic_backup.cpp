@@ -90,13 +90,34 @@ namespace cliz
 								for (long long i1=b1b+stride;i1<=b1e;i1+=2*stride)
 								{
 									T pred;
-									if (i1+stride<=b1e)
-										pred=linear_fitting_dpd(pos+i1*weight[1],stride*weight[1]);
-									else
+									if (i1+3*stride<=b1e)
 										if (i1-3*stride>=b1b)
-											pred=linear_fitting_ddp(pos+i1*weight[1],stride*weight[1]);
+											pred=cubic_fitting_ddpdd(pos+i1*weight[1],stride*weight[1]);
 										else
-											pred=constant_fitting_dp(pos+i1*weight[1],stride*weight[1]);
+											if (i1+5*stride<=b1e)
+												pred=cubic_fitting_dddpd(pos+i1*weight[1],-stride*weight[1]);
+											else
+												pred=quadratic_fitting_ddpd(pos+i1*weight[1],-stride*weight[1]);
+									else
+										if (i1+stride<=b1e)
+											if (i1-5*stride>=b1b)
+												pred=cubic_fitting_dddpd(pos+i1*weight[1],stride*weight[1]);
+											else
+												if (i1-3*stride>=b1b)
+													pred=quadratic_fitting_ddpd(pos+i1*weight[1],stride*weight[1]);
+												else
+													pred=linear_fitting_dpd(pos+i1*weight[1],stride*weight[1]);
+										else
+											if (i1-7*stride>=b1b)
+												pred=cubic_fitting_ddddp(pos+i1*weight[1],stride*weight[1]);
+											else
+												if (i1-5*stride>=b1b)
+													pred=quadratic_fitting_dddp(pos+i1*weight[1],stride*weight[1]);
+												else
+													if (i1-3*stride>=b1b)
+														pred=linear_fitting_ddp(pos+i1*weight[1],stride*weight[1]);
+													else
+														pred=constant_fitting_dp(pos+i1*weight[1],stride*weight[1]);
 									#ifdef JOB_TYPE_COMPRESS
 										quant_bin[quant_bin_pos]=quantize(pos+i1*weight[1],pred);
 									#endif
@@ -113,13 +134,34 @@ namespace cliz
 								for (long long i2=b2b+stride;i2<=b2e;i2+=2*stride)
 								{
 									T pred;
-									if (i2+stride<=b2e)
-										pred=linear_fitting_dpd(pos+i2*weight[2],stride*weight[2]);
-									else
+									if (i2+3*stride<=b2e)
 										if (i2-3*stride>=b2b)
-											pred=linear_fitting_ddp(pos+i2*weight[2],stride*weight[2]);
+											pred=cubic_fitting_ddpdd(pos+i2*weight[2],stride*weight[2]);
 										else
-											pred=constant_fitting_dp(pos+i2*weight[2],stride*weight[2]);
+											if (i2+5*stride<=b2e)
+												pred=cubic_fitting_dddpd(pos+i2*weight[2],-stride*weight[2]);
+											else
+												pred=quadratic_fitting_ddpd(pos+i2*weight[2],-stride*weight[2]);
+									else
+										if (i2+stride<=b2e)
+											if (i2-5*stride>=b2b)
+												pred=cubic_fitting_dddpd(pos+i2*weight[2],stride*weight[2]);
+											else
+												if (i2-3*stride>=b2b)
+													pred=quadratic_fitting_ddpd(pos+i2*weight[2],stride*weight[2]);
+												else
+													pred=linear_fitting_dpd(pos+i2*weight[2],stride*weight[2]);
+										else
+											if (i2-7*stride>=b2b)
+												pred=cubic_fitting_ddddp(pos+i2*weight[2],stride*weight[2]);
+											else
+												if (i2-5*stride>=b2b)
+													pred=quadratic_fitting_dddp(pos+i2*weight[2],stride*weight[2]);
+												else
+													if (i2-3*stride>=b2b)
+														pred=linear_fitting_ddp(pos+i2*weight[2],stride*weight[2]);
+													else
+														pred=constant_fitting_dp(pos+i2*weight[2],stride*weight[2]);
 									#ifdef JOB_TYPE_COMPRESS
 										quant_bin[quant_bin_pos]=quantize(pos+i2*weight[2],pred);
 									#endif

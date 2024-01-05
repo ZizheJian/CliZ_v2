@@ -25,28 +25,35 @@ namespace cliz
 		}
 		else
 		{
+			if ((it1->dim_seq!=NULL) || (it1->dim_fission_l!=it1->dim_fission_r) || (SAMPLING_RATE!=1))
+				return;
 			////////////////Quant Bin////////////////
 			new_data(quant_bin,test_num);
 			call_DC_functions_test();
 			////////////////Huffman Tree////////////////
 			huffman.push_back(huffman_tree_c<T>());
 			count_quant_bin_test();
+			write_quant_bin_freq(1);
 			huffman_tree_c<T> & this_huffman=huffman[0];
 			this_huffman.generate_tree();
 			this_huffman.generate_code(this);
+			printf("bitstream_length=%lld\n",bitstream_length);
 			// ////////////////Huffman Encode////////////////
 			encode_test();
 			delete_data(quant_bin);
 			this_huffman.nodes.clear();
 			huffman.clear();
+			printf("bitstream_length=%lld\n",bitstream_length);
 			////////////////Irregular////////////////
 			memcpy(bitstream+bitstream_length,irregular_data.data(),irregular_data.size()*sizeof(T));
 			irregular_data.clear();
+			printf("bitstream_length=%lld\n",bitstream_length);
 			////////////////Zstd////////////////
 			unsigned char *temp_bitstream=bitstream;
 			new_data(bitstream,data_num*sizeof(T),false,false);
 			bitstream_length=ZSTD_compress(bitstream,data_num*sizeof(T),temp_bitstream,bitstream_length,3);
 			delete_data(temp_bitstream);
+			printf("bitstream_length=%lld\n",bitstream_length);
 		}
 		if (debug)
 			print_test_condition();

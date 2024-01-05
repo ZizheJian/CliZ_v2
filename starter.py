@@ -1,5 +1,6 @@
 import os
 from starter_setting.Hurricane_T import Hurricane_T
+from starter_setting.CESM_T import CESM_T
 
 os.chdir("change_err_bound")
 os.system("python3 code_generation.py")
@@ -32,7 +33,7 @@ command=""
 #testname="compress b.nday1.SST+mask"
 #testname="api test"
 
-command=Hurricane_T()
+command=CESM_T()
 os.system("make")
 print("command=",command)
 os.system(command)

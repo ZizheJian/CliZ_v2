@@ -349,17 +349,6 @@
 // 	}
 
 // 	template<typename T>
-// 	void task_c<T>::write_quant_bin_freq(FILE *freq_file,int num)
-// 	{
-// 		for (int i=0;i<65536;i++)
-// 		{
-// 			for (int j=0;j<num;j++)
-// 				fprintf(freq_file,"%lld ",quant_bin_count[j][i]);
-// 			fprintf(freq_file,"\n");
-// 		}
-// 	}
-
-// 	template<typename T>
 // 	void task_c<T>::read_irr_data()
 // 	{
 // 		long long len;
