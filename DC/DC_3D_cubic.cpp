@@ -8,7 +8,6 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::DC_3D_cubic()
 	{
-		printf("In DC_3D_cubic\n");
 		long long *mx=best_it1->mx;
 		long long *weight=best_it1->weight;
 		int interpolation_level=0;

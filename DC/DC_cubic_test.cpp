@@ -26,7 +26,7 @@ namespace cliz
 			}
 			for (int did=it2->n-1;did>=0;did--)
 				i2[did]=(test_pos[test_id]/weight2[did])%mx2[did];
-			reverse_convert(i1,i2,it1,it2);
+			reverse_convert(i1,i2);
 			int lv=0;
 			int direction=0;
 			for (lv=0;;lv++)
@@ -65,14 +65,14 @@ namespace cliz
 			for (int i=1;i<=left_data;i++)
 			{
 				i1[direction]=i1_direction_backup-(2*i-1)*stride;
-				convert(i1,i2,it1,it2);
+				convert(i1,i2);
 				long long pos2l=i2[0]*weight2[0]+i2[1]*weight2[1]+i2[2]*weight2[2];
 				data[6-2*i]=data_backup[pos2l];
 			}
 			for (int i=1;i<=right_data;i++)
 			{
 				i1[direction]=i1_direction_backup+(2*i-1)*stride;
-				convert(i1,i2,it1,it2);
+				convert(i1,i2);
 				long long pos2r=i2[0]*weight2[0]+i2[1]*weight2[1]+i2[2]*weight2[2];
 				data[4+2*i]=data_backup[pos2r];
 			}

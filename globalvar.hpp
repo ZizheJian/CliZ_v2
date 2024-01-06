@@ -26,7 +26,7 @@ namespace cliz
 	#define FUNC_NAME_LENGTH 100
 	#define TEMP_STRING_LENGTH 1000
 	#define SAMPLING_RATE 1
-	#define TEST_ALL true
+	#define TEST_ALL false
 	#define FFT_SAMPLE_NUM 10
 	#define FAST_SAMPLING false
 
@@ -112,14 +112,6 @@ namespace cliz
 			void rebuild(task_c<T> *task);
 			void traversal(int id,task_c<T> *task);
 			//void append_cache(unsigned short x);
-	};
-
-	template<typename T>
-	class predictor_c
-	{
-		public:
-			function<T(int,long long)> f=function<T(int,long long)>();//和数据采集范围，mask有关
-			char *name=NULL;
 	};
 
 	template<typename T>
@@ -230,6 +222,8 @@ namespace cliz
 			void test_all_dimension_fission();		
 			void test_all_fitting_function();	
 			void test_i32();
+			void convert(long long *i1,long long *i2);
+			void reverse_convert(long long *i1,long long *i2);
 			void test_mask();
 			void test_pert_mask();
 			void print_test_condition();

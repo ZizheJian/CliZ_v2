@@ -26,7 +26,7 @@ namespace cliz
 			}
 			for (int did=it2->n-1;did>=0;did--)
 				i2[did]=(test_pos[test_id]/weight2[did])%mx2[did];
-			reverse_convert(i1,i2,it1,it2);
+			reverse_convert(i1,i2);
 			int lv=0;
 			int direction=0;
 			for (lv=0;;lv++)
@@ -49,48 +49,33 @@ namespace cliz
 			else
 				err_bound=err_bound_backup;
 			err_bound_reciprocal=1/err_bound;
-			if (i1[direction]+stride<mx1[direction])
+			long long pos2=i2[0]*weight2[0]+i2[1]*weight2[1]+i2[2]*weight2[2];
+			data[3]=data_backup[pos2];
+			i1[direction]-=stride;
+			convert(i1,i2);
+			long long pos2l=i2[0]*weight2[0]+i2[1]*weight2[1]+i2[2]*weight2[2];
+			data[2]=data_backup[pos2l];
+			T pred=0;
+			if (i1[direction]+2*stride<mx1[direction])
 			{
-				long long pos2=i2[0]*weight2[0]+i2[1]*weight2[1]+i2[2]*weight2[2];
-				i1[direction]-=stride;
-				convert(i1,i2,it1,it2);
-				long long pos2l=i2[0]*weight2[0]+i2[1]*weight2[1]+i2[2]*weight2[2];
 				i1[direction]+=2*stride;
-				convert(i1,i2,it1,it2);
+				convert(i1,i2);
 				long long pos2r=i2[0]*weight2[0]+i2[1]*weight2[1]+i2[2]*weight2[2];
-				data[2]=data_backup[pos2l];
-				data[3]=data_backup[pos2];
 				data[4]=data_backup[pos2r];
-				T pred=linear_fitting_dpd(3,1);
-				quant_bin[test_id]=quantize(3,pred);
+				pred=linear_fitting_dpd(3,1);
 			}
 			else
-				if (i1[direction]-3*stride>=0)
+				if (i1[direction]-2*stride>=0)
 				{
-					long long pos2=i2[0]*weight2[0]+i2[1]*weight2[1]+i2[2]*weight2[2];
-					i1[direction]-=stride;
-					convert(i1,i2,it1,it2);
-					long long pos2l=i2[0]*weight2[0]+i2[1]*weight2[1]+i2[2]*weight2[2];
 					i1[direction]-=2*stride;
-					convert(i1,i2,it1,it2);
+					convert(i1,i2);
 					long long pos2ll=i2[0]*weight2[0]+i2[1]*weight2[1]+i2[2]*weight2[2];
 					data[0]=data_backup[pos2ll];
-					data[2]=data_backup[pos2l];
-					data[3]=data_backup[pos2];
-					T pred=linear_fitting_ddp(3,1);
-					quant_bin[test_id]=quantize(3,pred);
+					pred=linear_fitting_ddp(3,1);
 				}
 				else
-				{
-					long long pos2=i2[0]*weight2[0]+i2[1]*weight2[1]+i2[2]*weight2[2];
-					i1[direction]-=stride;
-					convert(i1,i2,it1,it2);
-					long long pos2l=i2[0]*weight2[0]+i2[1]*weight2[1]+i2[2]*weight2[2];
-					data[2]=data_backup[pos2l];
-					data[3]=data_backup[pos2];
-					T pred=constant_fitting_dp(3,1);
-					quant_bin[test_id]=quantize(3,pred);
-				}
+					pred=constant_fitting_dp(3,1);
+			quant_bin[test_id]=quantize(3,pred);
 		}
 		delete_data(data);
 		data=data_backup;

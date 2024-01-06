@@ -9,13 +9,9 @@ namespace cliz
 	void task_c<T>::call_DC_functions_test()
 	{
 		if (strcmp(fitting_function,"linear")==0)
-		{
 			DC_linear_test();
-		}
 		if (strcmp(fitting_function,"cubic")==0)
-		{
 			DC_cubic_test();
-		}
 	}
 }
 

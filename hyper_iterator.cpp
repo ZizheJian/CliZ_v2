@@ -81,7 +81,8 @@ namespace cliz
 		ity->dim_fission_r=itx->dim_fission_r;
 	}
 
-	void reverse_convert(long long *i1,long long *i2,hyper_iterator_c *it1,hyper_iterator_c *it2)
+	template<typename T>
+	void task_c<T>::reverse_convert(long long *i1,long long *i2)
 	{
 		if (it1->dim_fission_l==it1->dim_fission_r)
 			if (it1->dim_seq==NULL)
@@ -123,7 +124,8 @@ namespace cliz
 			}
 	}
 
-	void convert(long long *i1,long long *i2,hyper_iterator_c *it1,hyper_iterator_c *it2)
+	template<typename T>
+	void task_c<T>::convert(long long *i1,long long *i2)
 	{
 		if (it1->dim_fission_l==it1->dim_fission_r)
 			if (it1->dim_seq==NULL)

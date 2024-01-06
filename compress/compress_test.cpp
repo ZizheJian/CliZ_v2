@@ -8,8 +8,8 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::compress_test()
 	{
-		if ((it1->dim_seq!=NULL) || (it1->dim_fission_l!=it1->dim_fission_r))
-			return;
+		//if ((it1->dim_seq!=NULL) || (it1->dim_fission_l!=it1->dim_fission_r))
+		//	return;
 		if (TEST_ALL)
 		{
 			hyper_iterator_c *best_it1_backup=NULL;
@@ -27,35 +27,44 @@ namespace cliz
 		}
 		else
 		{
-			if (SAMPLING_RATE!=1)
-				return;
+			auto timer=new timer_c();
 			////////////////Quant Bin////////////////
+			timer->start();
 			new_data(quant_bin,test_num);
 			call_DC_functions_test();
+			timer->pause();
 			////////////////Huffman Tree////////////////
+			timer->start();
 			huffman.push_back(huffman_tree_c<T>());
 			count_quant_bin_test();
-			write_quant_bin_freq(1);
 			huffman_tree_c<T> & this_huffman=huffman[0];
 			this_huffman.generate_tree();
 			this_huffman.generate_code(this);
 			printf("bitstream_length=%lld\n",bitstream_length);
-			// ////////////////Huffman Encode////////////////
+			timer->pause();
+			////////////////Huffman Encode////////////////
+			timer->start();
 			encode_test();
 			delete_data(quant_bin);
 			this_huffman.nodes.clear();
 			huffman.clear();
 			printf("bitstream_length=%lld\n",bitstream_length);
+			timer->pause();
 			////////////////Irregular////////////////
+			timer->start();
 			memcpy(bitstream+bitstream_length,irregular_data.data(),irregular_data.size()*sizeof(T));
 			irregular_data.clear();
 			printf("bitstream_length=%lld\n",bitstream_length);
+			timer->pause();
 			////////////////Zstd////////////////
+			timer->start();
 			unsigned char *temp_bitstream=bitstream;
 			new_data(bitstream,data_num*sizeof(T),false,false);
 			bitstream_length=ZSTD_compress(bitstream,data_num*sizeof(T),temp_bitstream,bitstream_length,3);
 			delete_data(temp_bitstream);
 			printf("bitstream_length=%lld\n",bitstream_length);
+			timer->pause();
+			timer->write();
 		}
 		if (debug)
 			print_test_condition();
@@ -68,7 +77,6 @@ namespace cliz
 			strcpy(best_fitting_function,fitting_function);
 		}
 		bitstream_length=0;
-		//getchar();
 	}
 }
 
