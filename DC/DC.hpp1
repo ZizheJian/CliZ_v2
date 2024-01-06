@@ -10,9 +10,6 @@
 #include "DC_2D_cubic.cpp"
 #include "DC_3D_cubic.cpp"
 #include "DC_4D_cubic.cpp"
-#include "call_DC_functions_test.cpp"
-#include "DC_linear_test.cpp"
-#include "DC_cubic_test.cpp"
 #include "quantize.cpp"
 #include "dequantize.cpp"
 

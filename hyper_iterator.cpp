@@ -55,7 +55,6 @@ namespace cliz
 			fprintf(cfg_file,"Dimension fission=%d %d\n",dim_fission_l,dim_fission_r);
 	}
 
-	//释放这个hyper_iterator中数组占用的内存
 	void hyper_iterator_c::delete_iterator()
 	{
 		delete_data(mx);
@@ -79,92 +78,6 @@ namespace cliz
 		}
 		ity->dim_fission_l=itx->dim_fission_l;
 		ity->dim_fission_r=itx->dim_fission_r;
-	}
-
-	template<typename T>
-	void task_c<T>::reverse_convert(long long *i1,long long *i2)
-	{
-		if (it1->dim_fission_l==it1->dim_fission_r)
-			if (it1->dim_seq==NULL)
-				memcpy(i1,i2,it2->n*sizeof(long long));
-			else
-				for (int did=0;did<it2->n;did++)
-					i1[did]=i2[it1->dim_seq[did]];
-		else
-			if (it1->dim_seq==NULL)
-			{
-				int dim_fission_l=it1->dim_fission_l;
-				int dim_fission_r=it1->dim_fission_r;
-				for (int did=0;did<dim_fission_l;did++)
-					i1[did]=i2[did];
-				i1[dim_fission_l]=0;
-				for (int did=dim_fission_l;did<dim_fission_r;did++)
-				{
-					i1[dim_fission_l]*=it2->mx[did];
-					i1[dim_fission_l]+=i2[did];
-				}
-				for (int did=dim_fission_l+1;did<it1->n;did++)
-					i1[did]=i2[did+dim_fission_r-dim_fission_l-1];
-			}
-			else
-			{
-				int dim_fission_l=it1->dim_fission_l;
-				int dim_fission_r=it1->dim_fission_r;
-				int *dim_seq=it1->dim_seq;
-				for (int did=0;did<dim_fission_l;did++)
-					i1[did]=i2[dim_seq[did]];
-				i1[dim_fission_l]=0;
-				for (int did=dim_fission_l;did<dim_fission_r;did++)
-				{
-					i1[dim_fission_l]*=it2->mx[dim_seq[did]];
-					i1[dim_fission_l]+=i2[dim_seq[did]];
-				}
-				for (int did=dim_fission_l+1;did<it1->n;did++)
-					i1[did]=i2[dim_seq[did+dim_fission_r-dim_fission_l-1]];
-			}
-	}
-
-	template<typename T>
-	void task_c<T>::convert(long long *i1,long long *i2)
-	{
-		if (it1->dim_fission_l==it1->dim_fission_r)
-			if (it1->dim_seq==NULL)
-				memcpy(i2,i1,it2->n*sizeof(long long));
-			else
-				for (int did=0;did<it2->n;did++)
-					i2[it1->dim_seq[did]]=i1[did];
-		else
-			if (it1->dim_seq==NULL)
-			{
-				int dim_fission_l=it1->dim_fission_l;
-				int dim_fission_r=it1->dim_fission_r;
-				for (int did=it2->n-1;did>=dim_fission_r;did--)
-					i2[did]=i1[did+dim_fission_l-dim_fission_r+1];
-				long long temp=i1[dim_fission_l];
-				for (int did=dim_fission_r-1;did>=dim_fission_l;did--)
-				{
-					i2[did]=temp%it2->mx[did];
-					temp/=it2->mx[did];
-				}
-				for (int did=dim_fission_l-1;did>=0;did--)
-					i2[did]=i1[did];
-			}
-			else
-			{
-				int dim_fission_l=it1->dim_fission_l;
-				int dim_fission_r=it1->dim_fission_r;
-				int *dim_seq=it1->dim_seq;
-				for (int did=it2->n-1;did>=dim_fission_r;did--)
-					i2[dim_seq[did]]=i1[did+dim_fission_l-dim_fission_r+1];
-				long long temp=i1[dim_fission_l];
-				for (int did=dim_fission_r-1;did>=dim_fission_l;did--)
-				{
-					i2[dim_seq[did]]=temp%it2->mx[dim_seq[did]];
-					temp/=it2->mx[dim_seq[did]];
-				}
-				for (int did=dim_fission_l-1;did>=0;did--)
-					i2[dim_seq[did]]=i1[did];
-			}
 	}
 }
 

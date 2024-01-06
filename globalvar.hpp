@@ -26,7 +26,6 @@ namespace cliz
 	#define FUNC_NAME_LENGTH 100
 	#define TEMP_STRING_LENGTH 1000
 	#define SAMPLING_RATE 0.001
-	#define TEST_ALL false
 	#define FFT_SAMPLE_NUM 10
 	#define FAST_SAMPLING false
 
@@ -160,8 +159,6 @@ namespace cliz
 			hyper_iterator_c *best_pert_it1=NULL;
 			hyper_iterator_c *it2=NULL;
 			hyper_iterator_c *pert_it2=NULL;
-			long long test_num=0;
-			long long *test_pos=NULL;
 			bool best_map=false;
 			unsigned char *map=NULL;
 			long long pert=0;
@@ -223,8 +220,6 @@ namespace cliz
 			void test_all_dimension_fission();		
 			void test_all_fitting_function();	
 			void test_i32();
-			void convert(long long *i1,long long *i2);
-			void reverse_convert(long long *i1,long long *i2);
 			void collect_data_1D(T *data_backup,hyper_iterator_c *it2_backup);
 			void collect_data_2D(T *data_backup,hyper_iterator_c *it2_backup);
 			void collect_data_3D(T *data_backup,hyper_iterator_c *it2_backup);
@@ -232,7 +227,6 @@ namespace cliz
 			void test_mask();
 			void test_pert_mask();
 			void print_test_condition();
-			void assign_test_pos_with_map(hyper_iterator_c *map_it);
 			void calc_pert_mask(task_c<int> *mask_subtask);
 			void calc_avg_data();
 			void test_avg_data();
@@ -245,7 +239,6 @@ namespace cliz
 			void call_compress_functions_test();
 			char *best_compress_function=NULL,*compress_function=NULL;
 			void compress();
-			void compress_test();
 			//compress_framework_c compress_framework,best_compress_framework,best_avg_compress_framework;
 			void compress_framework_i32();
 			void compress_framework_mask(task_c<int> *mask_subtask);
@@ -287,7 +280,6 @@ namespace cliz
 
 			////////////////DC Functions////////////////
 			void call_DC_functions();
-			void call_DC_functions_test();
 			void DC_1D_linear();
 			void DC_2D_linear();
 			void DC_3D_linear();
@@ -296,8 +288,6 @@ namespace cliz
 			void DC_2D_cubic();
 			void DC_3D_cubic();
 			void DC_4D_cubic();
-			void DC_linear_test();
-			void DC_cubic_test();
 
 			////////////////Fitting Functions////////////////
 			char *best_fitting_function=NULL,*fitting_function=NULL;
@@ -314,7 +304,6 @@ namespace cliz
 
 			////////////////Count Quant_Bin Functions////////////////
 			void count_quant_bin();
-			void count_quant_bin_test();
 			void count_quant_bin_mask(task_c<int> *mask_subtask);
 			void count_quant_bin_mask_test(task_c<int> *mask_subtask);
 			void count_quant_bin_map(int lngid,int latid);
@@ -324,7 +313,6 @@ namespace cliz
 			
 			/////////////////Encode Quant_Bin Functions////////////////
 			void encode();
-			void encode_test();
 			void encode_quant_bin_mask(task_c<int> *mask_subtask);
 			void encode_quant_bin_map(int lngid,int latid);
 			void encode_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
@@ -343,17 +331,11 @@ namespace cliz
 			void generate_map_test(hyper_iterator_c *map_it,int lngid,int latid);
 
 			T linear_interp_predictor_mask(task_c<int> *mask_subtask,int direction,long long stride);
-			T cubic_interp_predictor(int direction,long long stride);
-			T cubic_interp_predictor_fast(int direction,long long stride);
 			T cubic_interp_predictor_mask(task_c<int> *mask_subtask,int direction,long long stride);
-			T cubic_interp_predictor_mask_fast(task_c<int> *mask_subtask,int direction,long long stride);
 
 			void write_quant_bin_freq(int num);
 			void draw_quant_bin(int lngid,int latid);
 			void draw_map(int lngid,int latid);
-			void printdetail();
-			void get_derivative(float *derivative);
-			int find_dim_name(char **name_list,const char *name);
 	};
 }
 

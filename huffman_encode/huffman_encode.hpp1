@@ -2,6 +2,5 @@
 #define __HUFFMAN_ENCODE_HPP1__
 
 #include "encode.cpp"
-#include "encode_test.cpp"
 
 #endif

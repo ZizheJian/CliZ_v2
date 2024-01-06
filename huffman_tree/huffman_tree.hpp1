@@ -3,6 +3,5 @@
 
 #include "huffman_tree.cpp"
 #include "count_quant_bin.cpp"
-#include "count_quant_bin_test.cpp"
 
 #endif
