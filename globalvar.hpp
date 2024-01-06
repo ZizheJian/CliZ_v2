@@ -25,7 +25,7 @@ namespace cliz
 	#define FILE_NAME_LENGTH 1000
 	#define FUNC_NAME_LENGTH 100
 	#define TEMP_STRING_LENGTH 1000
-	#define SAMPLING_RATE 1
+	#define SAMPLING_RATE 0.001
 	#define TEST_ALL false
 	#define FFT_SAMPLE_NUM 10
 	#define FAST_SAMPLING false
@@ -124,7 +124,8 @@ namespace cliz
 			FILE *out_file=NULL;
 			unsigned char *bitstream=NULL;
 			long long bitstream_length=0;
-			long long best_bitstream_length=numeric_limits<long long>::max();
+			float CR=0;
+			float best_CR=0;
 			long long bitstream_index=0;
 			char *cfg_file_mode=NULL;
 			char *cfg_file_path=NULL;
@@ -224,6 +225,10 @@ namespace cliz
 			void test_i32();
 			void convert(long long *i1,long long *i2);
 			void reverse_convert(long long *i1,long long *i2);
+			void collect_data_1D(T *data_backup,hyper_iterator_c *it2_backup);
+			void collect_data_2D(T *data_backup,hyper_iterator_c *it2_backup);
+			void collect_data_3D(T *data_backup,hyper_iterator_c *it2_backup);
+			void collect_data_4D(T *data_backup,hyper_iterator_c *it2_backup);
 			void test_mask();
 			void test_pert_mask();
 			void print_test_condition();

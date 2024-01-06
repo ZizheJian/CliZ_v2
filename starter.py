@@ -2,15 +2,11 @@ import os
 from starter_setting.Hurricane_T import Hurricane_T
 from starter_setting.CESM_T import CESM_T
 
-os.chdir("change_err_bound")
-os.system("python3 code_generation.py")
-os.chdir("..")
-os.chdir("DC")
-os.system("python3 code_generation.py")
-os.chdir("..")
-os.chdir("transform")
-os.system("python3 code_generation.py")
-os.chdir("..")
+code_generation_list=["change_err_bound","choose_method","DC","transform"]
+for code_generation_folder in code_generation_list:
+	os.chdir(code_generation_folder)
+	os.system("python3 code_generation.py")
+	os.chdir("..")
 
 datasets=[Hurricane_T,CESM_T]
 commands=[]
@@ -38,7 +34,10 @@ for dataset in datasets:
 	command=dataset()
 	if command!=None:
 		commands.append(command)
-if (len(commands)!=1):
+if (len(commands)==0):
+	print("Error: No task is selected.")
+	exit()
+if (len(commands)>1):
 	print("Error: More than one tasks are selected.")
 	exit()
 os.system("make")

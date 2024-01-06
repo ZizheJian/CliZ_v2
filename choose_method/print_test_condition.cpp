@@ -21,9 +21,9 @@ namespace cliz
 		if (strcmp(fitting_function,"linear")==0)
 			sprintf(temp_string+strlen(temp_string),"0");
 		if (TEST_ALL)
-			sprintf(temp_string+strlen(temp_string)," ALL %f",((float)data_num*sizeof(T))/(bitstream_length));
+			sprintf(temp_string+strlen(temp_string)," ALL %f",CR);
 		else
-			sprintf(temp_string+strlen(temp_string)," %f %f",(float)SAMPLING_RATE,((float)test_num*sizeof(T))/(bitstream_length));
+			sprintf(temp_string+strlen(temp_string)," %f %f",(float)SAMPLING_RATE,CR);
 		printf("%s\n",temp_string);
 		FILE *test_condition_file=fopen("result/test_condition.txt","a");
 		fprintf(test_condition_file,"%s\n",temp_string);

@@ -58,6 +58,7 @@ namespace cliz
 		delete_data(temp_bitstream);
 		timer->pause();
 		printf("bitstream_length=%lld\n",bitstream_length);
+		CR=((float)data_num*sizeof(T))/bitstream_length;
 		////////////////Anti-Tanspose////////////////
 		timer->start();
 		if ((best_it1_backup!=NULL) && (best_it1_backup->dim_seq!=NULL))
