@@ -2,5 +2,7 @@
 #define __CHANGE_ERR_BOUND_HPP2__
 
 #include "../globalvar.hpp"
+#include "../io/io.hpp1"
+#include "../hyper_iterator.cpp"
 
 #endif

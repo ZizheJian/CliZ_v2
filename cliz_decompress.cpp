@@ -1,5 +1,4 @@
 #define JOB_TYPE_DECOMPRESS
-#define JOB_TYPE_ID 1
 
 #include "init/init.hpp1"
 #include "change_err_bound/change_err_bound.hpp1"

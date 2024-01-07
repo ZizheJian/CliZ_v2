@@ -8,7 +8,13 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::change_err_bound_1D()
 	{
-		char *decisive_file_path=((JOB_TYPE_ID<=1)?in_file_path:src_file_path);
+		char *decisive_file_path=NULL;
+		#if defined(JOB_TYPE_COMPRESS) || defined(JOB_TYPE_DECOMPRESS)
+			decisive_file_path=in_file_path;
+		#endif
+		#ifdef JOB_TYPE_VALIDATE
+			decisive_file_path=src_file_path;
+		#endif
 		if ((cfg_file_mode==NULL) || (strcmp(cfg_file_mode,"set")==0))
 		{
 			if (strcmp(err_type,"ABS")==0)

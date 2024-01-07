@@ -1,9 +1,7 @@
 #define JOB_TYPE_VALIDATE
-#define JOB_TYPE_ID 2
 
 #include "init/init.hpp1"
 #include "change_err_bound/change_err_bound.hpp1"
-#include "choose_method/choose_method.hpp1"
 #include "validate/validate.hpp1"
 
 using namespace cliz;

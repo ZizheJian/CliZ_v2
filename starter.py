@@ -2,7 +2,7 @@ import os
 from starter_setting.Hurricane_T import Hurricane_T
 from starter_setting.CESM_T import CESM_T
 
-code_generation_list=["change_err_bound","choose_method","DC","transform"]
+code_generation_list=["choose_method","DC","transform"]
 for code_generation_folder in code_generation_list:
 	os.chdir(code_generation_folder)
 	os.system("python3 code_generation.py")
@@ -40,7 +40,7 @@ if (len(commands)==0):
 if (len(commands)>1):
 	print("Error: More than one tasks are selected.")
 	exit()
-os.system("make")
+os.system("make -j8")
 print("command=",commands[0])
 os.system(commands[0])
 

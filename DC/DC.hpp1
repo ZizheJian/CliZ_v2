@@ -10,7 +10,17 @@
 #include "DC_2D_cubic.cpp"
 #include "DC_3D_cubic.cpp"
 #include "DC_4D_cubic.cpp"
+#include "call_DC_functions_map.cpp"
+#include "DC_1D_linear_map.cpp"
+#include "DC_2D_linear_map.cpp"
+#include "DC_3D_linear_map.cpp"
+#include "DC_4D_linear_map.cpp"
+#include "DC_1D_cubic_map.cpp"
+#include "DC_2D_cubic_map.cpp"
+#include "DC_3D_cubic_map.cpp"
+#include "DC_4D_cubic_map.cpp"
 #include "quantize.cpp"
+#include "quantize_map.cpp"
 #include "dequantize.cpp"
 
 #endif

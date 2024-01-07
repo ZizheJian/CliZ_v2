@@ -15,24 +15,46 @@ namespace cliz
 			move_task(task_i32,task_f32);
 		if (strcmp(task_f32.data_type,"f64")==0)
 			move_task(task_f64,task_f32);
-		if (((JOB_TYPE_ID<=1) && (task_i32.in_file_path!=NULL)) || ((JOB_TYPE_ID==2) && (task_i32.src_file_path!=NULL)))
-		{
-			if (task_i32.it2==NULL)
-				task_i32.init_it();
-			task_i32.print_detail();
-		}
-		if (((JOB_TYPE_ID<=1) && (task_f32.in_file_path!=NULL)) || ((JOB_TYPE_ID==2) && (task_f32.src_file_path!=NULL)))
-		{
-			if (task_f32.it2==NULL)
-				task_f32.init_it();
-			task_f32.print_detail();
-		}
-		if (((JOB_TYPE_ID<=1) && (task_f64.in_file_path!=NULL)) || ((JOB_TYPE_ID==2) && (task_f64.src_file_path!=NULL)))
-		{
-			if (task_f64.it2==NULL)
-				task_f64.init_it();
-			task_f64.print_detail();
-		}
+		#if defined(JOB_TYPE_COMPRESS) || defined(JOB_TYPE_DECOMPRESS)
+			if (task_i32.in_file_path!=NULL)
+			{
+				if (task_i32.it2==NULL)
+					task_i32.init_it();
+				task_i32.print_detail();
+			}
+			if (task_f32.in_file_path!=NULL)
+			{
+				if (task_f32.it2==NULL)
+					task_f32.init_it();
+				task_f32.print_detail();
+			}
+			if (task_f64.in_file_path!=NULL)
+			{
+				if (task_f64.it2==NULL)
+					task_f64.init_it();
+				task_f64.print_detail();
+			}
+		#endif
+		#ifdef JOB_TYPE_VALIDATE
+			if (task_i32.src_file_path!=NULL)
+			{
+				if (task_i32.it2==NULL)
+					task_i32.init_it();
+				task_i32.print_detail();
+			}
+			if (task_f32.src_file_path!=NULL)
+			{
+				if (task_f32.it2==NULL)
+					task_f32.init_it();
+				task_f32.print_detail();
+			}
+			if (task_f64.src_file_path!=NULL)
+			{
+				if (task_f64.it2==NULL)
+					task_f64.init_it();
+				task_f64.print_detail();
+			}
+		#endif
 	}
 
 	void read_command(task_c<float> &task_f32,int argc,char **argv)

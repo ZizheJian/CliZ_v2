@@ -317,6 +317,7 @@ namespace cliz
 
 			////////////////Quantization Functions////////////////
 			short quantize(long long i,T pred);
+			short quantize_map(long long i,T pred);
 			T dequantize(long long i,T pred);
 
 			////////////////Count Quant_Bin Functions////////////////
