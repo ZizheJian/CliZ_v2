@@ -6,10 +6,16 @@
 #include "transpose_2D.cpp"
 #include "transpose_3D.cpp"
 #include "transpose_4D.cpp"
+#include "transpose_map.cpp"
+#include "transpose_map_1D.cpp"
+#include "transpose_map_2D.cpp"
+#include "transpose_map_3D.cpp"
+#include "transpose_map_4D.cpp"
 #include "anti_transpose.cpp"
 #include "anti_transpose_1D.cpp"
 #include "anti_transpose_2D.cpp"
 #include "anti_transpose_3D.cpp"
 #include "anti_transpose_4D.cpp"
+#include "generate_pos2horiz_mapping.cpp"
 
 #endif

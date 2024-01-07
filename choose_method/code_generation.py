@@ -12,12 +12,12 @@ for dimension_num in [1,2,3,4]:
 	file.write("	{\n")
 	tabnum=2
 	for did in range(dimension_num):
-		file.write("\t"*(tabnum+did)+f"for (long long i{did}=0;i{did}<it2->mx[{did}];i{did}++)\n")
-	file.write("\t"*(tabnum+dimension_num-1)+"{\n")
+		file.write("	"*(tabnum+did)+f"for (long long i{did}=0;i{did}<it2->mx[{did}];i{did}++)\n")
+	file.write("	"*(tabnum+dimension_num-1)+"{\n")
 	tabnum=2+dimension_num
 	for did in range(dimension_num):
-		file.write("\t"*tabnum+f"long long j{did}=((2*i{did}<it2->mx[{did}])?(i{did}+floor((it2_backup->mx[{did}]-it2->mx[{did}])/3)):(i{did}+it2_backup->mx[{did}]-it2->mx[{did}]-floor((it2_backup->mx[{did}]-it2->mx[{did}])/3)));\n")
-	file.write("\t"*tabnum+"data[")
+		file.write("	"*tabnum+f"long long j{did}=((2*i{did}<it2->mx[{did}])?(i{did}+floor((it2_backup->mx[{did}]-it2->mx[{did}])/3)):(i{did}+it2_backup->mx[{did}]-it2->mx[{did}]-floor((it2_backup->mx[{did}]-it2->mx[{did}])/3)));\n")
+	file.write("	"*tabnum+"data[")
 	for did in range(dimension_num):
 		if did!=0:
 			file.write("+")
@@ -29,7 +29,7 @@ for dimension_num in [1,2,3,4]:
 		file.write(f"j{did}*it2_backup->weight[{did}]")
 	file.write("];\n")
 	tabnum=2
-	file.write("\t"*(tabnum+dimension_num-1)+"}\n")
+	file.write("	"*(tabnum+dimension_num-1)+"}\n")
 	file.write("	}\n")
 	file.write("}\n")
 	file.write("\n")

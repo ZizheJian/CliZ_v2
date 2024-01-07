@@ -4,5 +4,6 @@
 #include "call_compress_functions.cpp"
 #include "call_compress_functions_test.cpp"
 #include "compress.cpp"
+#include "compress_map.cpp"
 
 #endif

@@ -15,6 +15,8 @@ namespace cliz
 		new_data(bitstream,data_num*sizeof(T));
 		if (strcmp(best_compress_function,"compress")==0)
 			compress();
+		if (strcmp(best_compress_function,"compress_map")==0)
+			compress_map();
 		out_file=fopen(out_file_path,"wb");
 		fwrite(bitstream,bitstream_length,sizeof(unsigned char),out_file);
 		fclose(out_file);

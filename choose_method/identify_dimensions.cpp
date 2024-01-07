@@ -27,6 +27,12 @@ namespace cliz
 				printf("Error: Lacking necessary dimensions for mask file.\n");
 				exit(0);
 			}
+		if (map_file_mode!=NULL)
+			if ((latid<0) || (lngid<0))
+			{
+				printf("Error: Lacking necessary dimensions for map file.\n");
+				exit(0);
+			}
 	}
 }
 

@@ -160,6 +160,7 @@ namespace cliz
 			hyper_iterator_c *it2=NULL;
 			hyper_iterator_c *pert_it2=NULL;
 			bool best_map=false;
+			long long *pos2horiz_mapping=NULL;
 			unsigned char *map=NULL;
 			long long pert=0;
 			T *avg_data=NULL;
@@ -239,6 +240,7 @@ namespace cliz
 			void call_compress_functions_test();
 			char *best_compress_function=NULL,*compress_function=NULL;
 			void compress();
+			void compress_map();
 			//compress_framework_c compress_framework,best_compress_framework,best_avg_compress_framework;
 			void compress_framework_i32();
 			void compress_framework_mask(task_c<int> *mask_subtask);
@@ -272,11 +274,17 @@ namespace cliz
 			void transpose_2D(T *data_backup);
 			void transpose_3D(T *data_backup);
 			void transpose_4D(T *data_backup);
+			void transpose_map(T *data_backup,long long *pos2horiz_mapping_backup);
+			void transpose_map_1D(T *data_backup,long long *pos2horiz_mapping_backup);
+			void transpose_map_2D(T *data_backup,long long *pos2horiz_mapping_backup);
+			void transpose_map_3D(T *data_backup,long long *pos2horiz_mapping_backup);
+			void transpose_map_4D(T *data_backup,long long *pos2horiz_mapping_backup);
 			void anti_transpose(T *data_backup);
 			void anti_transpose_1D(T *data_backup);
 			void anti_transpose_2D(T *data_backup);
 			void anti_transpose_3D(T *data_backup);
 			void anti_transpose_4D(T *data_backup);
+			void generate_pos2horiz_mapping();
 
 			////////////////DC Functions////////////////
 			void call_DC_functions();
@@ -288,6 +296,15 @@ namespace cliz
 			void DC_2D_cubic();
 			void DC_3D_cubic();
 			void DC_4D_cubic();
+			void call_DC_functions_map();
+			void DC_1D_linear_map();
+			void DC_2D_linear_map();
+			void DC_3D_linear_map();
+			void DC_4D_linear_map();
+			void DC_1D_cubic_map();
+			void DC_2D_cubic_map();
+			void DC_3D_cubic_map();
+			void DC_4D_cubic_map();
 
 			////////////////Fitting Functions////////////////
 			char *best_fitting_function=NULL,*fitting_function=NULL;
