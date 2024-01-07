@@ -16,14 +16,12 @@ namespace cliz
 				bin=ceil((diff-err_bound)*err_bound_reciprocal/2);
 			else
 				bin=floor((diff+err_bound)*err_bound_reciprocal/2);
-			//printf("pos=%lld, data=%f, pred=%f, diff=%f, bin=%d, data'=%f\n",i,data[i],pred,diff,bin,pred+bin*2*err_bound);
 			data[i]=pred+bin*2*err_bound;
 			return bin;
 		}
 		else
 		{
 			irregular_data.push_back(data[i]);
-			//printf("pos=%lld, data=%f, pred=%f, diff=%f, bin=-32768, data'=%f\n",i,data[i],pred,diff,data[i]);
 			return -32768;
 		}
 	}

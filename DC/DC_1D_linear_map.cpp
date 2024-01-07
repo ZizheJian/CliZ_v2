@@ -18,7 +18,7 @@ namespace cliz
 			quant_bin[quant_bin_pos]=quantize_map(0,0);
 		#endif
 		#ifdef JOB_TYPE_DECOMPRESS
-			data[0]=dequantize(quant_bin_pos,0);
+			data[0]=dequantize_map(quant_bin_pos,0);
 		#endif
 		quant_bin_pos++;
 		double err_bound_backup=err_bound;
@@ -48,7 +48,7 @@ namespace cliz
 						quant_bin[quant_bin_pos]=quantize_map(pos+i0*weight[0],pred);
 					#endif
 					#ifdef JOB_TYPE_DECOMPRESS
-						data[pos+i0*weight[0]]=dequantize(quant_bin_pos,pred);
+						data[pos+i0*weight[0]]=dequantize_map(quant_bin_pos,pred);
 					#endif
 					quant_bin_pos++;
 				}

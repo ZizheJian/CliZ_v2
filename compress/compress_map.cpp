@@ -33,6 +33,7 @@ namespace cliz
 		////////////////Quant Bin////////////////
 		timer->start();
 		new_data(quant_bin,data_num);
+		new_data(qb2horiz_mapping,data_num);
 		call_DC_functions_map();
 		timer->pause();
 		////////////////Huffman Tree////////////////

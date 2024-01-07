@@ -1,12 +1,12 @@
-#ifndef __DEQUANTIZE_CPP__
-#define __DEQUANTIZE_CPP__
+#ifndef __DEQUANTIZE_MAP_CPP__
+#define __DEQUANTIZE_MAP_CPP__
 
 #include "DC.hpp2"
 
 namespace cliz
 {
 	template<typename T>
-	T task_c<T>::dequantize(long long i,T pred)
+	T task_c<T>::dequantize_map(long long i,T pred)
 	{
 		if (quant_bin[i]==-32768)
 		{

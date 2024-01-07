@@ -22,5 +22,6 @@
 #include "quantize.cpp"
 #include "quantize_map.cpp"
 #include "dequantize.cpp"
+#include "dequantize_map.cpp"
 
 #endif

@@ -161,6 +161,7 @@ namespace cliz
 			hyper_iterator_c *pert_it2=NULL;
 			bool best_map=false;
 			long long *pos2horiz_mapping=NULL;
+			long long *qb2horiz_mapping=NULL;
 			unsigned char *map=NULL;
 			long long pert=0;
 			T *avg_data=NULL;
@@ -319,6 +320,7 @@ namespace cliz
 			short quantize(long long i,T pred);
 			short quantize_map(long long i,T pred);
 			T dequantize(long long i,T pred);
+			T dequantize_map(long long i,T pred);
 
 			////////////////Count Quant_Bin Functions////////////////
 			void count_quant_bin();
