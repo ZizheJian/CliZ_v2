@@ -16,7 +16,13 @@ namespace cliz
 		if (strcmp(best_compress_function,"compress")==0)
 			compress();
 		if (strcmp(best_compress_function,"compress_map")==0)
+		{
+			new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid]);
 			compress_map();
+			map_file=fopen(map_file_path,"wb");
+			fwrite(map_bitstream,map_bitstream_length,sizeof(unsigned char),map_file);
+			fclose(map_file);
+		}
 		out_file=fopen(out_file_path,"wb");
 		fwrite(bitstream,bitstream_length,sizeof(unsigned char),out_file);
 		fclose(out_file);

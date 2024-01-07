@@ -5,5 +5,7 @@
 #include "call_compress_functions_test.cpp"
 #include "compress.cpp"
 #include "compress_map.cpp"
+#include "generate_map.cpp"
+#include "apply_map.cpp"
 
 #endif

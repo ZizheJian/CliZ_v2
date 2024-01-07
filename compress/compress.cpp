@@ -31,7 +31,7 @@ namespace cliz
 		timer->start();
 		huffman.push_back(huffman_tree_c<T>());
 		count_quant_bin();
-		huffman_tree_c<T> & this_huffman=huffman[0];
+		huffman_tree_c<T> &this_huffman=huffman[0];
 		this_huffman.generate_tree();
 		this_huffman.generate_code(this);
 		timer->pause();

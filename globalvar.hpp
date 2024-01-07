@@ -103,8 +103,8 @@ namespace cliz
 	class huffman_tree_c
 	{
 		public:
-			multiset<node_c*,node_compare> unarranged_nodes;//目前还需要连成一个树的节点集合
-			unordered_map<int,node_c,simple_hash> nodes;//前65536个node对应65536个quant_bin，后面的留给多个quant_bin组成的树的根节点。在压缩和解压时，前65536个一定相同，但后面的不一定相同
+			multiset<node_c*,node_compare> unarranged_nodes;
+			unordered_map<int,node_c,simple_hash> nodes;
 
 			void generate_tree();
 			void generate_code(task_c<T> *task);
@@ -123,18 +123,19 @@ namespace cliz
 			FILE *out_file=NULL;
 			unsigned char *bitstream=NULL;
 			long long bitstream_length=0;
+			long long bitstream_index=0;
 			float CR=0;
 			float best_CR=0;
-			long long bitstream_index=0;
 			char *cfg_file_mode=NULL;
 			char *cfg_file_path=NULL;
 			FILE *cfg_file=NULL;
 			char *map_file_mode=NULL;
 			char *map_file_path=NULL;
 			FILE *map_file=NULL;
-			unsigned char *map_bitstream=NULL;
 			char *mask_file_path=NULL;
 			FILE *mask_file=NULL;
+			unsigned char *map_bitstream=NULL;
+			long long map_bitstream_length=0;
 			char *src_file_path=NULL;
 			FILE *src_file=NULL;
 			char *dec_file_path=NULL;
@@ -162,7 +163,9 @@ namespace cliz
 			bool best_map=false;
 			long long *pos2horiz_mapping=NULL;
 			long long *qb2horiz_mapping=NULL;
-			unsigned char *map=NULL;
+			long long *horiz_hist=NULL;
+			char *width_map=NULL;
+			char *shift_map=NULL;
 			long long pert=0;
 			T *avg_data=NULL;
 			double best_average_bytes=numeric_limits<double>::max();
@@ -322,19 +325,20 @@ namespace cliz
 			T dequantize(long long i,T pred);
 			T dequantize_map(long long i,T pred);
 
+			////////////////Map Functions////////////////
+			void generate_map();
+			void apply_map();
+
 			////////////////Count Quant_Bin Functions////////////////
 			void count_quant_bin();
-			void count_quant_bin_mask(task_c<int> *mask_subtask);
-			void count_quant_bin_mask_test(task_c<int> *mask_subtask);
-			void count_quant_bin_map(int lngid,int latid);
-			void count_quant_bin_map_test(int lngid,int latid);
+			void count_quant_bin_map();
+			void count_quant_bin_mask(task_c<int> *mask_subtask);			
 			void count_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
-			void count_quant_bin_map_mask_test(task_c<int> *mask_subtask,int lngid,int latid);
 			
 			/////////////////Encode Quant_Bin Functions////////////////
 			void encode();
+			void encode_map();
 			void encode_quant_bin_mask(task_c<int> *mask_subtask);
-			void encode_quant_bin_map(int lngid,int latid);
 			void encode_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
 			void decode_quant_bin_mask(task_c<int> *mask_subtask);
 			void decode_quant_bin_map(int lngid,int latid);
@@ -346,9 +350,6 @@ namespace cliz
 			////////////////Validate Functions////////////////
 			void call_validate_functions();
 			void validate_ABS();
-			
-			void generate_map(hyper_iterator_c *map_it);
-			void generate_map_test(hyper_iterator_c *map_it,int lngid,int latid);
 
 			T linear_interp_predictor_mask(task_c<int> *mask_subtask,int direction,long long stride);
 			T cubic_interp_predictor_mask(task_c<int> *mask_subtask,int direction,long long stride);

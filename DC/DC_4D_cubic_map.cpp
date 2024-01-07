@@ -15,7 +15,10 @@ namespace cliz
 			interpolation_level=max(interpolation_level,(int)ceil(log2(mx[i])));
 		long long quant_bin_pos=0;
 		#ifdef JOB_TYPE_COMPRESS
-			quant_bin[quant_bin_pos]=quantize_map(0,0);
+			quant_bin[quant_bin_pos]=quantize(0,0);
+			qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[0];
+			if (abs(quant_bin[quant_bin_pos])<=2)
+				horiz_hist[qb2horiz_mapping[quant_bin_pos]*5+quant_bin[quant_bin_pos]+2]++;
 		#endif
 		#ifdef JOB_TYPE_DECOMPRESS
 			data[0]=dequantize_map(quant_bin_pos,0);
@@ -58,7 +61,12 @@ namespace cliz
 										else
 											pred=constant_fitting_dp(pos+i0*weight[0],stride*weight[0]);
 							#ifdef JOB_TYPE_COMPRESS
-								quant_bin[quant_bin_pos]=quantize_map(pos+i0*weight[0],pred);
+								short qb=quantize(pos+i0*weight[0],pred);
+								quant_bin[quant_bin_pos]=qb;
+								long long horiz=pos2horiz_mapping[pos+i0*weight[0]];
+								qb2horiz_mapping[quant_bin_pos]=horiz;
+								if (abs(qb)<=2)
+									horiz_hist[horiz*5+qb+2]++;
 							#endif
 							#ifdef JOB_TYPE_DECOMPRESS
 								data[pos+i0*weight[0]]=dequantize_map(quant_bin_pos,pred);
@@ -94,7 +102,12 @@ namespace cliz
 										else
 											pred=constant_fitting_dp(pos+i1*weight[1],stride*weight[1]);
 							#ifdef JOB_TYPE_COMPRESS
-								quant_bin[quant_bin_pos]=quantize_map(pos+i1*weight[1],pred);
+								short qb=quantize(pos+i1*weight[1],pred);
+								quant_bin[quant_bin_pos]=qb;
+								long long horiz=pos2horiz_mapping[pos+i1*weight[1]];
+								qb2horiz_mapping[quant_bin_pos]=horiz;
+								if (abs(qb)<=2)
+									horiz_hist[horiz*5+qb+2]++;
 							#endif
 							#ifdef JOB_TYPE_DECOMPRESS
 								data[pos+i1*weight[1]]=dequantize_map(quant_bin_pos,pred);
@@ -130,7 +143,12 @@ namespace cliz
 										else
 											pred=constant_fitting_dp(pos+i2*weight[2],stride*weight[2]);
 							#ifdef JOB_TYPE_COMPRESS
-								quant_bin[quant_bin_pos]=quantize_map(pos+i2*weight[2],pred);
+								short qb=quantize(pos+i2*weight[2],pred);
+								quant_bin[quant_bin_pos]=qb;
+								long long horiz=pos2horiz_mapping[pos+i2*weight[2]];
+								qb2horiz_mapping[quant_bin_pos]=horiz;
+								if (abs(qb)<=2)
+									horiz_hist[horiz*5+qb+2]++;
 							#endif
 							#ifdef JOB_TYPE_DECOMPRESS
 								data[pos+i2*weight[2]]=dequantize_map(quant_bin_pos,pred);
@@ -166,7 +184,12 @@ namespace cliz
 										else
 											pred=constant_fitting_dp(pos+i3*weight[3],stride*weight[3]);
 							#ifdef JOB_TYPE_COMPRESS
-								quant_bin[quant_bin_pos]=quantize_map(pos+i3*weight[3],pred);
+								short qb=quantize(pos+i3*weight[3],pred);
+								quant_bin[quant_bin_pos]=qb;
+								long long horiz=pos2horiz_mapping[pos+i3*weight[3]];
+								qb2horiz_mapping[quant_bin_pos]=horiz;
+								if (abs(qb)<=2)
+									horiz_hist[horiz*5+qb+2]++;
 							#endif
 							#ifdef JOB_TYPE_DECOMPRESS
 								data[pos+i3*weight[3]]=dequantize_map(quant_bin_pos,pred);

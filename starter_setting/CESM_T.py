@@ -16,7 +16,7 @@ def CESM_T():
 		command=generate_command_compress(job_type="compress"
 			,input_path=source_path
 			,config=["set",config_path]
-			,map=["set",map_path]
+			,map=["force-set",map_path]
 			,dimension=[["h",26],["lat",1800],["lng",3600]]
 			,err=["REL",1e-3]
 			,debug=True
