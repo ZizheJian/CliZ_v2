@@ -3,5 +3,7 @@
 
 #include "call_decompress_functions.cpp"
 #include "decompress.cpp"
+#include "decompress_map.cpp"
+#include "undo_apply_map.cpp"
 
 #endif

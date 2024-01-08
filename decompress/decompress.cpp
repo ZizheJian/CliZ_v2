@@ -8,7 +8,6 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::decompress()
 	{
-		printf("In decompress\n");
 		auto timer=new timer_c();
 		////////////////Zstd////////////////
 		timer->start();
@@ -31,7 +30,7 @@ namespace cliz
 		timer->pause();
 		////////////////Quant Bin & Irregular////////////////
 		timer->start();
-		call_DC_functions();
+		call_DC_functions_data();
 		delete_data(quant_bin);
 		timer->pause();
 		timer->write();
@@ -41,7 +40,7 @@ namespace cliz
 		{
 			T *data_backup=data;
 			new_data(data,data_num,false,false);
-			anti_transpose(data_backup);
+			anti_transpose_data(data_backup);
 			delete_data(data_backup);
 		}
 

@@ -6,7 +6,7 @@
 namespace cliz
 {
 	template<typename T>
-	void task_c<T>::transpose_map_1D(T *data_backup,long long *pos2horiz_mapping_backup)
+	void task_c<T>::transpose_map_1D(long long *pos2horiz_mapping_backup)
 	{
 		int *dim_seq=best_it1->dim_seq;
 		long long *mx2=it2->mx;
@@ -27,7 +27,6 @@ namespace cliz
 			j[dim_seq[0]]=i[0];
 			long long pos1=i[0]*weight1[0];
 			long long pos2=j[0]*weight2[0];
-			data[pos1]=data_backup[pos2];
 			pos2horiz_mapping[pos1]=pos2horiz_mapping_backup[pos2];
 		}
 		delete_data(mx1);

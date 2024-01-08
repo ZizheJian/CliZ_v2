@@ -2,8 +2,6 @@
 #define __DEBUG_HPP2__
 
 #include "../globalvar.hpp"
-//#include "../png.cpp"
-//#include "../util.cpp"
-//#include "../hyper_iterator.cpp"
+#include "../png.cpp"
 
 #endif

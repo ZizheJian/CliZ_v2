@@ -1,12 +1,12 @@
-#ifndef __DC_2D_CUBIC_CPP__
-#define __DC_2D_CUBIC_CPP__
+#ifndef __DC_2D_CUBIC_DATA_CPP__
+#define __DC_2D_CUBIC_DATA_CPP__
 
 #include "DC.hpp2"
 
 namespace cliz
 {
 	template<typename T>
-	void task_c<T>::DC_2D_cubic()
+	void task_c<T>::DC_2D_cubic_data()
 	{
 		long long *mx=best_it1->mx;
 		long long *weight=best_it1->weight;

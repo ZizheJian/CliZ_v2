@@ -8,7 +8,6 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::decode()
 	{
-		printf("%lld %lld\n",bitstream_index,bitstream_length);
 		huffman_tree_c<T> &this_huffman=huffman[0];
 		unordered_map<int,node_c,simple_hash> &this_nodes=this_huffman.nodes;
 		align_cache<unsigned char>();
@@ -38,7 +37,6 @@ namespace cliz
 				i++;
 			}
 		}
-		printf("%lld %lld\n",bitstream_index,bitstream_length);
 	}
 }
 

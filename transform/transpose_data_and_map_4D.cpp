@@ -1,12 +1,12 @@
-#ifndef __ANTI_TRANSPOSE_4D_CPP__
-#define __ANTI_TRANSPOSE_4D_CPP__
+#ifndef __TRANSPOSE_DATA_AND_MAP_4D_CPP__
+#define __TRANSPOSE_DATA_AND_MAP_4D_CPP__
 
 #include "transform.hpp2"
 
 namespace cliz
 {
 	template<typename T>
-	void task_c<T>::anti_transpose_4D(T *data_backup)
+	void task_c<T>::transpose_data_and_map_4D(T *data_backup,long long *pos2horiz_mapping_backup)
 	{
 		int *dim_seq=best_it1->dim_seq;
 		long long *mx2=it2->mx;
@@ -36,7 +36,8 @@ namespace cliz
 						j[dim_seq[3]]=i[3];
 						long long pos1=i[0]*weight1[0]+i[1]*weight1[1]+i[2]*weight1[2]+i[3]*weight1[3];
 						long long pos2=j[0]*weight2[0]+j[1]*weight2[1]+j[2]*weight2[2]+j[3]*weight2[3];
-						data[pos2]=data_backup[pos1];
+						data[pos1]=data_backup[pos2];
+						pos2horiz_mapping[pos1]=pos2horiz_mapping_backup[pos2];
 					}
 				}
 			}

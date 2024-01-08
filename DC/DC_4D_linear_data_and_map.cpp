@@ -1,12 +1,12 @@
-#ifndef __DC_4D_LINEAR_MAP_CPP__
-#define __DC_4D_LINEAR_MAP_CPP__
+#ifndef __DC_4D_LINEAR_DATA_AND_MAP_CPP__
+#define __DC_4D_LINEAR_DATA_AND_MAP_CPP__
 
 #include "DC.hpp2"
 
 namespace cliz
 {
 	template<typename T>
-	void task_c<T>::DC_4D_linear_map()
+	void task_c<T>::DC_4D_linear_data_and_map()
 	{
 		long long *mx=best_it1->mx;
 		long long *weight=best_it1->weight;
@@ -15,11 +15,14 @@ namespace cliz
 			interpolation_level=max(interpolation_level,(int)ceil(log2(mx[i])));
 		long long quant_bin_pos=0;
 		#ifdef JOB_TYPE_COMPRESS
-			printf("Error: DC_4D_linear_map shouldn't be called during compression.\n");
-			exit(0);
+			quant_bin[quant_bin_pos]=quantize(0,0);
+			qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[0];
+			if (abs(quant_bin[quant_bin_pos])<=2)
+				horiz_hist[qb2horiz_mapping[quant_bin_pos]*5+quant_bin[quant_bin_pos]+2]++;
 		#endif
 		#ifdef JOB_TYPE_DECOMPRESS
-			qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[0];
+			printf("Error: DC_4D_linear_data_and_map shouldn't be called during decompression.\n");
+			exit(0);
 		#endif
 		quant_bin_pos++;
 		double err_bound_backup=err_bound;
@@ -59,11 +62,16 @@ namespace cliz
 												else
 													pred=constant_fitting_dp(pos+i0*weight[0],stride*weight[0]);
 											#ifdef JOB_TYPE_COMPRESS
-			printf("Error: DC_4D_linear_map shouldn't be called during compression.\n");
-			exit(0);
+												short qb=quantize(pos+i0*weight[0],pred);
+												quant_bin[quant_bin_pos]=qb;
+												long long horiz=pos2horiz_mapping[pos+i0*weight[0]];
+												qb2horiz_mapping[quant_bin_pos]=horiz;
+												if (abs(qb)<=2)
+													horiz_hist[horiz*5+qb+2]++;
 											#endif
 											#ifdef JOB_TYPE_DECOMPRESS
-												qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[pos+i0*weight[0]];
+			printf("Error: DC_4D_linear_data_and_map shouldn't be called during decompression.\n");
+			exit(0);
 											#endif
 											quant_bin_pos++;
 										}
@@ -84,11 +92,16 @@ namespace cliz
 												else
 													pred=constant_fitting_dp(pos+i1*weight[1],stride*weight[1]);
 											#ifdef JOB_TYPE_COMPRESS
-			printf("Error: DC_4D_linear_map shouldn't be called during compression.\n");
-			exit(0);
+												short qb=quantize(pos+i1*weight[1],pred);
+												quant_bin[quant_bin_pos]=qb;
+												long long horiz=pos2horiz_mapping[pos+i1*weight[1]];
+												qb2horiz_mapping[quant_bin_pos]=horiz;
+												if (abs(qb)<=2)
+													horiz_hist[horiz*5+qb+2]++;
 											#endif
 											#ifdef JOB_TYPE_DECOMPRESS
-												qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[pos+i1*weight[1]];
+			printf("Error: DC_4D_linear_data_and_map shouldn't be called during decompression.\n");
+			exit(0);
 											#endif
 											quant_bin_pos++;
 										}
@@ -109,11 +122,16 @@ namespace cliz
 												else
 													pred=constant_fitting_dp(pos+i2*weight[2],stride*weight[2]);
 											#ifdef JOB_TYPE_COMPRESS
-			printf("Error: DC_4D_linear_map shouldn't be called during compression.\n");
-			exit(0);
+												short qb=quantize(pos+i2*weight[2],pred);
+												quant_bin[quant_bin_pos]=qb;
+												long long horiz=pos2horiz_mapping[pos+i2*weight[2]];
+												qb2horiz_mapping[quant_bin_pos]=horiz;
+												if (abs(qb)<=2)
+													horiz_hist[horiz*5+qb+2]++;
 											#endif
 											#ifdef JOB_TYPE_DECOMPRESS
-												qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[pos+i2*weight[2]];
+			printf("Error: DC_4D_linear_data_and_map shouldn't be called during decompression.\n");
+			exit(0);
 											#endif
 											quant_bin_pos++;
 										}
@@ -134,11 +152,16 @@ namespace cliz
 												else
 													pred=constant_fitting_dp(pos+i3*weight[3],stride*weight[3]);
 											#ifdef JOB_TYPE_COMPRESS
-			printf("Error: DC_4D_linear_map shouldn't be called during compression.\n");
-			exit(0);
+												short qb=quantize(pos+i3*weight[3],pred);
+												quant_bin[quant_bin_pos]=qb;
+												long long horiz=pos2horiz_mapping[pos+i3*weight[3]];
+												qb2horiz_mapping[quant_bin_pos]=horiz;
+												if (abs(qb)<=2)
+													horiz_hist[horiz*5+qb+2]++;
 											#endif
 											#ifdef JOB_TYPE_DECOMPRESS
-												qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[pos+i3*weight[3]];
+			printf("Error: DC_4D_linear_data_and_map shouldn't be called during decompression.\n");
+			exit(0);
 											#endif
 											quant_bin_pos++;
 										}

@@ -16,7 +16,7 @@ namespace cliz
 		{
 			T *data_backup=data;
 			new_data(data,data_num,false,false);
-			transpose(data_backup);
+			transpose_data(data_backup);
 			copy_iterator(best_it1_backup,best_it1);
 			delete_data(best_it1->dim_seq);
 			delete_data(data_backup);
@@ -25,7 +25,7 @@ namespace cliz
 		////////////////Quant Bin////////////////
 		timer->start();
 		new_data(quant_bin,data_num);
-		call_DC_functions();
+		call_DC_functions_data();
 		timer->pause();
 		////////////////Huffman Tree////////////////
 		timer->start();

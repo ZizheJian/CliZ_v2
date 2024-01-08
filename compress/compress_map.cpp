@@ -9,23 +9,20 @@ namespace cliz
 	void task_c<T>::compress_map()
 	{
 		auto timer=new timer_c();
-		////////////////Generate Horizontal Position Mapping////////////////
+		////////////////Generate Position-To-Horizontal-Position Mapping////////////////
 		timer->start();
 		new_data(pos2horiz_mapping,data_num);
 		generate_pos2horiz_mapping();
 		timer->pause();
 		////////////////Transpose////////////////
 		timer->start();
-		hyper_iterator_c *best_it1_backup=NULL;
 		if (best_it1->dim_seq!=NULL)
 		{
 			T *data_backup=data;
 			new_data(data,data_num,false,false);
 			long long *pos2horiz_mapping_backup=pos2horiz_mapping;
 			new_data(pos2horiz_mapping,data_num,false,false);
-			transpose_map(data_backup,pos2horiz_mapping_backup);
-			copy_iterator(best_it1_backup,best_it1);
-			delete_data(best_it1->dim_seq);
+			transpose_data_and_map(data_backup,pos2horiz_mapping_backup);
 			delete_data(data_backup);
 			delete_data(pos2horiz_mapping_backup);
 		}
@@ -35,7 +32,7 @@ namespace cliz
 		new_data(quant_bin,data_num);
 		new_data(qb2horiz_mapping,data_num);
 		new_data(horiz_hist,it2->mx[latid]*it2->mx[lngid]*5);
-		call_DC_functions_map();
+		call_DC_functions_data_and_map();
 		delete_data(pos2horiz_mapping);
 		timer->pause();
 		////////////////Map////////////////
@@ -98,11 +95,6 @@ namespace cliz
 		timer->pause();
 		printf("bitstream_length=%lld+%lld=%lld\n",bitstream_length,map_bitstream_length,bitstream_length+map_bitstream_length);
 		CR=((float)data_num*sizeof(T))/(bitstream_length+map_bitstream_length);
-		////////////////Anti-Tanspose////////////////
-		timer->start();
-		if ((best_it1_backup!=NULL) && (best_it1_backup->dim_seq!=NULL))
-			copy_iterator(best_it1,best_it1_backup);
-		timer->pause();
 		timer->write();
 	}
 }

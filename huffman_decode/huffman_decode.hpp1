@@ -2,5 +2,6 @@
 #define __HUFFMAN_DECODE_HPP1__
 
 #include "decode.cpp"
+#include "decode_map.cpp"
 
 #endif

@@ -136,6 +136,7 @@ namespace cliz
 			FILE *mask_file=NULL;
 			unsigned char *map_bitstream=NULL;
 			long long map_bitstream_length=0;
+			long long map_bitstream_index=0;
 			char *src_file_path=NULL;
 			FILE *src_file=NULL;
 			char *dec_file_path=NULL;
@@ -198,11 +199,9 @@ namespace cliz
 			template<typename T2>
 			T2 read_cache();
 
-			////////////////Some Other Functions////////////////
+			////////////////Some Init Functions////////////////
 			void init_it();
-			void print_detail();
 			void identify_dimensions();
-			void print_best_strategy();
 			
 			////////////////Error Bound Functions////////////////
 			void change_err_bound();
@@ -263,43 +262,47 @@ namespace cliz
 			void call_decompress_functions();
 			char *best_decompress_function=NULL;
 			void decompress();
+			void decompress_map();
 			void decompress_framework_i32();
-			void decompress_framework_basic();
 			void decompress_framework_mask(task_c<int> *mask_subtask);
-			void decompress_framework_map();
 			void decompress_framework_map_mask(task_c<int> *mask_subtask);
 			//void match_decompress_functions(compress_framework_c &best_decompress_framework,predictor_c<T> &best_predictor);
 			void read_map(int lngid,int latid);
 			void read_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
 
 			////////////////Transpose Functions////////////////
-			void transpose(T *data_backup);
-			void transpose_1D(T *data_backup);
-			void transpose_2D(T *data_backup);
-			void transpose_3D(T *data_backup);
-			void transpose_4D(T *data_backup);
-			void transpose_map(T *data_backup,long long *pos2horiz_mapping_backup);
-			void transpose_map_1D(T *data_backup,long long *pos2horiz_mapping_backup);
-			void transpose_map_2D(T *data_backup,long long *pos2horiz_mapping_backup);
-			void transpose_map_3D(T *data_backup,long long *pos2horiz_mapping_backup);
-			void transpose_map_4D(T *data_backup,long long *pos2horiz_mapping_backup);
-			void anti_transpose(T *data_backup);
-			void anti_transpose_1D(T *data_backup);
-			void anti_transpose_2D(T *data_backup);
-			void anti_transpose_3D(T *data_backup);
-			void anti_transpose_4D(T *data_backup);
+			void transpose_data(T *data_backup);
+			void transpose_data_1D(T *data_backup);
+			void transpose_data_2D(T *data_backup);
+			void transpose_data_3D(T *data_backup);
+			void transpose_data_4D(T *data_backup);
+			void transpose_map(long long *pos2horiz_mapping_backup);
+			void transpose_map_1D(long long *pos2horiz_mapping_backup);
+			void transpose_map_2D(long long *pos2horiz_mapping_backup);
+			void transpose_map_3D(long long *pos2horiz_mapping_backup);
+			void transpose_map_4D(long long *pos2horiz_mapping_backup);
+			void transpose_data_and_map(T *data_backup,long long *pos2horiz_mapping_backup);
+			void transpose_data_and_map_1D(T *data_backup,long long *pos2horiz_mapping_backup);
+			void transpose_data_and_map_2D(T *data_backup,long long *pos2horiz_mapping_backup);
+			void transpose_data_and_map_3D(T *data_backup,long long *pos2horiz_mapping_backup);
+			void transpose_data_and_map_4D(T *data_backup,long long *pos2horiz_mapping_backup);
+			void anti_transpose_data(T *data_backup);
+			void anti_transpose_data_1D(T *data_backup);
+			void anti_transpose_data_2D(T *data_backup);
+			void anti_transpose_data_3D(T *data_backup);
+			void anti_transpose_data_4D(T *data_backup);
 			void generate_pos2horiz_mapping();
 
 			////////////////DC Functions////////////////
-			void call_DC_functions();
-			void DC_1D_linear();
-			void DC_2D_linear();
-			void DC_3D_linear();
-			void DC_4D_linear();
-			void DC_1D_cubic();
-			void DC_2D_cubic();
-			void DC_3D_cubic();
-			void DC_4D_cubic();
+			void call_DC_functions_data();
+			void DC_1D_linear_data();
+			void DC_2D_linear_data();
+			void DC_3D_linear_data();
+			void DC_4D_linear_data();
+			void DC_1D_cubic_data();
+			void DC_2D_cubic_data();
+			void DC_3D_cubic_data();
+			void DC_4D_cubic_data();
 			void call_DC_functions_map();
 			void DC_1D_linear_map();
 			void DC_2D_linear_map();
@@ -309,6 +312,15 @@ namespace cliz
 			void DC_2D_cubic_map();
 			void DC_3D_cubic_map();
 			void DC_4D_cubic_map();
+			void call_DC_functions_data_and_map();
+			void DC_1D_linear_data_and_map();
+			void DC_2D_linear_data_and_map();
+			void DC_3D_linear_data_and_map();
+			void DC_4D_linear_data_and_map();
+			void DC_1D_cubic_data_and_map();
+			void DC_2D_cubic_data_and_map();
+			void DC_3D_cubic_data_and_map();
+			void DC_4D_cubic_data_and_map();
 
 			////////////////Fitting Functions////////////////
 			char *best_fitting_function=NULL,*fitting_function=NULL;
@@ -328,6 +340,7 @@ namespace cliz
 			////////////////Map Functions////////////////
 			void generate_map();
 			void apply_map();
+			void undo_apply_map();
 
 			////////////////Count Quant_Bin Functions////////////////
 			void count_quant_bin();
@@ -346,6 +359,7 @@ namespace cliz
 			
 			////////////////Decode Quant_Bin Functions////////////////
 			void decode();
+			void decode_map();
 
 			////////////////Validate Functions////////////////
 			void call_validate_functions();
@@ -354,9 +368,12 @@ namespace cliz
 			T linear_interp_predictor_mask(task_c<int> *mask_subtask,int direction,long long stride);
 			T cubic_interp_predictor_mask(task_c<int> *mask_subtask,int direction,long long stride);
 
+			////////////////Debug////////////////
+			void print_detail();
+			void print_best_strategy();
 			void write_quant_bin_freq(int num);
 			void draw_quant_bin(int lngid,int latid);
-			void draw_map(int lngid,int latid);
+			void draw_map();
 	};
 }
 

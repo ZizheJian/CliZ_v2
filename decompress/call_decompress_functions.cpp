@@ -18,6 +18,17 @@ namespace cliz
 		new_data(data,data_num);
 		if (strcmp(best_decompress_function,"decompress")==0)
 			decompress();
+		if (strcmp(best_decompress_function,"decompress_map")==0)
+		{
+			map_file=fopen(map_file_path,"rb");
+			fseek(map_file,0,SEEK_END);
+			map_bitstream_length=ftell(map_file)/sizeof(unsigned char);
+			fseek(map_file,0,SEEK_SET);
+			new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid]);
+			fread(map_bitstream,sizeof(unsigned char),map_bitstream_length,map_file);
+			fclose(map_file);
+			decompress_map();
+		}
 		out_file=fopen(out_file_path,"wb");
 		fwrite(data,data_num,sizeof(T),out_file);
 		fclose(out_file);
