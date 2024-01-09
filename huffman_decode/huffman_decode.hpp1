@@ -1,7 +1,8 @@
 #ifndef __HUFFMAN_DECODE_HPP1__
 #define __HUFFMAN_DECODE_HPP1__
 
-#include "decode.cpp"
+#include "decode_data.cpp"
 #include "decode_map.cpp"
+#include "decode_data_and_map.cpp"
 
 #endif

@@ -26,7 +26,7 @@ namespace cliz
 		////////////////Huffman Decode////////////////
 		timer->start();
 		new_data(quant_bin,data_num);
-		decode();
+		decode_data();
 		timer->pause();
 		////////////////Quant Bin & Irregular////////////////
 		timer->start();

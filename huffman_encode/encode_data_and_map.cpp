@@ -1,12 +1,12 @@
-#ifndef __ENCODE_MAP_CPP__
-#define __ENCODE_MAP_CPP__
+#ifndef __ENCODE_DATA_AND_MAP_CPP__
+#define __ENCODE_DATA_AND_MAP_CPP__
 
 #include "huffman_encode.hpp2"
 
 namespace cliz
 {
 	template<typename T>
-	void task_c<T>::encode_map()
+	void task_c<T>::encode_data_and_map()
 	{
 		align_cache<unsigned char>();
 		int cache_digit=0;

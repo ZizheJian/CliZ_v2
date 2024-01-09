@@ -1,5 +1,5 @@
 for dimension_num in [1,2,3,4]:
-	for map in ["_data","_map","_data_and_map"]:
+	for map in ["_data","_map","_data_set_map","_data_use_map"]:
 		file=open(f"DC_{dimension_num}D_linear{map}.cpp","w")
 		file.write(f"#ifndef __DC_{dimension_num}D_LINEAR{map.upper()}_CPP__\n")
 		file.write(f"#define __DC_{dimension_num}D_LINEAR{map.upper()}_CPP__\n")
@@ -23,18 +23,24 @@ for dimension_num in [1,2,3,4]:
 		if map=="_map":
 			file.write(f"			printf(\"Error: DC_{dimension_num}D_linear{map} shouldn't be called during compression.\\n\");\n")
 			file.write(f"			exit(0);\n")
-		if map=="_data_and_map":
+		if map=="_data_set_map":
 			file.write(f"			quant_bin[quant_bin_pos]=quantize(0,0);\n")
 			file.write(f"			qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[0];\n")
 			file.write(f"			if (abs(quant_bin[quant_bin_pos])<=2)\n")
 			file.write(f"				horiz_hist[qb2horiz_mapping[quant_bin_pos]*5+quant_bin[quant_bin_pos]+2]++;\n")
+		if map=="_data_use_map":
+			file.write(f"			quant_bin[quant_bin_pos]=quantize(0,0);\n")
+			file.write(f"			qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[0];\n")
 		file.write("		#endif\n")
 		file.write("		#ifdef JOB_TYPE_DECOMPRESS\n")
 		if map=="_data":
 			file.write(f"			data[0]=dequantize(quant_bin_pos,0);\n")
 		if map=="_map":
 			file.write(f"			qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[0];\n")
-		if map=="_data_and_map":
+		if map=="_data_map":
+			file.write(f"			printf(\"Error: DC_{dimension_num}D_linear{map} shouldn't be called during decompression.\\n\");\n")
+			file.write(f"			exit(0);\n")
+		if map=="_data_hist_map":
 			file.write(f"			printf(\"Error: DC_{dimension_num}D_linear{map} shouldn't be called during decompression.\\n\");\n")
 			file.write(f"			exit(0);\n")
 		file.write("		#endif\n")
@@ -88,22 +94,28 @@ for dimension_num in [1,2,3,4]:
 			if map=="_map":
 				file.write(f"			printf(\"Error: DC_{dimension_num}D_linear{map} shouldn't be called during compression.\\n\");\n")
 				file.write(f"			exit(0);\n")
-			if map=="_data_and_map":
+			if map=="_data_set_map":
 				file.write("	"*tabnum+f"	short qb=quantize(pos+i{direction}*weight[{direction}],pred);\n")
 				file.write("	"*tabnum+f"	quant_bin[quant_bin_pos]=qb;\n")
 				file.write("	"*tabnum+f"	long long horiz=pos2horiz_mapping[pos+i{direction}*weight[{direction}]];\n")
 				file.write("	"*tabnum+f"	qb2horiz_mapping[quant_bin_pos]=horiz;\n")
 				file.write("	"*tabnum+f"	if (abs(qb)<=2)\n")
 				file.write("	"*tabnum+f"		horiz_hist[horiz*5+qb+2]++;\n")
+			if map=="_data_use_map":
+				file.write("	"*tabnum+f"	quant_bin[quant_bin_pos]=quantize(pos+i{direction}*weight[{direction}],pred);\n")
+				file.write("	"*tabnum+f"	qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[pos+i{direction}*weight[{direction}]];\n")
 			file.write("	"*tabnum+f"#endif\n")
 			file.write("	"*tabnum+f"#ifdef JOB_TYPE_DECOMPRESS\n")
 			if map=="_data":
 				file.write("	"*tabnum+f"	data[pos+i{direction}*weight[{direction}]]=dequantize(quant_bin_pos,pred);\n")
 			if map=="_map":
 				file.write("	"*tabnum+f"	qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[pos+i{direction}*weight[{direction}]];\n")
-			if map=="_data_and_map":
-				file.write(f"			printf(\"Error: DC_{dimension_num}D_linear{map} shouldn't be called during decompression.\\n\");\n")
-				file.write(f"			exit(0);\n")
+			if map=="_data_set_map":
+				file.write("	"*tabnum+f"	printf(\"Error: DC_{dimension_num}D_linear{map} shouldn't be called during decompression.\\n\");\n")
+				file.write("	"*tabnum+f"	exit(0);\n")
+			if map=="_data_use_map":
+				file.write("	"*tabnum+f"	printf(\"Error: DC_{dimension_num}D_linear{map} shouldn't be called during decompression.\\n\");\n")
+				file.write("	"*tabnum+f"	exit(0);\n")
 			file.write("	"*tabnum+f"#endif\n")
 			file.write("	"*tabnum+f"quant_bin_pos++;\n")
 			tabnum=3+dimension_num
@@ -121,7 +133,7 @@ for dimension_num in [1,2,3,4]:
 		file.close()
 
 for dimension_num in [1,2,3,4]:
-	for map in ["_data","_map","_data_and_map"]:
+	for map in ["_data","_map","_data_set_map","_data_use_map"]:
 		file=open(f"DC_{dimension_num}D_cubic{map}.cpp","w")
 		file.write(f"#ifndef __DC_{dimension_num}D_CUBIC{map.upper()}_CPP__\n")
 		file.write(f"#define __DC_{dimension_num}D_CUBIC{map.upper()}_CPP__\n")
@@ -145,18 +157,24 @@ for dimension_num in [1,2,3,4]:
 		if map=="_map":
 			file.write(f"			printf(\"Error: DC_{dimension_num}D_linear{map} shouldn't be called during compression.\\n\");\n")
 			file.write(f"			exit(0);\n")
-		if map=="_data_and_map":
+		if map=="_data_set_map":
 			file.write(f"			quant_bin[quant_bin_pos]=quantize(0,0);\n")
 			file.write(f"			qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[0];\n")
 			file.write(f"			if (abs(quant_bin[quant_bin_pos])<=2)\n")
 			file.write(f"				horiz_hist[qb2horiz_mapping[quant_bin_pos]*5+quant_bin[quant_bin_pos]+2]++;\n")
+		if map=="_data_use_map":
+			file.write(f"			quant_bin[quant_bin_pos]=quantize(0,0);\n")
+			file.write(f"			qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[0];\n")
 		file.write("		#endif\n")
 		file.write("		#ifdef JOB_TYPE_DECOMPRESS\n")
 		if map=="_data":
 			file.write(f"			data[0]=dequantize(quant_bin_pos,0);\n")
 		if map=="_map":
 			file.write(f"			qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[0];\n")
-		if map=="_data_and_map":
+		if map=="_data_map":
+			file.write(f"			printf(\"Error: DC_{dimension_num}D_linear{map} shouldn't be called during decompression.\\n\");\n")
+			file.write(f"			exit(0);\n")
+		if map=="_data_hist_map":
 			file.write(f"			printf(\"Error: DC_{dimension_num}D_linear{map} shouldn't be called during decompression.\\n\");\n")
 			file.write(f"			exit(0);\n")
 		file.write("		#endif\n")
@@ -217,22 +235,28 @@ for dimension_num in [1,2,3,4]:
 			if map=="_map":
 				file.write(f"			printf(\"Error: DC_{dimension_num}D_linear{map} shouldn't be called during compression.\\n\");\n")
 				file.write(f"			exit(0);\n")
-			if map=="_data_and_map":
+			if map=="_data_set_map":
 				file.write("	"*tabnum+f"	short qb=quantize(pos+i{direction}*weight[{direction}],pred);\n")
 				file.write("	"*tabnum+f"	quant_bin[quant_bin_pos]=qb;\n")
 				file.write("	"*tabnum+f"	long long horiz=pos2horiz_mapping[pos+i{direction}*weight[{direction}]];\n")
 				file.write("	"*tabnum+f"	qb2horiz_mapping[quant_bin_pos]=horiz;\n")
 				file.write("	"*tabnum+f"	if (abs(qb)<=2)\n")
 				file.write("	"*tabnum+f"		horiz_hist[horiz*5+qb+2]++;\n")
+			if map=="_data_use_map":
+				file.write("	"*tabnum+f"	quant_bin[quant_bin_pos]=quantize(pos+i{direction}*weight[{direction}],pred);\n")
+				file.write("	"*tabnum+f"	qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[pos+i{direction}*weight[{direction}]];\n")
 			file.write("	"*tabnum+f"#endif\n")
 			file.write("	"*tabnum+f"#ifdef JOB_TYPE_DECOMPRESS\n")
 			if map=="_data":
 				file.write("	"*tabnum+f"	data[pos+i{direction}*weight[{direction}]]=dequantize(quant_bin_pos,pred);\n")
 			if map=="_map":
 				file.write("	"*tabnum+f"	qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[pos+i{direction}*weight[{direction}]];\n")
-			if map=="_data_and_map":
-				file.write(f"			printf(\"Error: DC_{dimension_num}D_linear{map} shouldn't be called during decompression.\\n\");\n")
-				file.write(f"			exit(0);\n")
+			if map=="_data_set_map":
+				file.write("	"*tabnum+f"	printf(\"Error: DC_{dimension_num}D_linear{map} shouldn't be called during decompression.\\n\");\n")
+				file.write("	"*tabnum+f"	exit(0);\n")
+			if map=="_data_use_map":
+				file.write("	"*tabnum+f"	printf(\"Error: DC_{dimension_num}D_linear{map} shouldn't be called during decompression.\\n\");\n")
+				file.write("	"*tabnum+f"	exit(0);\n")
 			file.write("	"*tabnum+f"#endif\n")
 			file.write("	"*tabnum+f"quant_bin_pos++;\n")
 			tabnum=3

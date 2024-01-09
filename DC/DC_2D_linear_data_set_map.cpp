@@ -1,12 +1,12 @@
-#ifndef __DC_2D_LINEAR_DATA_AND_MAP_CPP__
-#define __DC_2D_LINEAR_DATA_AND_MAP_CPP__
+#ifndef __DC_2D_LINEAR_DATA_SET_MAP_CPP__
+#define __DC_2D_LINEAR_DATA_SET_MAP_CPP__
 
 #include "DC.hpp2"
 
 namespace cliz
 {
 	template<typename T>
-	void task_c<T>::DC_2D_linear_data_and_map()
+	void task_c<T>::DC_2D_linear_data_set_map()
 	{
 		long long *mx=best_it1->mx;
 		long long *weight=best_it1->weight;
@@ -21,8 +21,6 @@ namespace cliz
 				horiz_hist[qb2horiz_mapping[quant_bin_pos]*5+quant_bin[quant_bin_pos]+2]++;
 		#endif
 		#ifdef JOB_TYPE_DECOMPRESS
-			printf("Error: DC_2D_linear_data_and_map shouldn't be called during decompression.\n");
-			exit(0);
 		#endif
 		quant_bin_pos++;
 		double err_bound_backup=err_bound;
@@ -62,8 +60,8 @@ namespace cliz
 									horiz_hist[horiz*5+qb+2]++;
 							#endif
 							#ifdef JOB_TYPE_DECOMPRESS
-			printf("Error: DC_2D_linear_data_and_map shouldn't be called during decompression.\n");
-			exit(0);
+								printf("Error: DC_2D_linear_data_set_map shouldn't be called during decompression.\n");
+								exit(0);
 							#endif
 							quant_bin_pos++;
 						}
@@ -90,8 +88,8 @@ namespace cliz
 									horiz_hist[horiz*5+qb+2]++;
 							#endif
 							#ifdef JOB_TYPE_DECOMPRESS
-			printf("Error: DC_2D_linear_data_and_map shouldn't be called during decompression.\n");
-			exit(0);
+								printf("Error: DC_2D_linear_data_set_map shouldn't be called during decompression.\n");
+								exit(0);
 							#endif
 							quant_bin_pos++;
 						}

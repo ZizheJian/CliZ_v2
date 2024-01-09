@@ -25,15 +25,11 @@ Type "cliz_{job_type} {something}" to start cliz compressor.
 	D. map file (optional)
 		//Map is a table indicating quantization bin classification used in Huffman encoding. It can be set in the following form:
 			-set-map {map_file_path} (only for compressing)
-			-force-set-map {map_file_path} (only for compressing)
 			-use-map {map_file_path}
-			-force-use-map {map_file_path}
-		//During compressing, if given "-set-map", the program will test and decide whether to generate a vaild map file. If it decides not to generate a valid map file, it will still generate an enpty map file.
-		//During compressing, if given "-force-set-map", the program will generate a valid map file.
-		//During compressing, if given "-use-map", the program will test and decide whether to use the given map file.
-		//During compressing, if given "-force-use-map", the program will use the given map file.
-		//During decompressing, if given "-use-map" or "-force-use-map", the program will use the given map file.
-		//If given "-use-map" or "-force-use-map", configuration file must be missing or provided with "-use-cfg".
+		//During compressing, if given "-set-map", the program will test and decide whether to generate a map file.
+		//During compressing, if given "-use-map", the program will use the given map file.
+		//During decompressing, if given "-use-map", the program will use the given map file.
+		//If given "-use-map", configuration file must be missing or provided with "-use-cfg".
 		//If no command is provided, the program will not try this optimization.
 	
 	E. mask file (optional)

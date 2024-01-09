@@ -15,13 +15,25 @@ namespace cliz
 		new_data(bitstream,data_num*sizeof(T));
 		if (strcmp(best_compress_function,"compress")==0)
 			compress();
-		if (strcmp(best_compress_function,"compress_map")==0)
+		if (strcmp(best_compress_function,"compress_set_map")==0)
 		{
 			new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid]);
-			compress_map();
+			compress_set_map();
 			map_file=fopen(map_file_path,"wb");
 			fwrite(map_bitstream,map_bitstream_length,sizeof(unsigned char),map_file);
 			fclose(map_file);
+			delete_data(map_bitstream);
+		}
+		if (strcmp(best_compress_function,"compress_use_map")==0)
+		{
+			map_file=fopen(map_file_path,"rb");
+			fseek(map_file,0,SEEK_END);
+			map_bitstream_length=ftell(map_file)/sizeof(unsigned char);
+			fseek(map_file,0,SEEK_SET);
+			new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid]);
+			fread(map_bitstream,sizeof(unsigned char),map_bitstream_length,map_file);
+			fclose(map_file);
+			compress_use_map();
 		}
 		out_file=fopen(out_file_path,"wb");
 		fwrite(bitstream,bitstream_length,sizeof(unsigned char),out_file);

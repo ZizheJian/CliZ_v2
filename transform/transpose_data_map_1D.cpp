@@ -1,12 +1,12 @@
-#ifndef __TRANSPOSE_DATA_AND_MAP_2D_CPP__
-#define __TRANSPOSE_DATA_AND_MAP_2D_CPP__
+#ifndef __TRANSPOSE_DATA_MAP_1D_CPP__
+#define __TRANSPOSE_DATA_MAP_1D_CPP__
 
 #include "transform.hpp2"
 
 namespace cliz
 {
 	template<typename T>
-	void task_c<T>::transpose_data_and_map_2D(T *data_backup,long long *pos2horiz_mapping_backup)
+	void task_c<T>::transpose_data_map_1D(T *data_backup,long long *pos2horiz_mapping_backup)
 	{
 		int *dim_seq=best_it1->dim_seq;
 		long long *mx2=it2->mx;
@@ -25,14 +25,10 @@ namespace cliz
 		for (i[0]=0;i[0]<mx1[0];i[0]++)
 		{
 			j[dim_seq[0]]=i[0];
-			for (i[1]=0;i[1]<mx1[1];i[1]++)
-			{
-				j[dim_seq[1]]=i[1];
-				long long pos1=i[0]*weight1[0]+i[1]*weight1[1];
-				long long pos2=j[0]*weight2[0]+j[1]*weight2[1];
-				data[pos1]=data_backup[pos2];
-				pos2horiz_mapping[pos1]=pos2horiz_mapping_backup[pos2];
-			}
+			long long pos1=i[0]*weight1[0];
+			long long pos2=j[0]*weight2[0];
+			data[pos1]=data_backup[pos2];
+			pos2horiz_mapping[pos1]=pos2horiz_mapping_backup[pos2];
 		}
 		delete_data(mx1);
 		delete_data(weight1);

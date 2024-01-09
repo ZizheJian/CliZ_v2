@@ -16,7 +16,7 @@ def Hurricane_T():
 		command=generate_command_compress(job_type="compress"
 			,input_path=source_path
 			,config=["set",config_path]
-			,map=["force-set",map_path]
+			,map=["set",map_path]
 			,dimension=[["h",100],["lat",500],["lng",500]]
 			,err=["REL",1e-3]
 			,debug=True
@@ -25,6 +25,7 @@ def Hurricane_T():
 		command=generate_command_compress(job_type="compress"
 			,input_path=source_path
 			,config=["use",config_path]
+			,map=["set",map_path]
 		)
 	if test_name=="Decompress":
 		command=generate_command_compress(job_type="decompress"

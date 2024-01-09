@@ -1,7 +1,6 @@
 #ifndef __LV1_TEST_HPP1__
 #define __LV1_TEST_HPP1__
 
-#include "test_i32.cpp"
 #include "test.cpp"
 #include "test_map.cpp"
 #include "test_pert.cpp"

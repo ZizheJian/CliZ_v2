@@ -38,7 +38,7 @@ namespace cliz
 		printf("bitstream_length=%lld\n",bitstream_length);
 		////////////////Huffman Encode////////////////
 		timer->start();
-		encode();
+		encode_data();
 		delete_data(quant_bin);
 		this_huffman.nodes.clear();
 		huffman.clear();

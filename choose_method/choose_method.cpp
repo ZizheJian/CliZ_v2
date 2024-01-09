@@ -8,41 +8,78 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::choose_method()
 	{
-		if (cfg_file_mode==NULL)
-		{
-			new_data(best_compress_function,FUNC_NAME_LENGTH);
-			strcpy(best_compress_function,"compress");
-			new_data(best_fitting_function,FUNC_NAME_LENGTH);
-			strcpy(best_fitting_function,"cubic");
-			copy_iterator(best_it1,it1);
-			return;
-		}
-		if (strcmp(cfg_file_mode,"use")==0)
-		{
-			print_best_strategy();
-			return;
-		}
+		//TODO: i32
 		new_data(data,data_num);
 		in_file=fopen(in_file_path,"rb");
 		fread(data,sizeof(T),data_num,in_file);
 		fclose(in_file);
 		new_data(bitstream,data_num*sizeof(T));
-		new_data(best_compress_function,FUNC_NAME_LENGTH);
-		new_data(best_fitting_function,FUNC_NAME_LENGTH);
 		auto timer=new timer_c();
 		timer->start();
-		if (strcmp(data_type,"i32")==0)
-			test_i32();
+		if ((cfg_file_mode==NULL) || (strcmp(cfg_file_mode,"use")==0))
+			if (cfg_file_mode==NULL)
+			{
+				new_data(best_compress_function,FUNC_NAME_LENGTH);
+				new_data(best_fitting_function,FUNC_NAME_LENGTH);
+				strcpy(best_fitting_function,"cubic");
+				if (map_file_mode==NULL)
+					strcpy(best_compress_function,"compress");
+				else
+					if (strcmp(map_file_mode,"set")==0)
+					{
+						new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid]);
+						new_data(compress_function,FUNC_NAME_LENGTH);
+						strcpy(compress_function,"compress_set_map_test");
+						new_data(fitting_function,FUNC_NAME_LENGTH);
+						strcpy(fitting_function,best_fitting_function);
+						call_compress_functions_test();
+						delete_data(compress_function);
+						delete_data(fitting_function);
+						delete_data(map_bitstream);
+					}
+					else
+					{
+						new_data(compress_function,FUNC_NAME_LENGTH);
+						strcpy(compress_function,"compress_test");
+						new_data(fitting_function,FUNC_NAME_LENGTH);
+						strcpy(fitting_function,best_fitting_function);
+						call_compress_functions_test();
+						delete_data(compress_function);
+						delete_data(fitting_function);
+					}
+			}
+			else
+				if (map_file_mode==NULL)
+					if (strcmp(best_compress_function,"compress")==0)
+						strcpy(best_compress_function,"compress");
+					else
+					{
+						printf("Error: Configure file indicates that a map file is required, but no map file is specified.\n");
+						exit(0);
+					}
+				else
+					if (strcmp(map_file_mode,"set")==0)
+						if (strcmp(best_compress_function,"compress")==0)
+							strcpy(best_compress_function,"compress");
+						else
+							strcpy(best_compress_function,"compress_set_map");
+					else
+						if (strcmp(best_compress_function,"compress")==0)
+							strcpy(best_compress_function,"compress");
+						else
+							strcpy(best_compress_function,"compress_use_map");
 		else
 		{
+			new_data(best_compress_function,FUNC_NAME_LENGTH);
+			new_data(best_fitting_function,FUNC_NAME_LENGTH);
 			if (pertid!=-1)
 			{
-				if ((map_file_mode!=NULL) && ((strcmp(map_file_mode,"set")==0) || (strcmp(map_file_mode,"force-set")==0) || (strcmp(map_file_mode,"use")==0)))
+				if ((map_file_mode!=NULL) && ((strcmp(map_file_mode,"set")==0) || (strcmp(map_file_mode,"use")==0)))
 					test_map_pert();
 				if ((map_file_mode==NULL) || (strcmp(map_file_mode,"set")==0) || (strcmp(map_file_mode,"use")==0))
 					test_pert();
 			}
-			if ((map_file_mode!=NULL) && ((strcmp(map_file_mode,"set")==0) || (strcmp(map_file_mode,"force-set")==0) || (strcmp(map_file_mode,"use")==0)))
+			if (map_file_mode!=NULL)
 				test_map();
 			if ((map_file_mode==NULL) || (strcmp(map_file_mode,"set")==0) || (strcmp(map_file_mode,"use")==0))
 				test();

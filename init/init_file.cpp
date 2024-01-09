@@ -170,7 +170,7 @@ namespace cliz
 	void check_map_file(task_c<float> &task_f32)
 	{
 		#ifdef JOB_TYPE_DECOMPRESS
-			if ((task_f32.map_file_mode!=NULL) && ((strcmp(task_f32.map_file_mode,"set")==0) || (strcmp(task_f32.map_file_mode,"force-set")==0)))
+			if ((task_f32.map_file_mode!=NULL) && (strcmp(task_f32.map_file_mode,"set")==0))
 			{
 				printf("Error: Setting map file is not supported in decompression.\n");
 				exit(0);

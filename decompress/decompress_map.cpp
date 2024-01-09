@@ -68,12 +68,15 @@ namespace cliz
 		new_data(quant_bin,data_num);
 		new_data(width_map,it2->mx[latid]*it2->mx[lngid]);
 		new_data(shift_map,it2->mx[latid]*it2->mx[lngid]);
-		decode_map();
+		decode_data_and_map();
 		timer->pause();
 		printf("bitstream_progress=%lld/%lld, map_bitstream_progress=%lld/%lld\n",bitstream_index,bitstream_length,map_bitstream_index,map_bitstream_length);
 		////////////////Map////////////////
 		timer->start();
 		undo_apply_map();
+		delete_data(qb2horiz_mapping);
+		delete_data(width_map);
+		delete_data(shift_map);
 		timer->pause();
 		////////////////Quant Bin & Irregular////////////////
 		timer->start();

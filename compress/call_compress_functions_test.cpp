@@ -68,6 +68,8 @@ namespace cliz
 		best_fitting_function=fitting_function;
 		if (strcmp(compress_function,"compress_test")==0)
 			compress();
+		if (strcmp(compress_function,"compress_set_map_test")==0)
+			compress_set_map();
 		copy_iterator(best_it1,best_it1_backup);
 		copy_iterator(it1,it1_backup);
 		copy_iterator(it2,it2_backup);
@@ -88,9 +90,12 @@ namespace cliz
 			copy_iterator(best_it1,it1);
 			if (strcmp(compress_function,"compress_test")==0)
 				strcpy(best_compress_function,"compress");
+			if (strcmp(compress_function,"compress_map_test")==0)
+				strcpy(best_compress_function,"compress_set_map");
 			strcpy(best_fitting_function,fitting_function);
 		}
 		bitstream_length=0;
+		map_bitstream_length=0;
 	}
 }
 

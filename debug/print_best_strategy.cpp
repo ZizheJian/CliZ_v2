@@ -9,7 +9,10 @@ namespace cliz
 	void task_c<T>::print_best_strategy()
 	{
 		#ifdef JOB_TYPE_COMPRESS
-			printf("best_compress_function=%s\n",best_compress_function);
+			if (strcmp(best_compress_function,"compress")==0)
+				printf("best_compress_function=%s\n",best_compress_function);
+			if ((strcmp(best_compress_function,"compress_set_map")==0) || (strcmp(best_compress_function,"compress_use_map")==0))
+				printf("best_compress_function=compress_map\n");
 		#endif
 		#ifdef JOB_TYPE_DECOMPRESS
 			printf("best_decompress_function=%s\n",best_decompress_function);

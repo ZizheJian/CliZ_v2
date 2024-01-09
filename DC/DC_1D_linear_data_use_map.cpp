@@ -1,12 +1,12 @@
-#ifndef __DC_1D_LINEAR_DATA_AND_MAP_CPP__
-#define __DC_1D_LINEAR_DATA_AND_MAP_CPP__
+#ifndef __DC_1D_LINEAR_DATA_USE_MAP_CPP__
+#define __DC_1D_LINEAR_DATA_USE_MAP_CPP__
 
 #include "DC.hpp2"
 
 namespace cliz
 {
 	template<typename T>
-	void task_c<T>::DC_1D_linear_data_and_map()
+	void task_c<T>::DC_1D_linear_data_use_map()
 	{
 		long long *mx=best_it1->mx;
 		long long *weight=best_it1->weight;
@@ -17,12 +17,8 @@ namespace cliz
 		#ifdef JOB_TYPE_COMPRESS
 			quant_bin[quant_bin_pos]=quantize(0,0);
 			qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[0];
-			if (abs(quant_bin[quant_bin_pos])<=2)
-				horiz_hist[qb2horiz_mapping[quant_bin_pos]*5+quant_bin[quant_bin_pos]+2]++;
 		#endif
 		#ifdef JOB_TYPE_DECOMPRESS
-			printf("Error: DC_1D_linear_data_and_map shouldn't be called during decompression.\n");
-			exit(0);
 		#endif
 		quant_bin_pos++;
 		double err_bound_backup=err_bound;
@@ -49,16 +45,12 @@ namespace cliz
 						else
 							pred=constant_fitting_dp(pos+i0*weight[0],stride*weight[0]);
 					#ifdef JOB_TYPE_COMPRESS
-						short qb=quantize(pos+i0*weight[0],pred);
-						quant_bin[quant_bin_pos]=qb;
-						long long horiz=pos2horiz_mapping[pos+i0*weight[0]];
-						qb2horiz_mapping[quant_bin_pos]=horiz;
-						if (abs(qb)<=2)
-							horiz_hist[horiz*5+qb+2]++;
+						quant_bin[quant_bin_pos]=quantize(pos+i0*weight[0],pred);
+						qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[pos+i0*weight[0]];
 					#endif
 					#ifdef JOB_TYPE_DECOMPRESS
-			printf("Error: DC_1D_linear_data_and_map shouldn't be called during decompression.\n");
-			exit(0);
+						printf("Error: DC_1D_linear_data_use_map shouldn't be called during decompression.\n");
+						exit(0);
 					#endif
 					quant_bin_pos++;
 				}

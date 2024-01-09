@@ -19,9 +19,6 @@ namespace cliz
 			else
 				fprintf(cfg_file,"%lld ",dimension[did]);
 		fprintf(cfg_file,"\n");
-		// if ((strcmp(best_compress_framework.name,"compress_framework_map_mask")==0)
-		//	 || ((pert!=0) && (strcmp(best_avg_compress_framework.name,"compress_framework_map_mask")==0)))
-		//	 fprintf(cfg_file,"Map file path=%s\n",map_file_path);
 		fprintf(cfg_file,"Data type=%s\n",data_type);
 		fprintf(cfg_file,"Error bound=%la\n",err_bound);
 		fprintf(cfg_file,"Best compress function=%s\n",best_compress_function);
@@ -96,7 +93,7 @@ namespace cliz
 			}
 			if (strncmp(temp_string,"Dimension fission=",18)==0)
 			{
-				read_cfg_fission_mapping(temp_string+17);
+				read_cfg_fission_mapping(temp_string+18);
 				continue;
 			}
 		}

@@ -25,7 +25,7 @@ namespace cliz
 	#define FILE_NAME_LENGTH 1000
 	#define FUNC_NAME_LENGTH 100
 	#define TEMP_STRING_LENGTH 1000
-	#define SAMPLING_RATE 0.001
+	#define SAMPLING_RATE 1e-3
 	#define FFT_SAMPLE_NUM 10
 	#define FAST_SAMPLING false
 
@@ -223,7 +223,6 @@ namespace cliz
 			void test_all_dimension_sequence();
 			void test_all_dimension_fission();		
 			void test_all_fitting_function();	
-			void test_i32();
 			void collect_data_1D(T *data_backup,hyper_iterator_c *it2_backup);
 			void collect_data_2D(T *data_backup,hyper_iterator_c *it2_backup);
 			void collect_data_3D(T *data_backup,hyper_iterator_c *it2_backup);
@@ -243,9 +242,9 @@ namespace cliz
 			void call_compress_functions_test();
 			char *best_compress_function=NULL,*compress_function=NULL;
 			void compress();
-			void compress_map();
+			void compress_set_map();
+			void compress_use_map();
 			//compress_framework_c compress_framework,best_compress_framework,best_avg_compress_framework;
-			void compress_framework_i32();
 			void compress_framework_mask(task_c<int> *mask_subtask);
 			void compress_framework_mask_test(task_c<int> *mask_subtask);
 			void compress_framework_map();
@@ -263,7 +262,6 @@ namespace cliz
 			char *best_decompress_function=NULL;
 			void decompress();
 			void decompress_map();
-			void decompress_framework_i32();
 			void decompress_framework_mask(task_c<int> *mask_subtask);
 			void decompress_framework_map_mask(task_c<int> *mask_subtask);
 			//void match_decompress_functions(compress_framework_c &best_decompress_framework,predictor_c<T> &best_predictor);
@@ -281,11 +279,11 @@ namespace cliz
 			void transpose_map_2D(long long *pos2horiz_mapping_backup);
 			void transpose_map_3D(long long *pos2horiz_mapping_backup);
 			void transpose_map_4D(long long *pos2horiz_mapping_backup);
-			void transpose_data_and_map(T *data_backup,long long *pos2horiz_mapping_backup);
-			void transpose_data_and_map_1D(T *data_backup,long long *pos2horiz_mapping_backup);
-			void transpose_data_and_map_2D(T *data_backup,long long *pos2horiz_mapping_backup);
-			void transpose_data_and_map_3D(T *data_backup,long long *pos2horiz_mapping_backup);
-			void transpose_data_and_map_4D(T *data_backup,long long *pos2horiz_mapping_backup);
+			void transpose_data_map(T *data_backup,long long *pos2horiz_mapping_backup);
+			void transpose_data_map_1D(T *data_backup,long long *pos2horiz_mapping_backup);
+			void transpose_data_map_2D(T *data_backup,long long *pos2horiz_mapping_backup);
+			void transpose_data_map_3D(T *data_backup,long long *pos2horiz_mapping_backup);
+			void transpose_data_map_4D(T *data_backup,long long *pos2horiz_mapping_backup);
 			void anti_transpose_data(T *data_backup);
 			void anti_transpose_data_1D(T *data_backup);
 			void anti_transpose_data_2D(T *data_backup);
@@ -312,15 +310,24 @@ namespace cliz
 			void DC_2D_cubic_map();
 			void DC_3D_cubic_map();
 			void DC_4D_cubic_map();
-			void call_DC_functions_data_and_map();
-			void DC_1D_linear_data_and_map();
-			void DC_2D_linear_data_and_map();
-			void DC_3D_linear_data_and_map();
-			void DC_4D_linear_data_and_map();
-			void DC_1D_cubic_data_and_map();
-			void DC_2D_cubic_data_and_map();
-			void DC_3D_cubic_data_and_map();
-			void DC_4D_cubic_data_and_map();
+			void call_DC_functions_data_set_map();
+			void DC_1D_linear_data_set_map();
+			void DC_2D_linear_data_set_map();
+			void DC_3D_linear_data_set_map();
+			void DC_4D_linear_data_set_map();
+			void DC_1D_cubic_data_set_map();
+			void DC_2D_cubic_data_set_map();
+			void DC_3D_cubic_data_set_map();
+			void DC_4D_cubic_data_set_map();
+			void call_DC_functions_data_use_map();
+			void DC_1D_linear_data_use_map();
+			void DC_2D_linear_data_use_map();
+			void DC_3D_linear_data_use_map();
+			void DC_4D_linear_data_use_map();
+			void DC_1D_cubic_data_use_map();
+			void DC_2D_cubic_data_use_map();
+			void DC_3D_cubic_data_use_map();
+			void DC_4D_cubic_data_use_map();
 
 			////////////////Fitting Functions////////////////
 			char *best_fitting_function=NULL,*fitting_function=NULL;
@@ -349,17 +356,18 @@ namespace cliz
 			void count_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
 			
 			/////////////////Encode Quant_Bin Functions////////////////
-			void encode();
-			void encode_map();
+			void encode_data();
+			void encode_data_and_map();
+			void encode_data_with_map();
 			void encode_quant_bin_mask(task_c<int> *mask_subtask);
 			void encode_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
 			void decode_quant_bin_mask(task_c<int> *mask_subtask);
-			void decode_quant_bin_map(int lngid,int latid);
 			void decode_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
 			
 			////////////////Decode Quant_Bin Functions////////////////
-			void decode();
+			void decode_data();
 			void decode_map();
+			void decode_data_and_map();
 
 			////////////////Validate Functions////////////////
 			void call_validate_functions();

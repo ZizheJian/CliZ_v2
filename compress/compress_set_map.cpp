@@ -1,12 +1,12 @@
-#ifndef __COMPRESS_MAP_CPP__
-#define __COMPRESS_MAP_CPP__
+#ifndef __COMPRESS_SET_MAP_CPP__
+#define __COMPRESS_SET_MAP_CPP__
 
 #include "compress.hpp2"
 
 namespace cliz
 {
 	template<typename T>
-	void task_c<T>::compress_map()
+	void task_c<T>::compress_set_map()
 	{
 		auto timer=new timer_c();
 		////////////////Generate Position-To-Horizontal-Position Mapping////////////////
@@ -22,7 +22,7 @@ namespace cliz
 			new_data(data,data_num,false,false);
 			long long *pos2horiz_mapping_backup=pos2horiz_mapping;
 			new_data(pos2horiz_mapping,data_num,false,false);
-			transpose_data_and_map(data_backup,pos2horiz_mapping_backup);
+			transpose_data_map(data_backup,pos2horiz_mapping_backup);
 			delete_data(data_backup);
 			delete_data(pos2horiz_mapping_backup);
 		}
@@ -31,8 +31,8 @@ namespace cliz
 		timer->start();
 		new_data(quant_bin,data_num);
 		new_data(qb2horiz_mapping,data_num);
-		new_data(horiz_hist,it2->mx[latid]*it2->mx[lngid]*5);
-		call_DC_functions_data_and_map();
+		new_data(horiz_hist,it2->mx[latid]*it2->mx[lngid]*5,true);
+		call_DC_functions_data_set_map();
 		delete_data(pos2horiz_mapping);
 		timer->pause();
 		////////////////Map////////////////
@@ -40,6 +40,7 @@ namespace cliz
 		new_data(width_map,it2->mx[latid]*it2->mx[lngid]);
 		new_data(shift_map,it2->mx[latid]*it2->mx[lngid]);
 		generate_map();
+		delete_data(horiz_hist);
 		apply_map();
 		timer->pause();
 		////////////////Huffman Tree////////////////
@@ -68,8 +69,11 @@ namespace cliz
 		printf("bitstream_length=%lld+%lld=%lld\n",bitstream_length,map_bitstream_length,bitstream_length+map_bitstream_length);
 		////////////////Huffman Encode////////////////
 		timer->start();
-		encode_map();
+		encode_data_and_map();
 		delete_data(quant_bin);
+		delete_data(qb2horiz_mapping);
+		delete_data(width_map);
+		delete_data(shift_map);
 		this_huffman_0.nodes.clear();
 		this_huffman_1.nodes.clear();
 		this_huffman_map.nodes.clear();

@@ -1,12 +1,12 @@
-#ifndef __DECODE_CPP__
-#define __DECODE_CPP__
+#ifndef __DECODE_DATA_CPP__
+#define __DECODE_DATA_CPP__
 
 #include "huffman_decode.hpp2"
 
 namespace cliz
 {
 	template<typename T>
-	void task_c<T>::decode()
+	void task_c<T>::decode_data()
 	{
 		huffman_tree_c<T> &this_huffman=huffman[0];
 		unordered_map<int,node_c,simple_hash> &this_nodes=this_huffman.nodes;
@@ -14,7 +14,6 @@ namespace cliz
 		int cache_digit=0;
 		int nid=32767+this_nodes.size()/2;
 		unsigned char cache=read_cache<unsigned char>();
-		//printf("cache=%d\n",cache);
 		for (long long i=0;i<data_num;)
 		{
 			if (cache_digit==8)

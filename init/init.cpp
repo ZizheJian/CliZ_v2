@@ -77,7 +77,7 @@ namespace cliz
 					read_cfg_file_command(task_f32,argc,argv,i);
 					continue;
 				}
-				if ((strcmp(argv[i],"-set-map")==0) || (strcmp(argv[i],"-force-set-map")==0) || (strcmp(argv[i],"-use-map")==0) || (strcmp(argv[i],"-force-use-map")==0))
+				if ((strcmp(argv[i],"-set-map")==0) || (strcmp(argv[i],"-use-map")==0))
 				{
 					read_map_file_command(task_f32,argc,argv,i);
 					continue;
