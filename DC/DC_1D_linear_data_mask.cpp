@@ -13,12 +13,17 @@ namespace cliz
 		int interpolation_level=0;
 		for (int i=0;i<1;i++)
 			interpolation_level=max(interpolation_level,(int)ceil(log2(mx[i])));
-		long long quant_bin_pos=0;
-		#ifdef JOB_TYPE_COMPRESS
-		#endif
-		#ifdef JOB_TYPE_DECOMPRESS
-		#endif
-		quant_bin_pos++;
+		quant_bin_num=0;
+		if (mask_data[pos2horiz_mapping[0]]!=0)
+		{
+			#ifdef JOB_TYPE_COMPRESS
+				quant_bin[quant_bin_num]=quantize(0,0);
+			#endif
+			#ifdef JOB_TYPE_DECOMPRESS
+				data[0]=dequantize(quant_bin_num,0);
+			#endif
+			quant_bin_num++;
+		}
 		double err_bound_backup=err_bound;
 		for (int lv=interpolation_level-1;lv>=0;lv--)
 		{
@@ -34,19 +39,23 @@ namespace cliz
 				long long pos=0;
 				for (long long i0=b0b+stride;i0<=b0e;i0+=2*stride)
 				{
+					if (mask_data[pos2horiz_mapping[pos+i0*weight[0]]]==0)
+						continue;
 					T pred;
 					if (i0+stride<=b0e)
-						pred=linear_fitting_dpd(pos+i0*weight[0],stride*weight[0]);
+						pred=linear_fitting_dpd_mask(pos+i0*weight[0],stride*weight[0]);
 					else
 						if (i0-3*stride>=b0b)
-							pred=linear_fitting_ddp(pos+i0*weight[0],stride*weight[0]);
+							pred=linear_fitting_ddp_mask(pos+i0*weight[0],stride*weight[0]);
 						else
-							pred=constant_fitting_dp(pos+i0*weight[0],stride*weight[0]);
+							pred=constant_fitting_dp_mask(pos+i0*weight[0],stride*weight[0]);
 					#ifdef JOB_TYPE_COMPRESS
+						quant_bin[quant_bin_num]=quantize(pos+i0*weight[0],pred);
 					#endif
 					#ifdef JOB_TYPE_DECOMPRESS
+						data[pos+i0*weight[0]]=dequantize(quant_bin_num,pred);
 					#endif
-					quant_bin_pos++;
+					quant_bin_num++;
 				}
 			}
 		}

@@ -8,9 +8,8 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::generate_map()
 	{
-		long long horiz_data_num=it2->mx[latid]*it2->mx[lngid];
-		long long other_data_num=data_num/horiz_data_num;
-		for (long long i=0;i<horiz_data_num;i++)
+		long long other_data_num=data_num/map_num;
+		for (long long i=0;i<map_num;i++)
 		{
 			shift_map[i]=-1;
 			width_map[i]=0;

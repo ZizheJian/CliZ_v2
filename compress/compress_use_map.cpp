@@ -29,9 +29,10 @@ namespace cliz
 		timer->pause();
 		////////////////Zstd////////////////
 		timer->start();
+		map_num=it2->mx[latid]*it2->mx[lngid];
 		unsigned char *temp_map_bitstream=map_bitstream;
-		new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid],false,false);
-		map_bitstream_length=ZSTD_decompress(map_bitstream,it2->mx[latid]*it2->mx[lngid],temp_map_bitstream,map_bitstream_length);
+		new_data(map_bitstream,map_num,false,false);
+		map_bitstream_length=ZSTD_decompress(map_bitstream,map_num,temp_map_bitstream,map_bitstream_length);
 		delete_data(temp_map_bitstream);
 		timer->pause();
 		////////////////Huffman Tree////////////////
@@ -52,8 +53,8 @@ namespace cliz
 		printf("bitstream_length=0, map_bitstream_progress=%lld/%lld\n",map_bitstream_index,map_bitstream_length);
 		////////////////Huffman Decode////////////////
 		timer->start();
-		new_data(width_map,it2->mx[latid]*it2->mx[lngid]);
-		new_data(shift_map,it2->mx[latid]*it2->mx[lngid]);
+		new_data(width_map,map_num);
+		new_data(shift_map,map_num);
 		decode_map();
 		timer->pause();
 		printf("bitstream_length=0, map_bitstream_progress=%lld/%lld\n",map_bitstream_index,map_bitstream_length);

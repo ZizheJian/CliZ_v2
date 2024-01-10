@@ -18,7 +18,7 @@ namespace cliz
 		int cache_digit=0;
 		int nid=32767+this_nodes_map.size()/2;
 		unsigned char cache=read_cache<unsigned char>();
-		for (long long i=0;i<it2->mx[latid]*it2->mx[lngid];)
+		for (long long i=0;i<map_num;)
 		{
 			if (cache_digit==8)
 			{

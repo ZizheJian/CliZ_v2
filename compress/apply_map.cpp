@@ -8,7 +8,7 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::apply_map()
 	{
-		for (long long i=0;i<data_num;i++)
+		for (long long i=0;i<quant_bin_num;i++)
 		{
 			long long horiz=qb2horiz_mapping[i];
 			char shift=shift_map[horiz];

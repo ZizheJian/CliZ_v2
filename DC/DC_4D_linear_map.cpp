@@ -13,15 +13,15 @@ namespace cliz
 		int interpolation_level=0;
 		for (int i=0;i<4;i++)
 			interpolation_level=max(interpolation_level,(int)ceil(log2(mx[i])));
-		long long quant_bin_pos=0;
+		quant_bin_num=0;
 		#ifdef JOB_TYPE_COMPRESS
 			printf("Error: DC_4D_linear_map shouldn't be called during compression.\n");
 			exit(0);
 		#endif
 		#ifdef JOB_TYPE_DECOMPRESS
-			qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[0];
+			qb2horiz_mapping[quant_bin_num]=pos2horiz_mapping[0];
 		#endif
-		quant_bin_pos++;
+		quant_bin_num++;
 		double err_bound_backup=err_bound;
 		for (int lv=interpolation_level-1;lv>=0;lv--)
 		{
@@ -63,9 +63,9 @@ namespace cliz
 			exit(0);
 											#endif
 											#ifdef JOB_TYPE_DECOMPRESS
-												qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[pos+i0*weight[0]];
+												qb2horiz_mapping[quant_bin_num]=pos2horiz_mapping[pos+i0*weight[0]];
 											#endif
-											quant_bin_pos++;
+											quant_bin_num++;
 										}
 									}
 							for (long long i0=(b0b?b0b+stride:0);i0<=b0e;i0+=stride)
@@ -88,9 +88,9 @@ namespace cliz
 			exit(0);
 											#endif
 											#ifdef JOB_TYPE_DECOMPRESS
-												qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[pos+i1*weight[1]];
+												qb2horiz_mapping[quant_bin_num]=pos2horiz_mapping[pos+i1*weight[1]];
 											#endif
-											quant_bin_pos++;
+											quant_bin_num++;
 										}
 									}
 							for (long long i0=(b0b?b0b+stride:0);i0<=b0e;i0+=stride)
@@ -113,9 +113,9 @@ namespace cliz
 			exit(0);
 											#endif
 											#ifdef JOB_TYPE_DECOMPRESS
-												qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[pos+i2*weight[2]];
+												qb2horiz_mapping[quant_bin_num]=pos2horiz_mapping[pos+i2*weight[2]];
 											#endif
-											quant_bin_pos++;
+											quant_bin_num++;
 										}
 									}
 							for (long long i0=(b0b?b0b+stride:0);i0<=b0e;i0+=stride)
@@ -138,9 +138,9 @@ namespace cliz
 			exit(0);
 											#endif
 											#ifdef JOB_TYPE_DECOMPRESS
-												qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[pos+i3*weight[3]];
+												qb2horiz_mapping[quant_bin_num]=pos2horiz_mapping[pos+i3*weight[3]];
 											#endif
-											quant_bin_pos++;
+											quant_bin_num++;
 										}
 									}
 						}

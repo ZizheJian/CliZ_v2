@@ -3,5 +3,7 @@
 
 #include "linear_fitting.cpp"
 #include "cubic_fitting.cpp"
+#include "linear_fitting_mask.cpp"
+#include "cubic_fitting_mask.cpp"
 
 #endif

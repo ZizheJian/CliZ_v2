@@ -8,7 +8,6 @@ namespace cliz
 	template<typename T>
 	T task_c<T>::linear_fitting_dpd(long long i,long long stride)
 	{
-		//printf("i=%lld, stride=%lld, data[i-stride]=%f, data[i+stride]=%f\n",i,stride,data[i-stride],data[i+stride]);
 		return 0.5*(data[i-stride]+data[i+stride]);
 	}
 

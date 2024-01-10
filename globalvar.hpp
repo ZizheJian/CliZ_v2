@@ -146,6 +146,8 @@ namespace cliz
 			long long *dimension=NULL;
 			char **dimension_type=NULL;
 			long long data_num=0;
+			long long quant_bin_num=0;
+			long long map_num=0;
 			char *data_type=NULL;
 			char *err_type=NULL;
 			double raw_err_bound=0;
@@ -337,9 +339,15 @@ namespace cliz
 			T cubic_fitting_ddpdd(long long i,long long stride);
 			T quadratic_fitting_ddpd(long long i,long long stride);
 			T quadratic_fitting_dddp(long long i,long long stride);
+			T cubic_fitting_ddpdd_mask(long long i,long long stride);
+			T quadratic_fitting_ddpd_mask(long long i,long long stride);
+			T quadratic_fitting_dddp_mask(long long i,long long stride);
 			T linear_fitting_dpd(long long i,long long stride);
 			T linear_fitting_ddp(long long i,long long stride);
 			T constant_fitting_dp(long long i,long long stride);
+			T linear_fitting_dpd_mask(long long i,long long stride);
+			T linear_fitting_ddp_mask(long long i,long long stride);
+			T constant_fitting_dp_mask(long long i,long long stride);
 
 			////////////////Quantization Functions////////////////
 			short quantize(long long i,T pred);

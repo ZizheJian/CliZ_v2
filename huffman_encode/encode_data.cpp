@@ -14,7 +14,7 @@ namespace cliz
 		unsigned char cache=0;
 		huffman_tree_c<T> &this_huffman=huffman[0];
 		unordered_map<int,node_c,simple_hash> &this_nodes=this_huffman.nodes;
-		for (long long i=0;i<data_num;)
+		for (long long i=0;i<quant_bin_num;)
 		{
 			node_c &this_node=this_nodes[quant_bin[i]];
 			long long code=this_node.code;

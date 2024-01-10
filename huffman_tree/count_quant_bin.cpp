@@ -10,7 +10,7 @@ namespace cliz
 	{
 		huffman_tree_c<T> &this_huffman=huffman[0];
 		unordered_map<int,node_c,simple_hash> &this_nodes=this_huffman.nodes;
-		for (long long i=0;i<data_num;i++)
+		for (long long i=0;i<quant_bin_num;i++)
 			this_nodes[quant_bin[i]].count++;
 	}
 }

@@ -16,7 +16,7 @@ namespace cliz
 		huffman_tree_c<T> &this_huffman_1=huffman[1];
 		unordered_map<int,node_c,simple_hash> &this_nodes_0=this_huffman_0.nodes;
 		unordered_map<int,node_c,simple_hash> &this_nodes_1=this_huffman_1.nodes;
-		for (long long i=0;i<data_num;)
+		for (long long i=0;i<quant_bin_num;)
 		{
 			node_c &this_node=(width_map[qb2horiz_mapping[i]]==0)?this_nodes_0[quant_bin[i]]:this_nodes_1[quant_bin[i]];
 			long long code=this_node.code;
