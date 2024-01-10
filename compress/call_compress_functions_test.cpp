@@ -70,6 +70,15 @@ namespace cliz
 			compress();
 		if (strcmp(compress_function,"compress_set_map_test")==0)
 			compress_set_map();
+		if (strcmp(compress_function,"compress_mask_test")==0)
+		{
+			int *mask_data_backup=mask_data;
+			new_data(mask_data,it2->mx[latid]*it2->mx[lngid],false,false);
+			collect_data_mask(mask_data_backup,it2_backup);
+			compress_mask();
+			delete_data(mask_data);
+			mask_data=mask_data_backup;
+		}
 		copy_iterator(best_it1,best_it1_backup);
 		copy_iterator(it1,it1_backup);
 		copy_iterator(it2,it2_backup);

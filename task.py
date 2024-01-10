@@ -8,7 +8,7 @@ def generate_command_compress(job_type,input_path,output_path=None,config=None,m
 	if (map!=None):
 		command+=" -"+map[0]+"-map "+map[1]
 	if (mask!=None):
-		command+=" -mask"+mask
+		command+=" -mask "+mask
 	if (dimension!=None):
 		command+=" -dim"
 		for i in range(len(dimension)):

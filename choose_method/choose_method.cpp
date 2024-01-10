@@ -73,15 +73,15 @@ namespace cliz
 			new_data(best_compress_function,FUNC_NAME_LENGTH);
 			new_data(best_fitting_function,FUNC_NAME_LENGTH);
 			if (pertid!=-1)
-			{
-				if ((map_file_mode!=NULL) && ((strcmp(map_file_mode,"set")==0) || (strcmp(map_file_mode,"use")==0)))
-					test_map_pert();
-				if ((map_file_mode==NULL) || (strcmp(map_file_mode,"set")==0) || (strcmp(map_file_mode,"use")==0))
-					test_pert();
-			}
+				test_pert();
 			if (map_file_mode!=NULL)
-				test_map();
-			if ((map_file_mode==NULL) || (strcmp(map_file_mode,"set")==0) || (strcmp(map_file_mode,"use")==0))
+				if (mask_file_path!=NULL)
+					test_map_mask();
+				else
+					test_map();
+			if (mask_file_path!=NULL)
+				test_mask();
+			else
 				test();
 		}
 		timer->pause();

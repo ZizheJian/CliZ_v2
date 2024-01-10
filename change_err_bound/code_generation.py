@@ -1,3 +1,4 @@
+exit(0)
 for dimension_num in [1,2,3,4]:
 	file=open(f"change_err_bound_{dimension_num}D.cpp","w")
 	file.write(f"#ifndef __CHANGE_ERR_BOUND_{dimension_num}D_CPP__\n")

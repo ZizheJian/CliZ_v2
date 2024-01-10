@@ -4,6 +4,7 @@
 #include "call_compress_functions.cpp"
 #include "call_compress_functions_test.cpp"
 #include "compress.cpp"
+#include "compress_mask.cpp"
 #include "compress_set_map.cpp"
 #include "compress_use_map.cpp"
 #include "generate_map.cpp"

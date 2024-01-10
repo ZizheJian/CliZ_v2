@@ -1,5 +1,5 @@
 for dimension_num in [1,2,3,4]:
-	for map in ["_data","_map","_data_set_map","_data_use_map"]:
+	for map in ["_data","_map","_data_set_map","_data_use_map","_data_mask"]:
 		file=open(f"DC_{dimension_num}D_linear{map}.cpp","w")
 		file.write(f"#ifndef __DC_{dimension_num}D_LINEAR{map.upper()}_CPP__\n")
 		file.write(f"#define __DC_{dimension_num}D_LINEAR{map.upper()}_CPP__\n")
@@ -133,7 +133,7 @@ for dimension_num in [1,2,3,4]:
 		file.close()
 
 for dimension_num in [1,2,3,4]:
-	for map in ["_data","_map","_data_set_map","_data_use_map"]:
+	for map in ["_data","_map","_data_set_map","_data_use_map","_data_mask"]:
 		file=open(f"DC_{dimension_num}D_cubic{map}.cpp","w")
 		file.write(f"#ifndef __DC_{dimension_num}D_CUBIC{map.upper()}_CPP__\n")
 		file.write(f"#define __DC_{dimension_num}D_CUBIC{map.upper()}_CPP__\n")

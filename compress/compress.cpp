@@ -11,14 +11,11 @@ namespace cliz
 		auto timer=new timer_c();
 		////////////////Transpose////////////////
 		timer->start();
-		hyper_iterator_c *best_it1_backup=NULL;
 		if (best_it1->dim_seq!=NULL)
 		{
 			T *data_backup=data;
 			new_data(data,data_num,false,false);
 			transpose_data(data_backup);
-			copy_iterator(best_it1_backup,best_it1);
-			delete_data(best_it1->dim_seq);
 			delete_data(data_backup);
 		}
 		timer->pause();
@@ -59,11 +56,6 @@ namespace cliz
 		timer->pause();
 		printf("bitstream_length=%lld\n",bitstream_length);
 		CR=((float)data_num*sizeof(T))/bitstream_length;
-		////////////////Anti-Tanspose////////////////
-		timer->start();
-		if ((best_it1_backup!=NULL) && (best_it1_backup->dim_seq!=NULL))
-			copy_iterator(best_it1,best_it1_backup);
-		timer->pause();
 		timer->write();
 	}
 }

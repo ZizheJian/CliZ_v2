@@ -1,6 +1,7 @@
 import os
 from starter_setting.Hurricane_T import Hurricane_T
 from starter_setting.CESM_T import CESM_T
+from starter_setting.b_e11_SSH import b_e11_SSH
 
 code_generation_list=["change_err_bound","choose_method","DC","transform"]
 for code_generation_folder in code_generation_list:
@@ -8,27 +9,20 @@ for code_generation_folder in code_generation_list:
 	os.system("python3 code_generation.py")
 	os.chdir("..")
 
-datasets=[Hurricane_T,CESM_T]
+datasets=[Hurricane_T,CESM_T,b_e11_SSH]
 commands=[]
 
 #testname="compress CESM_ATM_RELHUM"
 #testname="decompress CESM_ATM_RELHUM"
 #testname="compress SOILLIQ+mask"
 #testname="decompress SOILLIQ+mask"
-#testname="compress b.SSH"
-#testname="decompress b.SSH"
-#testname="compress b.SSH+mask"
-#testname="decompress b.SSH+mask"
 #testname="compress CLOUDf48.log10"
 #testname="decompress CLOUDf48.log10"
-#testname="compress CESM-ATM-T"
-#testname="decompress CESM-ATM-T"
 #testname="compress CESM-ATM-CLDLOW_2D"
 #testname="decompress CESM-ATM-CLDLOW_2D"
 #testname="compress b.nday1.SST"
 #testname="compress b.SST+mask"
 #testname="compress b.nday1.SST+mask"
-#testname="api test"
 
 for dataset in datasets:
 	command=dataset()
@@ -87,58 +81,6 @@ os.system(commands[0])
 # 		,map=["use","~/compress/b40.1850.track1.2deg/SOILLIQ.bin.air.map"])
 # 	task.add_file(input_path="~/compress/b40.1850.track1.2deg/MASK.bin.air"
 # 		,config=["use","~/compress/b40.1850.track1.2deg/MASK.bin.air.cfg"])
-
-# if (testname=="compress b.SSH"):
-# 	task.set_job("compress")
-# 	task.add_file(input_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin"
-# 		,config=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.air.cfg"]
-# 		,map=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.air.map"]
-# 		,dimension=[["t",1032],["lat",384],["lng",320]]
-# 		,data_phy="SSH"
-# 		,err_type="ABS"
-# 		,err_bound=0.4
-# 		#,draw_dimension=[20,["h",384],["w",320]]
-# 		,freq=True
-# 	)
-
-# # if (testname=="decompress b.SSH"):
-# # 	task.add_file(job="decompress"
-# # 		,directory_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512"
-# # 		,file_name="b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512.bin.air"
-# # 		#,draw_dimension=[["",24],["h",384],["w",320]]
-# # 	)
-
-# if (testname=="compress b.SSH+mask"):
-# 	task.set_job("compress")
-# 	task.add_file(input_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin"
-# 		,config=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.air.cfg"]
-# 		#,map=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.air.map"]
-# 		,dimension=[["pert",1032],["lat",384],["lng",320]]
-# 		,data_phy="SSH"
-# 		,err_type="ABS"
-# 		,err_bound=0.0000414172318
-# 		#,draw_dimension=[20,["h",384],["w",320]]
-# 		#,freq=True
-# 	)
-# 	task.add_file(input_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/REGION_MASK.bin"
-# 		,config=["set","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/REGION_MASK.bin.air.cfg"]
-# 		,dimension=[["lat",384],["lng",320]]
-# 		,data_type="i32"
-# 		,data_phy="MASK"
-# 		#,draw_dimension=[["h",384],["w",320]]
-# 		#,freq=True
-# 	)
-
-# if (testname=="decompress b.SSH+mask"):
-# 	task.set_job("decompress")
-# 	task.add_file(input_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.air"
-# 		,config=["use","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.air.cfg"]
-# 		,map=["use","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.air.map"]
-# 	)
-# 	task.add_file(input_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/REGION_MASK.bin.air"
-# 		,config=["use","~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/REGION_MASK.bin.air.cfg"]
-# 		#,draw_dimension=[["h",384],["w",320]]
-# 	)
 
 # # if (testname=="compress CLOUDf48.log10"):
 # # 	task.add_file(job="compress"
@@ -224,9 +166,3 @@ os.system(commands[0])
 # 		#,draw_dimension=[["h",384],["w",320]]
 # 		,freq=True
 # 	)
-
-# if (testname=="api test"):
-# 	os.system("make")
-# 	os.system("./api_example")
-
-# task.run()

@@ -8,6 +8,7 @@
 #include "collect_data_2D.cpp"
 #include "collect_data_3D.cpp"
 #include "collect_data_4D.cpp"
+#include "collect_data_mask.cpp"
 #include "lv1_test/lv1_test.hpp1"
 #include "lv2_test/lv2_test.hpp1"
 

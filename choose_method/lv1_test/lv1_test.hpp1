@@ -2,8 +2,9 @@
 #define __LV1_TEST_HPP1__
 
 #include "test.cpp"
+#include "test_mask.cpp"
 #include "test_map.cpp"
+#include "test_map_mask.cpp"
 #include "test_pert.cpp"
-#include "test_map_pert.cpp"
 
 #endif

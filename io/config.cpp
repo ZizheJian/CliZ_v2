@@ -33,7 +33,6 @@ namespace cliz
 		//	 fprintf(cfg_file,"Pert=%lld\n",pert);
 		// fprintf(cfg_file,"\n");
 	
-		// best_it1->write(cfg_file);
 		// if (pert!=0)
 		//	 best_avg_it1->write(cfg_file);
 		fclose(cfg_file);

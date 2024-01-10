@@ -155,6 +155,7 @@ namespace cliz
 
 			T *data=NULL;
 			int *mask_data=NULL;
+			T mask_value=0;
 			int latid=-1,lngid=-1,hid=-1,tid=-1,pertid=-1;
 			hyper_iterator_c *it1=NULL;
 			hyper_iterator_c *best_it1=NULL;
@@ -217,9 +218,10 @@ namespace cliz
 			////////////////Testing Functions////////////////
 			void choose_method();
 			void test();
-			void test_map();
 			void test_pert();
-			void test_map_pert();
+			void test_mask();
+			void test_map();
+			void test_map_mask();
 			void test_all_dimension_sequence();
 			void test_all_dimension_fission();		
 			void test_all_fitting_function();	
@@ -227,7 +229,7 @@ namespace cliz
 			void collect_data_2D(T *data_backup,hyper_iterator_c *it2_backup);
 			void collect_data_3D(T *data_backup,hyper_iterator_c *it2_backup);
 			void collect_data_4D(T *data_backup,hyper_iterator_c *it2_backup);
-			void test_mask();
+			void collect_data_mask(int *mask_data_backup,hyper_iterator_c *it2_backup);
 			void test_pert_mask();
 			void print_test_condition();
 			void calc_pert_mask(task_c<int> *mask_subtask);
@@ -242,20 +244,12 @@ namespace cliz
 			void call_compress_functions_test();
 			char *best_compress_function=NULL,*compress_function=NULL;
 			void compress();
+			void compress_mask();
 			void compress_set_map();
 			void compress_use_map();
-			//compress_framework_c compress_framework,best_compress_framework,best_avg_compress_framework;
-			void compress_framework_mask(task_c<int> *mask_subtask);
-			void compress_framework_mask_test(task_c<int> *mask_subtask);
-			void compress_framework_map();
-			void compress_framework_map_test();
 			void compress_framework_map_mask(task_c<int> *mask_subtask);
 			void compress_framework_map_mask_fast(task_c<int> *mask_subtask);
 			void compress_framework_map_mask_test(task_c<int> *mask_subtask);
-			void assign_irr_data();
-			void assign_irr_data_mask(task_c<int> *mask_subtask);
-			void write_map(int lngid,int latid);
-			void write_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
 
 			////////////////Decompress Functions////////////////
 			void call_decompress_functions();
@@ -328,6 +322,15 @@ namespace cliz
 			void DC_2D_cubic_data_use_map();
 			void DC_3D_cubic_data_use_map();
 			void DC_4D_cubic_data_use_map();
+			void call_DC_functions_data_mask();
+			void DC_1D_linear_data_mask();
+			void DC_2D_linear_data_mask();
+			void DC_3D_linear_data_mask();
+			void DC_4D_linear_data_mask();
+			void DC_1D_cubic_data_mask();
+			void DC_2D_cubic_data_mask();
+			void DC_3D_cubic_data_mask();
+			void DC_4D_cubic_data_mask();
 
 			////////////////Fitting Functions////////////////
 			char *best_fitting_function=NULL,*fitting_function=NULL;

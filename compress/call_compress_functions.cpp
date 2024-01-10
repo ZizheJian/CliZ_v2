@@ -15,6 +15,15 @@ namespace cliz
 		new_data(bitstream,data_num*sizeof(T));
 		if (strcmp(best_compress_function,"compress")==0)
 			compress();
+		if (strcmp(best_compress_function,"compress_mask")==0)
+		{
+			new_data(mask_data,it2->mx[latid]*it2->mx[lngid]);
+			mask_file=fopen(mask_file_path,"rb");
+			fread(mask_data,sizeof(int),it2->mx[latid]*it2->mx[lngid],mask_file);
+			fclose(mask_file);
+			compress_mask();
+			delete_data(mask_data);
+		}
 		if (strcmp(best_compress_function,"compress_set_map")==0)
 		{
 			new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid]);
