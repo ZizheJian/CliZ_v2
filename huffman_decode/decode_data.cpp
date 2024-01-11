@@ -14,7 +14,7 @@ namespace cliz
 		int cache_digit=0;
 		int nid=32767+this_nodes.size()/2;
 		unsigned char cache=read_cache<unsigned char>();
-		for (long long i=0;i<data_num;)
+		for (long long i=0;i<quant_bin_num;)
 		{
 			if (cache_digit==8)
 			{

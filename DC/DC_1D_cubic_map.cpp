@@ -13,15 +13,15 @@ namespace cliz
 		int interpolation_level=0;
 		for (int i=0;i<1;i++)
 			interpolation_level=max(interpolation_level,(int)ceil(log2(mx[i])));
-		quant_bin_num=0;
+		long long quant_bin_pos=0;
 		#ifdef JOB_TYPE_COMPRESS
 			printf("Error: DC_1D_linear_map shouldn't be called during compression.\n");
 			exit(0);
 		#endif
 		#ifdef JOB_TYPE_DECOMPRESS
-			qb2horiz_mapping[quant_bin_num]=pos2horiz_mapping[0];
+			qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[0];
 		#endif
-		quant_bin_num++;
+		quant_bin_pos++;
 		double err_bound_backup=err_bound;
 		for (int lv=interpolation_level-1;lv>=0;lv--)
 		{
@@ -59,9 +59,9 @@ namespace cliz
 			exit(0);
 				#endif
 				#ifdef JOB_TYPE_DECOMPRESS
-					qb2horiz_mapping[quant_bin_num]=pos2horiz_mapping[pos+i0*weight[0]];
+					qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[pos+i0*weight[0]];
 				#endif
-				quant_bin_num++;
+				quant_bin_pos++;
 			}
 		}
 	}

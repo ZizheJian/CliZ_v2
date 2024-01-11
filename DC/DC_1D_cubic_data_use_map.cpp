@@ -13,16 +13,16 @@ namespace cliz
 		int interpolation_level=0;
 		for (int i=0;i<1;i++)
 			interpolation_level=max(interpolation_level,(int)ceil(log2(mx[i])));
-		quant_bin_num=0;
+		long long quant_bin_pos=0;
 		#ifdef JOB_TYPE_COMPRESS
-			quant_bin[quant_bin_num]=quantize(0,0);
-			qb2horiz_mapping[quant_bin_num]=pos2horiz_mapping[0];
+			quant_bin[quant_bin_pos]=quantize(0,0);
+			qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[0];
 		#endif
 		#ifdef JOB_TYPE_DECOMPRESS
 			printf("Error: DC_1D_linear_data_use_map shouldn't be called during decompression.\n");
 			exit(0);
 		#endif
-		quant_bin_num++;
+		quant_bin_pos++;
 		double err_bound_backup=err_bound;
 		for (int lv=interpolation_level-1;lv>=0;lv--)
 		{
@@ -56,14 +56,14 @@ namespace cliz
 							else
 								pred=constant_fitting_dp(pos+i0*weight[0],stride*weight[0]);
 				#ifdef JOB_TYPE_COMPRESS
-					quant_bin[quant_bin_num]=quantize(pos+i0*weight[0],pred);
-					qb2horiz_mapping[quant_bin_num]=pos2horiz_mapping[pos+i0*weight[0]];
+					quant_bin[quant_bin_pos]=quantize(pos+i0*weight[0],pred);
+					qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[pos+i0*weight[0]];
 				#endif
 				#ifdef JOB_TYPE_DECOMPRESS
 					printf("Error: DC_1D_linear_data_use_map shouldn't be called during decompression.\n");
 					exit(0);
 				#endif
-				quant_bin_num++;
+				quant_bin_pos++;
 			}
 		}
 	}

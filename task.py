@@ -33,11 +33,13 @@ def generate_command_compress(job_type,input_path,output_path=None,config=None,m
 		command+=" -debug"
 	return command
 
-def generate_command_validate(job_type,source_path,decompressed_path=None,dimension=None,data_type=None,err=None):
+def generate_command_validate(job_type,source_path,decompressed_path=None,mask_path=None,dimension=None,data_type=None,err=None):
 	command="./cliz_"+job_type
 	command+=" -src "+source_path
 	if decompressed_path!=None:
 		command+=" -dec "+decompressed_path
+	if mask_path!=None:
+		command+=" -mask "+mask_path
 	if dimension!=None:
 		command+=" -dim"
 		for i in range(len(dimension)):

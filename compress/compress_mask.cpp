@@ -29,7 +29,8 @@ namespace cliz
 		timer->pause();
 		////////////////Quant Bin////////////////
 		timer->start();
-		new_data(quant_bin,data_num);
+		quant_bin_num=data_num;
+		new_data(quant_bin,quant_bin_num);
 		call_DC_functions_data_mask();
 		timer->pause();
 		////////////////Huffman Tree////////////////

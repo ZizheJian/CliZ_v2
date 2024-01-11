@@ -10,7 +10,7 @@ cliz_decompress: change_err_bound/* choose_method/* DC/* debug/* decompress/* fi
 	rm -f cliz_decompress cliz_validate
 	g++ cliz_decompress.cpp -o cliz_decompress -O3 -Wno-unused-result -lfftw3f -lzstd
 
-cliz_validate: change_err_bound/* validate/* debug/* init/* io/* \
+cliz_validate: change_err_bound/* choose_method/* validate/* debug/* init/* io/* \
 	cliz_validate.cpp globalvar.hpp hyper_iterator.cpp makefile
 	rm -f cliz_validate
 	g++ cliz_validate.cpp -o cliz_validate -O3 -Wno-unused-result -lfftw3f -lzstd

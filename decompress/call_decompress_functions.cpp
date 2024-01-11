@@ -28,6 +28,16 @@ namespace cliz
 			fread(map_bitstream,sizeof(unsigned char),map_bitstream_length,map_file);
 			fclose(map_file);
 			decompress_map();
+			delete_data(map_bitstream);
+		}
+		if (strcmp(best_decompress_function,"decompress_mask")==0)
+		{
+			mask_file=fopen(mask_file_path,"rb");
+			new_data(mask_data,it2->mx[latid]*it2->mx[lngid]);
+			fread(mask_data,sizeof(int),it2->mx[latid]*it2->mx[lngid],mask_file);
+			fclose(mask_file);
+			decompress_mask();
+			delete_data(mask_data);
 		}
 		out_file=fopen(out_file_path,"wb");
 		fwrite(data,data_num,sizeof(T),out_file);

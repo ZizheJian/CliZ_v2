@@ -1,14 +1,33 @@
-#ifndef __DECOMPRESS_CPP__
-#define __DECOMPRESS_CPP__
+#ifndef __DECOMPRESS_MASK_CPP__
+#define __DECOMPRESS_MASK_CPP__
 
 #include "decompress.hpp2"
 
 namespace cliz
 {
 	template<typename T>
-	void task_c<T>::decompress()
+	void task_c<T>::decompress_mask()
 	{
 		auto timer=new timer_c();
+		////////////////Generate Position-To-Horizontal-Position Mapping////////////////
+		timer->start();
+		new_data(pos2horiz_mapping,data_num);
+		generate_pos2horiz_mapping();
+		timer->pause();
+		////////////////Transpose////////////////
+		timer->start();
+		if (best_it1->dim_seq!=NULL)
+		{
+			long long *pos2horiz_mapping_backup=pos2horiz_mapping;
+			new_data(pos2horiz_mapping,data_num,false,false);
+			transpose_map(pos2horiz_mapping_backup);
+			delete_data(pos2horiz_mapping_backup);
+		}
+		timer->pause();
+		////////////////Count Map Size////////////////
+		timer->start();
+		calc_quant_bin_size();
+		timer->pause();
 		////////////////Zstd////////////////
 		timer->start();
 		unsigned char *temp_bitstream=bitstream;
@@ -25,13 +44,15 @@ namespace cliz
 		timer->pause();
 		////////////////Huffman Decode////////////////
 		timer->start();
-		quant_bin_num=data_num;
 		new_data(quant_bin,quant_bin_num);
 		decode_data();
 		timer->pause();
 		////////////////Quant Bin & Irregular////////////////
+		printf("aaa\n");
 		timer->start();
-		call_DC_functions_data();
+		for (long long i=0;i<data_num;i++)
+			data[i]=mask_value;
+		call_DC_functions_data_mask();
 		delete_data(quant_bin);
 		timer->pause();
 		////////////////Anti-Transpose////////////////

@@ -189,6 +189,7 @@ namespace cliz
 			void read_cfg_best_compress_function(char *temp_string);
 			void read_cfg_best_decompress_function(char *temp_string);
 			void read_cfg_best_fitting_function(char *temp_string);
+			void read_cfg_mask_value(char *temp_string);
 			void read_cfg_it1_max(char *temp_string);
 			void read_cfg_seq_mapping(char *temp_string);
 			void read_cfg_fission_mapping(char *temp_string);
@@ -258,11 +259,8 @@ namespace cliz
 			char *best_decompress_function=NULL;
 			void decompress();
 			void decompress_map();
-			void decompress_framework_mask(task_c<int> *mask_subtask);
+			void decompress_mask();
 			void decompress_framework_map_mask(task_c<int> *mask_subtask);
-			//void match_decompress_functions(compress_framework_c &best_decompress_framework,predictor_c<T> &best_predictor);
-			void read_map(int lngid,int latid);
-			void read_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
 
 			////////////////Transpose Functions////////////////
 			void transpose_data(T *data_backup);
@@ -286,6 +284,7 @@ namespace cliz
 			void anti_transpose_data_3D(T *data_backup);
 			void anti_transpose_data_4D(T *data_backup);
 			void generate_pos2horiz_mapping();
+			void calc_quant_bin_size();
 
 			////////////////DC Functions////////////////
 			void call_DC_functions_data();

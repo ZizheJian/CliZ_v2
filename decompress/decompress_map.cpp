@@ -26,7 +26,8 @@ namespace cliz
 		timer->pause();
 		////////////////Generate Quant-Bin-To-Horizontal-Position Mapping////////////////
 		timer->start();
-		new_data(qb2horiz_mapping,data_num);
+		quant_bin_num=data_num;
+		new_data(qb2horiz_mapping,quant_bin_num);
 		call_DC_functions_map();
 		delete_data(pos2horiz_mapping);
 		timer->pause();
@@ -65,7 +66,7 @@ namespace cliz
 		printf("bitstream_progress=%lld/%lld, map_bitstream_progress=%lld/%lld\n",bitstream_index,bitstream_length,map_bitstream_index,map_bitstream_length);
 		////////////////Huffman Decode////////////////
 		timer->start();
-		new_data(quant_bin,data_num);
+		new_data(quant_bin,quant_bin_num);
 		new_data(width_map,it2->mx[latid]*it2->mx[lngid]);
 		new_data(shift_map,it2->mx[latid]*it2->mx[lngid]);
 		decode_data_and_map();

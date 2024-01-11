@@ -13,10 +13,14 @@ namespace cliz
 			T irr;
 			memcpy(&irr,bitstream+bitstream_index,sizeof(T));
 			bitstream_index+=sizeof(T);
+			//printf("i=???, data=%f, pred=%f, bin=%d\n",irr,pred,-32768);
 			return irr;
 		}
 		else
+		{
+			//printf("i=???, data=%f, pred=%f, bin=%d\n",pred+quant_bin[i]*2*err_bound,pred,quant_bin[i]);
 			return pred+quant_bin[i]*2*err_bound;
+		}
 	}
 }
 

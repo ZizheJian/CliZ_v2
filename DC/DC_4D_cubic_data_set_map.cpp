@@ -13,18 +13,18 @@ namespace cliz
 		int interpolation_level=0;
 		for (int i=0;i<4;i++)
 			interpolation_level=max(interpolation_level,(int)ceil(log2(mx[i])));
-		quant_bin_num=0;
+		long long quant_bin_pos=0;
 		#ifdef JOB_TYPE_COMPRESS
-			quant_bin[quant_bin_num]=quantize(0,0);
-			qb2horiz_mapping[quant_bin_num]=pos2horiz_mapping[0];
-			if (abs(quant_bin[quant_bin_num])<=2)
-				horiz_hist[qb2horiz_mapping[quant_bin_num]*5+quant_bin[quant_bin_num]+2]++;
+			quant_bin[quant_bin_pos]=quantize(0,0);
+			qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[0];
+			if (abs(quant_bin[quant_bin_pos])<=2)
+				horiz_hist[qb2horiz_mapping[quant_bin_pos]*5+quant_bin[quant_bin_pos]+2]++;
 		#endif
 		#ifdef JOB_TYPE_DECOMPRESS
 			printf("Error: DC_4D_linear_data_set_map shouldn't be called during decompression.\n");
 			exit(0);
 		#endif
-		quant_bin_num++;
+		quant_bin_pos++;
 		double err_bound_backup=err_bound;
 		for (int lv=interpolation_level-1;lv>=0;lv--)
 		{
@@ -63,9 +63,9 @@ namespace cliz
 											pred=constant_fitting_dp(pos+i0*weight[0],stride*weight[0]);
 							#ifdef JOB_TYPE_COMPRESS
 								short qb=quantize(pos+i0*weight[0],pred);
-								quant_bin[quant_bin_num]=qb;
+								quant_bin[quant_bin_pos]=qb;
 								long long horiz=pos2horiz_mapping[pos+i0*weight[0]];
-								qb2horiz_mapping[quant_bin_num]=horiz;
+								qb2horiz_mapping[quant_bin_pos]=horiz;
 								if (abs(qb)<=2)
 									horiz_hist[horiz*5+qb+2]++;
 							#endif
@@ -73,7 +73,7 @@ namespace cliz
 								printf("Error: DC_4D_linear_data_set_map shouldn't be called during decompression.\n");
 								exit(0);
 							#endif
-							quant_bin_num++;
+							quant_bin_pos++;
 						}
 					}
 			for (long long i0=0;i0<mx[0];i0+=stride)
@@ -105,9 +105,9 @@ namespace cliz
 											pred=constant_fitting_dp(pos+i1*weight[1],stride*weight[1]);
 							#ifdef JOB_TYPE_COMPRESS
 								short qb=quantize(pos+i1*weight[1],pred);
-								quant_bin[quant_bin_num]=qb;
+								quant_bin[quant_bin_pos]=qb;
 								long long horiz=pos2horiz_mapping[pos+i1*weight[1]];
-								qb2horiz_mapping[quant_bin_num]=horiz;
+								qb2horiz_mapping[quant_bin_pos]=horiz;
 								if (abs(qb)<=2)
 									horiz_hist[horiz*5+qb+2]++;
 							#endif
@@ -115,7 +115,7 @@ namespace cliz
 								printf("Error: DC_4D_linear_data_set_map shouldn't be called during decompression.\n");
 								exit(0);
 							#endif
-							quant_bin_num++;
+							quant_bin_pos++;
 						}
 					}
 			for (long long i0=0;i0<mx[0];i0+=stride)
@@ -147,9 +147,9 @@ namespace cliz
 											pred=constant_fitting_dp(pos+i2*weight[2],stride*weight[2]);
 							#ifdef JOB_TYPE_COMPRESS
 								short qb=quantize(pos+i2*weight[2],pred);
-								quant_bin[quant_bin_num]=qb;
+								quant_bin[quant_bin_pos]=qb;
 								long long horiz=pos2horiz_mapping[pos+i2*weight[2]];
-								qb2horiz_mapping[quant_bin_num]=horiz;
+								qb2horiz_mapping[quant_bin_pos]=horiz;
 								if (abs(qb)<=2)
 									horiz_hist[horiz*5+qb+2]++;
 							#endif
@@ -157,7 +157,7 @@ namespace cliz
 								printf("Error: DC_4D_linear_data_set_map shouldn't be called during decompression.\n");
 								exit(0);
 							#endif
-							quant_bin_num++;
+							quant_bin_pos++;
 						}
 					}
 			for (long long i0=0;i0<mx[0];i0+=stride)
@@ -189,9 +189,9 @@ namespace cliz
 											pred=constant_fitting_dp(pos+i3*weight[3],stride*weight[3]);
 							#ifdef JOB_TYPE_COMPRESS
 								short qb=quantize(pos+i3*weight[3],pred);
-								quant_bin[quant_bin_num]=qb;
+								quant_bin[quant_bin_pos]=qb;
 								long long horiz=pos2horiz_mapping[pos+i3*weight[3]];
-								qb2horiz_mapping[quant_bin_num]=horiz;
+								qb2horiz_mapping[quant_bin_pos]=horiz;
 								if (abs(qb)<=2)
 									horiz_hist[horiz*5+qb+2]++;
 							#endif
@@ -199,7 +199,7 @@ namespace cliz
 								printf("Error: DC_4D_linear_data_set_map shouldn't be called during decompression.\n");
 								exit(0);
 							#endif
-							quant_bin_num++;
+							quant_bin_pos++;
 						}
 					}
 		}

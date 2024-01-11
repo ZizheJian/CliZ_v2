@@ -22,5 +22,6 @@
 #include "anti_transpose_data_3D.cpp"
 #include "anti_transpose_data_4D.cpp"
 #include "generate_pos2horiz_mapping.cpp"
+#include "calc_quant_bin_size.cpp"
 
 #endif

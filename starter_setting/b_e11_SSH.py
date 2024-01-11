@@ -34,7 +34,7 @@ def b_e11_SSH():
 		command=generate_command_compress(job_type="decompress"
 			,input_path=compressed_path
 			,config=["use",config_path]
-			,map=["use",map_path]
+			#,map=["use",map_path]
 			,mask=mask_path
 		)
 	if test_name=="Validate":
@@ -42,8 +42,7 @@ def b_e11_SSH():
 			,source_path=source_path
 			,decompressed_path=decompressed_path
 			,mask_path=mask_path
-			,dimension=[["t",1032],["lat",184],["lng",320]]
-			,data_type="f32"
+			,dimension=[["t",1032],["lat",384],["lng",320]]
 			,err=["REL",1e-3]
 		)
 	return command

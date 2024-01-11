@@ -30,8 +30,9 @@ namespace cliz
 		////////////////Quant Bin////////////////
 		timer->start();
 		map_num=it2->mx[latid]*it2->mx[lngid];
-		new_data(quant_bin,data_num);
-		new_data(qb2horiz_mapping,data_num);
+		quant_bin_num=data_num;
+		new_data(quant_bin,quant_bin_num);
+		new_data(qb2horiz_mapping,quant_bin_num);
 		new_data(horiz_hist,map_num*5,true);
 		call_DC_functions_data_set_map();
 		delete_data(pos2horiz_mapping);

@@ -23,6 +23,15 @@ namespace cliz
 		fprintf(cfg_file,"Error bound=%la\n",err_bound);
 		fprintf(cfg_file,"Best compress function=%s\n",best_compress_function);
 		fprintf(cfg_file,"Best fitting function=%s\n",best_fitting_function);
+		if (mask_file_path!=NULL)
+		{
+			if (is_same<T,int>::value)
+				fprintf(cfg_file,"Mask value=%x\n",(int)mask_value);
+			if (is_same<T,float>::value)
+				fprintf(cfg_file,"Mask value=%a\n",(float)mask_value);
+			if (is_same<T,double>::value)
+				fprintf(cfg_file,"Mask value=%la\n",(double)mask_value);
+		}
 		best_it1->write(cfg_file);
 		// if (pert!=0)
 		// {
@@ -78,6 +87,11 @@ namespace cliz
 			if (strncmp(temp_string,"Best fitting function=",22)==0)
 			{
 				read_cfg_best_fitting_function(temp_string+22);
+				continue;
+			}
+			if (strncmp(temp_string,"Mask value=",11)==0)
+			{
+				read_cfg_mask_value(temp_string+11);
 				continue;
 			}
 			if (strncmp(temp_string,"Max=",4)==0)
@@ -229,6 +243,26 @@ namespace cliz
 	{
 		new_data(best_fitting_function,strlen(temp_string)+1);
 		sscanf(temp_string,"%s",best_fitting_function);
+	}
+
+	template<typename T>
+	void task_c<T>::read_cfg_mask_value(char *temp_string)
+	{
+		if (mask_file_path!=NULL)
+		{
+			if (is_same<T,int>::value)
+				if (sscanf(temp_string,"%x",(int*)&mask_value)==1){}
+				else
+					sscanf(temp_string,"%d",(int*)&mask_value);
+			if (is_same<T,float>::value)
+				if (sscanf(temp_string,"%a",&mask_value)==1){}
+				else 
+					sscanf(temp_string,"%f",&mask_value);
+			if (is_same<T,double>::value)
+				if (sscanf(temp_string,"%lf",(double*)&mask_value)==1){}
+				else 
+					sscanf(temp_string,"%la",(double*)&mask_value);
+		}
 	}
 
 	template<typename T>

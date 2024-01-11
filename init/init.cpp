@@ -82,11 +82,6 @@ namespace cliz
 					read_map_file_command(task_f32,argc,argv,i);
 					continue;
 				}
-				if (strcmp(argv[i],"-mask")==0)
-				{
-					read_mask_file_command(task_f32,argc,argv,i);
-					continue;
-				}
 				if (strcmp(argv[i],"-debug")==0)
 				{
 					read_debug_command(task_f32,argc,argv,i);
@@ -105,6 +100,11 @@ namespace cliz
 					continue;
 				}
 			#endif
+			if (strcmp(argv[i],"-mask")==0)
+				{
+					read_mask_file_command(task_f32,argc,argv,i);
+					continue;
+				}
 			if (strcmp(argv[i],"-dim")==0)
 			{
 				read_dimension_command(task_f32,argc,argv,i);
@@ -132,13 +132,13 @@ namespace cliz
 			check_out_file(task_f32);
 			check_cfg_file(task_f32);
 			check_map_file(task_f32);
-			check_mask_file(task_f32);
 			check_debug(task_f32);
 		#endif
 		#ifdef JOB_TYPE_VALIDATE
 			check_src_file(task_f32);
 			check_dec_file(task_f32);
 		#endif
+		check_mask_file(task_f32);
 		check_dimension(task_f32);
 		check_err_bound(task_f32);
 		check_type(task_f32);

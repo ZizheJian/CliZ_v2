@@ -60,8 +60,9 @@ namespace cliz
 		printf("bitstream_length=0, map_bitstream_progress=%lld/%lld\n",map_bitstream_index,map_bitstream_length);
 		////////////////Quant Bin////////////////
 		timer->start();
-		new_data(quant_bin,data_num);
-		new_data(qb2horiz_mapping,data_num);
+		quant_bin_num=data_num;
+		new_data(quant_bin,quant_bin_num);
+		new_data(qb2horiz_mapping,quant_bin_num);
 		call_DC_functions_data_use_map();
 		delete_data(pos2horiz_mapping);
 		timer->pause();
