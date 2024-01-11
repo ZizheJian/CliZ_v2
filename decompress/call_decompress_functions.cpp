@@ -8,6 +8,7 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::call_decompress_functions()
 	{
+		printf("In call_decompress_functions\n");
 		in_file=fopen(in_file_path,"rb");
 		fseek(in_file,0,SEEK_END);
 		bitstream_length=ftell(in_file)/sizeof(unsigned char);

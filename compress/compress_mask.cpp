@@ -27,11 +27,15 @@ namespace cliz
 			delete_data(pos2horiz_mapping_backup);
 		}
 		timer->pause();
+		////////////////Count Map Size////////////////
+		timer->start();
+		calc_quant_bin_size();
+		timer->pause();
 		////////////////Quant Bin////////////////
 		timer->start();
-		quant_bin_num=data_num;
 		new_data(quant_bin,quant_bin_num);
 		call_DC_functions_data_mask();
+		delete_data(pos2horiz_mapping);
 		timer->pause();
 		////////////////Huffman Tree////////////////
 		timer->start();
@@ -42,7 +46,7 @@ namespace cliz
 		this_huffman.generate_code(this);
 		timer->pause();
 		printf("bitstream_length=%lld\n",bitstream_length);
-		// ////////////////Huffman Encode////////////////
+		////////////////Huffman Encode////////////////
 		timer->start();
 		encode_data();
 		delete_data(quant_bin);

@@ -101,6 +101,8 @@ namespace cliz
 				strcpy(best_compress_function,"compress");
 			if (strcmp(compress_function,"compress_map_test")==0)
 				strcpy(best_compress_function,"compress_set_map");
+			if (strcmp(compress_function,"compress_mask_test")==0)
+				strcpy(best_compress_function,"compress_mask");
 			strcpy(best_fitting_function,fitting_function);
 		}
 		bitstream_length=0;

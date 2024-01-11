@@ -50,6 +50,7 @@ namespace cliz
 			fprintf(cfg_file,"Dimension sequence=");
 			for (int did=0;did<actual_n;did++)
 				fprintf(cfg_file,"%d ",dim_seq[did]);
+			fprintf(cfg_file,"\n");
 		}
 		if (dim_fission_l!=dim_fission_r)
 			fprintf(cfg_file,"Dimension fission=%d %d\n",dim_fission_l,dim_fission_r);

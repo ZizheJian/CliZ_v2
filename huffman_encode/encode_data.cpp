@@ -34,6 +34,8 @@ namespace cliz
 			{
 				i++;
 				code_digit=0;
+				if (i%10000000==0)
+					printf("i=%lld, bitstream_length=%lld\n",i,bitstream_length);
 			}
 		}
 		if (cache_digit!=0)

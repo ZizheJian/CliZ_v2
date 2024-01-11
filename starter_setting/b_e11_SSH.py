@@ -9,9 +9,9 @@ def b_e11_SSH():
 	map_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.cliz.map"
 	mask_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/REGION_MASK.bin"
 	#test_name="Compress"
-	test_name="Recompress"
+	#test_name="Recompress"
 	#test_name="Decompress"
-	#test_name="Validate"
+	test_name="Validate"
 	command=None
 	if test_name=="Compress":
 		command=generate_command_compress(job_type="compress"
@@ -27,7 +27,7 @@ def b_e11_SSH():
 		command=generate_command_compress(job_type="compress"
 			,input_path=source_path
 			,config=["use",config_path]
-			,map=["set",map_path]
+			#,map=["set",map_path]
 			,mask=mask_path
 		)
 	if test_name=="Decompress":
