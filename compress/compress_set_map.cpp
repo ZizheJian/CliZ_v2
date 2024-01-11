@@ -37,7 +37,6 @@ namespace cliz
 		call_DC_functions_data_set_map();
 		delete_data(pos2horiz_mapping);
 		timer->pause();
-		printf("quant_bin_num=%lld\n",quant_bin_num);
 		////////////////Map////////////////
 		timer->start();
 		new_data(width_map,map_num);

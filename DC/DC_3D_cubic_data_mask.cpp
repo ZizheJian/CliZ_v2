@@ -68,7 +68,6 @@ namespace cliz
 							data[pos+i0*weight[0]]=dequantize(quant_bin_pos,pred);
 						#endif
 						quant_bin_pos++;
-						//getchar();
 					}
 				}
 			for (long long i0=0;i0<mx[0];i0+=stride)
@@ -106,7 +105,6 @@ namespace cliz
 							data[pos+i1*weight[1]]=dequantize(quant_bin_pos,pred);
 						#endif
 						quant_bin_pos++;
-						//getchar();
 					}
 				}
 			for (long long i0=0;i0<mx[0];i0+=stride)
@@ -144,7 +142,6 @@ namespace cliz
 							data[pos+i2*weight[2]]=dequantize(quant_bin_pos,pred);
 						#endif
 						quant_bin_pos++;
-						//getchar();
 					}
 				}
 		}

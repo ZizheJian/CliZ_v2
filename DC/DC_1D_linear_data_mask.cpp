@@ -8,8 +8,6 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::DC_1D_linear_data_mask()
 	{
-		for (long long i=0;i<data_num;i++)
-			data[i]=mask_value;
 		long long *mx=best_it1->mx;
 		long long *weight=best_it1->weight;
 		int interpolation_level=0;

@@ -8,8 +8,8 @@ def b_e11_SSH():
 	config_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.cliz.cfg"
 	map_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.cliz.map"
 	mask_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/REGION_MASK.bin"
-	test_name="Compress"
-	#test_name="Recompress"
+	#test_name="Compress"
+	test_name="Recompress"
 	#test_name="Decompress"
 	#test_name="Validate"
 	command=None

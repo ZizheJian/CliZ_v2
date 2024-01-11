@@ -1,4 +1,3 @@
-exit(0)
 for dimension_num in [1,2,3,4]:
 	for map in ["_data","_map","_data_set_map","_data_use_map","_data_mask"]:
 		if map=="_data_mask":
@@ -16,9 +15,6 @@ for dimension_num in [1,2,3,4]:
 		file.write("	template<typename T>\n")
 		file.write(f"	void task_c<T>::DC_{dimension_num}D_linear{map}()\n")
 		file.write("	{\n")
-		if mask=="_mask":
-			file.write("		for (long long i=0;i<data_num;i++)\n")
-			file.write("			data[i]=mask_value;\n")
 		file.write("		long long *mx=best_it1->mx;\n")
 		file.write("		long long *weight=best_it1->weight;\n")
 		file.write("		int interpolation_level=0;\n")
@@ -168,9 +164,6 @@ for dimension_num in [1,2,3,4]:
 		file.write("	template<typename T>\n")
 		file.write(f"	void task_c<T>::DC_{dimension_num}D_cubic{map}()\n")
 		file.write("	{\n")
-		if mask=="_mask":
-			file.write("		for (long long i=0;i<data_num;i++)\n")
-			file.write("			data[i]=mask_value;\n")
 		file.write("		long long *mx=best_it1->mx;\n")
 		file.write("		long long *weight=best_it1->weight;\n")
 		file.write("		int interpolation_level=0;\n")

@@ -23,17 +23,20 @@ namespace cliz
 		huffman_tree_c<T> &this_huffman=huffman[0];
 		this_huffman.rebuild(this);
 		timer->pause();
+		printf("bitstream_progress=%lld/%lld\n",bitstream_index,bitstream_length);
 		////////////////Huffman Decode////////////////
 		timer->start();
 		quant_bin_num=data_num;
 		new_data(quant_bin,quant_bin_num);
 		decode_data();
 		timer->pause();
+		printf("bitstream_progress=%lld/%lld\n",bitstream_index,bitstream_length);
 		////////////////Quant Bin & Irregular////////////////
 		timer->start();
 		call_DC_functions_data();
 		delete_data(quant_bin);
 		timer->pause();
+		printf("bitstream_progress=%lld/%lld\n",bitstream_index,bitstream_length);
 		////////////////Anti-Transpose////////////////
 		timer->start();
 		if (best_it1->dim_seq!=NULL)
