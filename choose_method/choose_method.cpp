@@ -23,23 +23,48 @@ namespace cliz
 				new_data(best_fitting_function,FUNC_NAME_LENGTH);
 				strcpy(best_fitting_function,"cubic");
 				if (map_file_mode==NULL)
-					strcpy(best_compress_function,"compress");
+					if (mask_file_path==NULL)
+						strcpy(best_compress_function,"compress");
+					else
+						strcpy(best_compress_function,"compress_mask");
 				else
 					if (strcmp(map_file_mode,"set")==0)
-					{
-						new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid]);
-						new_data(compress_function,FUNC_NAME_LENGTH);
-						strcpy(compress_function,"compress_set_map_test");
-						new_data(fitting_function,FUNC_NAME_LENGTH);
-						strcpy(fitting_function,best_fitting_function);
-						call_compress_functions_test();
-						delete_data(map_bitstream);
-						strcpy(compress_function,"compress_test");
-						delete_data(compress_function);
-						delete_data(fitting_function);
-					}
+						if (mask_file_path==NULL)
+						{
+							new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid]);
+							new_data(compress_function,FUNC_NAME_LENGTH);
+							strcpy(compress_function,"compress_set_map_test");
+							new_data(fitting_function,FUNC_NAME_LENGTH);
+							strcpy(fitting_function,best_fitting_function);
+							call_compress_functions_test();
+							delete_data(map_bitstream);
+							strcpy(compress_function,"compress_test");
+							delete_data(compress_function);
+							delete_data(fitting_function);
+						}
+						else
+						{
+							new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid]);
+							new_data(mask_data,it2->mx[latid]*it2->mx[lngid]);
+							mask_file=fopen(mask_file_path,"rb");
+							fread(mask_data,sizeof(int),it2->mx[latid]*it2->mx[lngid],mask_file);
+							fclose(mask_file);
+							new_data(compress_function,FUNC_NAME_LENGTH);
+							strcpy(compress_function,"compress_set_map_mask_test");
+							new_data(fitting_function,FUNC_NAME_LENGTH);
+							strcpy(fitting_function,best_fitting_function);
+							call_compress_functions_test();
+							delete_data(map_bitstream);
+							strcpy(compress_function,"compress_mask_test");
+							delete_data(compress_function);
+							delete_data(fitting_function);
+							delete_data(mask_data);
+						}
 					else
-						strcpy(best_compress_function,"compress_use_map");
+						if (mask_file_path==NULL)
+							strcpy(best_compress_function,"compress_use_map");
+						else
+							strcpy(best_compress_function,"compress_use_map_mask");
 			}
 			else
 				if (map_file_mode==NULL)

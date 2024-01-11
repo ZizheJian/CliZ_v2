@@ -5,6 +5,7 @@
 #include "decompress.cpp"
 #include "decompress_mask.cpp"
 #include "decompress_map.cpp"
+#include "decompress_map_mask.cpp"
 #include "undo_apply_map.cpp"
 
 #endif

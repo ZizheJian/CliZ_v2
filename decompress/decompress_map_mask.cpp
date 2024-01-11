@@ -1,12 +1,12 @@
-#ifndef __DECOMPRESS_MAP_CPP__
-#define __DECOMPRESS_MAP_CPP__
+#ifndef __DECOMPRESS_MAP_MASK_CPP__
+#define __DECOMPRESS_MAP_MASK_CPP__
 
 #include "decompress.hpp2"
 
 namespace cliz
 {
 	template<typename T>
-	void task_c<T>::decompress_map()
+	void task_c<T>::decompress_map_mask()
 	{
 		auto timer=new timer_c();
 		////////////////Generate Position-To-Horizontal-Position Mapping////////////////
@@ -24,22 +24,25 @@ namespace cliz
 			delete_data(pos2horiz_mapping_backup);
 		}
 		timer->pause();
+		////////////////Count Map Size////////////////
+		timer->start();
+		calc_quant_bin_size();
+		timer->pause();
 		////////////////Generate Quant-Bin-To-Horizontal-Position Mapping////////////////
 		timer->start();
-		quant_bin_num=data_num;
 		new_data(qb2horiz_mapping,quant_bin_num);
-		call_DC_functions_map();
-		delete_data(pos2horiz_mapping);
+		call_DC_functions_map_mask();
 		timer->pause();
 		////////////////Zstd////////////////
 		timer->start();
+		map_num=it2->mx[latid]*it2->mx[lngid];
 		unsigned char *temp_bitstream=bitstream;
 		new_data(bitstream,data_num*sizeof(T),false,false);
 		bitstream_length=ZSTD_decompress(bitstream,data_num*sizeof(T),temp_bitstream,bitstream_length);
 		delete_data(temp_bitstream);
 		unsigned char *temp_map_bitstream=map_bitstream;
-		new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid],false,false);
-		map_bitstream_length=ZSTD_decompress(map_bitstream,it2->mx[latid]*it2->mx[lngid],temp_map_bitstream,map_bitstream_length);
+		new_data(map_bitstream,map_num,false,false);
+		map_bitstream_length=ZSTD_decompress(map_bitstream,map_num,temp_map_bitstream,map_bitstream_length);
 		delete_data(temp_map_bitstream);
 		timer->pause();
 		////////////////Huffman Tree////////////////
@@ -67,8 +70,8 @@ namespace cliz
 		////////////////Huffman Decode////////////////
 		timer->start();
 		new_data(quant_bin,quant_bin_num);
-		new_data(width_map,it2->mx[latid]*it2->mx[lngid]);
-		new_data(shift_map,it2->mx[latid]*it2->mx[lngid]);
+		new_data(width_map,map_num);
+		new_data(shift_map,map_num);
 		decode_data_and_map();
 		timer->pause();
 		printf("bitstream_progress=%lld/%lld, map_bitstream_progress=%lld/%lld\n",bitstream_index,bitstream_length,map_bitstream_index,map_bitstream_length);
@@ -81,8 +84,11 @@ namespace cliz
 		timer->pause();
 		////////////////Quant Bin & Irregular////////////////
 		timer->start();
-		call_DC_functions_data();
+		for (long long i=0;i<data_num;i++)
+			data[i]=mask_value;
+		call_DC_functions_data_mask();
 		delete_data(quant_bin);
+		delete_data(pos2horiz_mapping);
 		timer->pause();
 		printf("bitstream_progress=%lld/%lld, map_bitstream_progress=%lld/%lld\n",bitstream_index,bitstream_length,map_bitstream_index,map_bitstream_length);
 		////////////////Anti-Transpose////////////////

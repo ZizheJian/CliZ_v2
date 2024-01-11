@@ -8,7 +8,6 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::call_decompress_functions()
 	{
-		printf("In call_decompress_functions\n");
 		in_file=fopen(in_file_path,"rb");
 		fseek(in_file,0,SEEK_END);
 		bitstream_length=ftell(in_file)/sizeof(unsigned char);
@@ -38,6 +37,23 @@ namespace cliz
 			fread(mask_data,sizeof(int),it2->mx[latid]*it2->mx[lngid],mask_file);
 			fclose(mask_file);
 			decompress_mask();
+			delete_data(mask_data);
+		}
+		if (strcmp(best_decompress_function,"decompress_map_mask")==0)
+		{
+			map_file=fopen(map_file_path,"rb");
+			fseek(map_file,0,SEEK_END);
+			map_bitstream_length=ftell(map_file)/sizeof(unsigned char);
+			fseek(map_file,0,SEEK_SET);
+			new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid]);
+			fread(map_bitstream,sizeof(unsigned char),map_bitstream_length,map_file);
+			fclose(map_file);
+			mask_file=fopen(mask_file_path,"rb");
+			new_data(mask_data,it2->mx[latid]*it2->mx[lngid]);
+			fread(mask_data,sizeof(int),it2->mx[latid]*it2->mx[lngid],mask_file);
+			fclose(mask_file);
+			decompress_map_mask();
+			delete_data(map_bitstream);
 			delete_data(mask_data);
 		}
 		out_file=fopen(out_file_path,"wb");

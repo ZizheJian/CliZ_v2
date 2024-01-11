@@ -55,8 +55,8 @@ namespace cliz
 							else
 								pred=constant_fitting_dp(pos+i0*weight[0],stride*weight[0]);
 				#ifdef JOB_TYPE_COMPRESS
-			printf("Error: DC_1D_linear_map shouldn't be called during compression.\n");
-			exit(0);
+					printf("Error: DC_1D_linear_map shouldn't be called during compression.\n");
+					exit(0);
 				#endif
 				#ifdef JOB_TYPE_DECOMPRESS
 					qb2horiz_mapping[quant_bin_pos]=pos2horiz_mapping[pos+i0*weight[0]];

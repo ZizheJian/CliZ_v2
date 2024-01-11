@@ -7,6 +7,8 @@
 #include "compress_mask.cpp"
 #include "compress_set_map.cpp"
 #include "compress_use_map.cpp"
+#include "compress_set_map_mask.cpp"
+#include "compress_use_map_mask.cpp"
 #include "generate_map.cpp"
 #include "apply_map.cpp"
 

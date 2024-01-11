@@ -13,6 +13,7 @@ namespace cliz
 		call_compress_functions_test();
 		strcpy(fitting_function,"cubic");
 		call_compress_functions_test();
+		printf("best_compress_function=%s\n",best_compress_function);
 		delete_data(fitting_function);
 	}
 }

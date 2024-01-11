@@ -21,7 +21,14 @@ namespace cliz
 		fprintf(cfg_file,"\n");
 		fprintf(cfg_file,"Data type=%s\n",data_type);
 		fprintf(cfg_file,"Error bound=%la\n",err_bound);
-		fprintf(cfg_file,"Best compress function=%s\n",best_compress_function);
+		if (strcmp(best_compress_function,"compress")==0)
+			fprintf(cfg_file,"Best compress function=%s\n",best_compress_function);
+		if ((strcmp(best_compress_function,"compress_set_map")==0) || (strcmp(best_compress_function,"compress_use_map")==0))
+			fprintf(cfg_file,"Best compress function=compress_map\n");
+		if (strcmp(best_compress_function,"compress mask")==0)
+			fprintf(cfg_file,"Best compress function=compress_mask\n");
+		if ((strcmp(best_compress_function,"compress_set_map_mask")==0) || (strcmp(best_compress_function,"compress_use_map_mask")==0))
+			fprintf(cfg_file,"Best compress function=compress_map_mask\n");
 		fprintf(cfg_file,"Best fitting function=%s\n",best_fitting_function);
 		if (mask_file_path!=NULL)
 		{

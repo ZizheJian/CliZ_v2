@@ -55,6 +55,7 @@ namespace cliz
 			data[i]=mask_value;
 		call_DC_functions_data_mask();
 		delete_data(quant_bin);
+		delete_data(pos2horiz_mapping);
 		timer->pause();
 		printf("bitstream_progress=%lld/%lld\n",bitstream_index,bitstream_length);
 		////////////////Anti-Transpose////////////////

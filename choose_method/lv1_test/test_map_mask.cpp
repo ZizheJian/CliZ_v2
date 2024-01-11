@@ -15,11 +15,16 @@ namespace cliz
 		else
 		{
 			new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid]);
+			new_data(mask_data,it2->mx[latid]*it2->mx[lngid]);
+			mask_file=fopen(mask_file_path,"rb");
+			fread(mask_data,sizeof(int),it2->mx[latid]*it2->mx[lngid],mask_file);
+			fclose(mask_file);
 			new_data(compress_function,FUNC_NAME_LENGTH);
 			strcpy(compress_function,"compress_set_map_mask_test");
 			test_all_dimension_sequence();
 			delete_data(compress_function);
 			delete_data(map_bitstream);
+			delete_data(mask_data);
 		}
 	}
 }

@@ -10,17 +10,19 @@ namespace cliz
 	{
 		#ifdef JOB_TYPE_COMPRESS
 			if (strcmp(best_compress_function,"compress")==0)
-				printf("best_compress_function=%s\n",best_compress_function);
+				printf("best compress function=%s\n",best_compress_function);
 			if ((strcmp(best_compress_function,"compress_set_map")==0) || (strcmp(best_compress_function,"compress_use_map")==0))
-				printf("best_compress_function=compress_map\n");
+				printf("best compress function=compress_map\n");
 			if (strcmp(best_compress_function,"compress_mask")==0)
-				printf("best_compress_function=compress_mask\n");
+				printf("best compress function=compress_mask\n");
+			if ((strcmp(best_compress_function,"compress_set_map_mask")==0) || (strcmp(best_compress_function,"compress_use_map_mask")==0))
+				printf("best compress function=compress_map_mask\n");
 		#endif
 		#ifdef JOB_TYPE_DECOMPRESS
-			printf("best_decompress_function=%s\n",best_decompress_function);
+			printf("best decompress function=%s\n",best_decompress_function);
 		#endif
-		printf("best_fitting_function=%s\n",best_fitting_function);
-		printf("best_it1=\n");
+		printf("best fitting function=%s\n",best_fitting_function);
+		printf("best it1=\n");
 		best_it1->print();
 	}
 }

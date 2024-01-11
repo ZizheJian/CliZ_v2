@@ -79,6 +79,15 @@ namespace cliz
 			delete_data(mask_data);
 			mask_data=mask_data_backup;
 		}
+		if (strcmp(compress_function,"compress_set_map_mask_test")==0)
+		{
+			int *mask_data_backup=mask_data;
+			new_data(mask_data,it2->mx[latid]*it2->mx[lngid],false,false);
+			collect_data_mask(mask_data_backup,it2_backup);
+			compress_set_map_mask();
+			delete_data(mask_data);
+			mask_data=mask_data_backup;
+		}
 		copy_iterator(best_it1,best_it1_backup);
 		copy_iterator(it1,it1_backup);
 		copy_iterator(it2,it2_backup);
@@ -99,10 +108,12 @@ namespace cliz
 			copy_iterator(best_it1,it1);
 			if (strcmp(compress_function,"compress_test")==0)
 				strcpy(best_compress_function,"compress");
-			if (strcmp(compress_function,"compress_map_test")==0)
+			if (strcmp(compress_function,"compress_set_map_test")==0)
 				strcpy(best_compress_function,"compress_set_map");
 			if (strcmp(compress_function,"compress_mask_test")==0)
 				strcpy(best_compress_function,"compress_mask");
+			if (strcmp(compress_function,"compress_set_map_mask_test")==0)
+				strcpy(best_compress_function,"compress_set_map_mask");
 			strcpy(best_fitting_function,fitting_function);
 		}
 		bitstream_length=0;

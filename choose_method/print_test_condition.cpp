@@ -9,9 +9,9 @@ namespace cliz
 	void task_c<T>::print_test_condition()
 	{
 		char *temp_string=new_data<char>(TEMP_STRING_LENGTH,true);
-		if (strcmp(compress_function,"compress_test")==0)
+		if ((strcmp(compress_function,"compress_test")==0) || (strcmp(compress_function,"compress_mask_test")==0))
 			sprintf(temp_string,"0");
-		if (strcmp(compress_function,"compress_set_map_test")==0)
+		if ((strcmp(compress_function,"compress_set_map_test")==0) || (strcmp(compress_function,"compress_set_map_mask_test")==0))
 			sprintf(temp_string,"1");
 		if (it1->dim_seq==NULL)
 			for (int did=0;did<it2->n;did++)

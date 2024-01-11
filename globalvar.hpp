@@ -25,7 +25,7 @@ namespace cliz
 	#define FILE_NAME_LENGTH 1000
 	#define FUNC_NAME_LENGTH 100
 	#define TEMP_STRING_LENGTH 1000
-	#define SAMPLING_RATE 1
+	#define SAMPLING_RATE 1e-2
 	#define FFT_SAMPLE_NUM 10
 	#define FAST_SAMPLING false
 
@@ -250,9 +250,8 @@ namespace cliz
 			void compress_mask();
 			void compress_set_map();
 			void compress_use_map();
-			void compress_framework_map_mask(task_c<int> *mask_subtask);
-			void compress_framework_map_mask_fast(task_c<int> *mask_subtask);
-			void compress_framework_map_mask_test(task_c<int> *mask_subtask);
+			void compress_set_map_mask();
+			void compress_use_map_mask();
 
 			////////////////Decompress Functions////////////////
 			void call_decompress_functions();
@@ -260,7 +259,7 @@ namespace cliz
 			void decompress();
 			void decompress_map();
 			void decompress_mask();
-			void decompress_framework_map_mask(task_c<int> *mask_subtask);
+			void decompress_map_mask();
 
 			////////////////Transpose Functions////////////////
 			void transpose_data(T *data_backup);
@@ -332,6 +331,33 @@ namespace cliz
 			void DC_2D_cubic_data_mask();
 			void DC_3D_cubic_data_mask();
 			void DC_4D_cubic_data_mask();
+			void call_DC_functions_map_mask();
+			void DC_1D_linear_map_mask();
+			void DC_2D_linear_map_mask();
+			void DC_3D_linear_map_mask();
+			void DC_4D_linear_map_mask();
+			void DC_1D_cubic_map_mask();
+			void DC_2D_cubic_map_mask();
+			void DC_3D_cubic_map_mask();
+			void DC_4D_cubic_map_mask();
+			void call_DC_functions_data_set_map_mask();
+			void DC_1D_linear_data_set_map_mask();
+			void DC_2D_linear_data_set_map_mask();
+			void DC_3D_linear_data_set_map_mask();
+			void DC_4D_linear_data_set_map_mask();
+			void DC_1D_cubic_data_set_map_mask();
+			void DC_2D_cubic_data_set_map_mask();
+			void DC_3D_cubic_data_set_map_mask();
+			void DC_4D_cubic_data_set_map_mask();
+			void call_DC_functions_data_use_map_mask();
+			void DC_1D_linear_data_use_map_mask();
+			void DC_2D_linear_data_use_map_mask();
+			void DC_3D_linear_data_use_map_mask();
+			void DC_4D_linear_data_use_map_mask();
+			void DC_1D_cubic_data_use_map_mask();
+			void DC_2D_cubic_data_use_map_mask();
+			void DC_3D_cubic_data_use_map_mask();
+			void DC_4D_cubic_data_use_map_mask();
 
 			////////////////Fitting Functions////////////////
 			char *best_fitting_function=NULL,*fitting_function=NULL;

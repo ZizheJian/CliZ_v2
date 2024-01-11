@@ -18,7 +18,7 @@ namespace cliz
 		int cache_digit=0;
 		int nid=32767+this_nodes_map.size()/2;
 		unsigned char cache=read_cache<unsigned char>();
-		for (long long i=0;i<it2->mx[latid]*it2->mx[lngid];)
+		for (long long i=0;i<map_num;)
 		{
 			if (cache_digit==8)
 			{
@@ -53,7 +53,8 @@ namespace cliz
 		cache_digit=0;
 		nid=(width_map[qb2horiz_mapping[0]]==0)?(32767+this_nodes_0.size()/2):(32767+this_nodes_1.size()/2);
 		cache=read_cache<unsigned char>();
-		for (long long i=0;i<data_num;)
+		printf("quant_bin_num=%lld\n",quant_bin_num);
+		for (long long i=0;i<quant_bin_num;)
 		{
 			if (cache_digit==8)
 			{
