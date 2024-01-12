@@ -42,8 +42,8 @@ namespace cliz
 		map_bitstream_end=map_bitstream_start+ZSTD_decompress(temp_map_bitstream,map_num,map_bitstream+map_bitstream_start,map_bitstream_end-map_bitstream_start);
 		memcpy(map_bitstream+map_bitstream_start,temp_map_bitstream,map_bitstream_end-map_bitstream_start);
 		delete_data(temp_map_bitstream);
-		printf("bitstream_progress=%lld/%lld, map_bitstream_progress=%lld/%lld\n",bitstream_start,bitstream_end,map_bitstream_start,map_bitstream_end);
 		timer->pause();
+		printf("bitstream_progress=%lld/%lld, map_bitstream_progress=%lld/%lld\n",bitstream_start,bitstream_end,map_bitstream_start,map_bitstream_end);
 		////////////////Huffman Tree////////////////
 		timer->start();
 		huffman.push_back(huffman_tree_c<T>());
@@ -55,12 +55,12 @@ namespace cliz
 		this_huffman_0.rebuild(this);
 		this_huffman_1.rebuild(this);
 		unsigned char *bitstream_backup=bitstream;
-		long long bitstream_index_backup=bitstream_start;
+		long long bitstream_start_backup=bitstream_start;
 		bitstream=map_bitstream;
 		bitstream_start=map_bitstream_start;
 		this_huffman_map.rebuild(this);
 		map_bitstream_start=bitstream_start;
-		bitstream_start=bitstream_index_backup;
+		bitstream_start=bitstream_start_backup;
 		bitstream=bitstream_backup;
 		timer->pause();
 		printf("bitstream_progress=%lld/%lld, map_bitstream_progress=%lld/%lld\n",bitstream_start,bitstream_end,map_bitstream_start,map_bitstream_end);

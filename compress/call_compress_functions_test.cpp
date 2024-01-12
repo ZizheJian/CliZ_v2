@@ -90,6 +90,8 @@ namespace cliz
 			int *mask_data_backup=mask_data;
 			new_data(mask_data,it2->mx[latid]*it2->mx[lngid],false,false);
 			collect_data_mask(mask_data_backup,it2_backup);
+			map_bitstream_start=sizeof(long long);
+			map_bitstream_end=sizeof(long long);
 			compress_set_map_mask();
 			delete_data(mask_data);
 			mask_data=mask_data_backup;

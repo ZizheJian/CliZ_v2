@@ -43,13 +43,13 @@ namespace cliz
 		}
 		if ((best_decompress_function!=NULL) && (strcmp(best_decompress_function,"decompress_map_mask")==0))
 		{
+			map_bitstream_start=sizeof(long long);
 			map_file=fopen(map_file_path,"rb");
-			fseek(map_file,0,SEEK_END);
-			map_bitstream_end=ftell(map_file)/sizeof(unsigned char);
-			fseek(map_file,0,SEEK_SET);
+			long long map_bitstream_length;
+			fread(&map_bitstream_length,sizeof(long long),1,map_file);
+			map_bitstream_end=map_bitstream_length+map_bitstream_start;
 			new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid]);
-			fread(map_bitstream,sizeof(unsigned char),map_bitstream_end,map_file);
-			fclose(map_file);
+			fread(map_bitstream+map_bitstream_start,sizeof(unsigned char),map_bitstream_length,map_file);
 			mask_file=fopen(mask_file_path,"rb");
 			new_data(mask_data,it2->mx[latid]*it2->mx[lngid]);
 			fread(mask_data,sizeof(int),it2->mx[latid]*it2->mx[lngid],mask_file);

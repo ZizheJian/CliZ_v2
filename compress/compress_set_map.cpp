@@ -59,14 +59,14 @@ namespace cliz
 		this_huffman_1.generate_tree();
 		this_huffman_1.generate_code(this);
 		unsigned char *bitstream_backup=bitstream;
-		long long bitstream_length_backup=bitstream_end;
+		long long bitstream_end_backup=bitstream_end;
 		bitstream=map_bitstream;
 		bitstream_end=map_bitstream_end;
 		this_huffman_map.generate_tree();
 		this_huffman_map.generate_code(this);
 		map_bitstream_end=bitstream_end;
 		bitstream=bitstream_backup;
-		bitstream_end=bitstream_length_backup;
+		bitstream_end=bitstream_end_backup;
 		timer->pause();
 		printf("bitstream_end=%lld+%lld=%lld\n",bitstream_end,map_bitstream_end,bitstream_end+map_bitstream_end);
 		////////////////Huffman Encode////////////////

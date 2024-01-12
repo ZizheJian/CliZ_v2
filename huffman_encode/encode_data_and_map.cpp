@@ -48,7 +48,7 @@ namespace cliz
 		huffman_tree_c<T> &this_huffman_map=huffman[2];
 		unordered_map<int,node_c,simple_hash> &this_nodes_map=this_huffman_map.nodes;
 		unsigned char *bitstream_backup=bitstream;
-		long long bitstream_length_backup=bitstream_end;
+		long long bitstream_end_backup=bitstream_end;
 		bitstream=map_bitstream;
 		bitstream_end=map_bitstream_end;
 		for (long long i=0;i<map_num;)
@@ -82,7 +82,7 @@ namespace cliz
 		}
 		map_bitstream_end=bitstream_end;
 		bitstream=bitstream_backup;
-		bitstream_end=bitstream_length_backup;
+		bitstream_end=bitstream_end_backup;
 	}
 }
 

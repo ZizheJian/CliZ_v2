@@ -35,20 +35,19 @@ namespace cliz
 		timer->pause();
 		////////////////Zstd////////////////
 		timer->start();
-		map_num=it2->mx[latid]*it2->mx[lngid];
-		unsigned char *temp_bitstream=bitstream;
-		new_data(bitstream,data_num*sizeof(T),false,false);
-		bitstream_end=ZSTD_decompress(bitstream,data_num*sizeof(T),temp_bitstream,bitstream_end);
+		unsigned char *temp_bitstream=new_data<unsigned char>(data_num*sizeof(T));
+		bitstream_end=bitstream_start+ZSTD_decompress(temp_bitstream,data_num*sizeof(T),bitstream+bitstream_start,bitstream_end-bitstream_start);
+		memcpy(bitstream+bitstream_start,temp_bitstream,bitstream_end-bitstream_start);
 		delete_data(temp_bitstream);
-		unsigned char *temp_map_bitstream=map_bitstream;
-		new_data(map_bitstream,map_num,false,false);
-		map_bitstream_end=ZSTD_decompress(map_bitstream,map_num,temp_map_bitstream,map_bitstream_end);
+		map_num=it2->mx[latid]*it2->mx[lngid];
+		unsigned char *temp_map_bitstream=new_data<unsigned char>(map_num);
+		map_bitstream_end=map_bitstream_start+ZSTD_decompress(temp_map_bitstream,map_num,map_bitstream+map_bitstream_start,map_bitstream_end-map_bitstream_start);
+		memcpy(map_bitstream+map_bitstream_start,temp_map_bitstream,map_bitstream_end-map_bitstream_start);
 		delete_data(temp_map_bitstream);
 		timer->pause();
+		printf("bitstream_progress=%lld/%lld, map_bitstream_progress=%lld/%lld\n",bitstream_start,bitstream_end,map_bitstream_start,map_bitstream_end);
 		////////////////Huffman Tree////////////////
 		timer->start();
-		bitstream_start=0;
-		map_bitstream_start=0;
 		huffman.push_back(huffman_tree_c<T>());
 		huffman.push_back(huffman_tree_c<T>());
 		huffman.push_back(huffman_tree_c<T>());
@@ -58,12 +57,12 @@ namespace cliz
 		this_huffman_0.rebuild(this);
 		this_huffman_1.rebuild(this);
 		unsigned char *bitstream_backup=bitstream;
-		long long bitstream_index_backup=bitstream_start;
+		long long bitstream_start_backup=bitstream_start;
 		bitstream=map_bitstream;
 		bitstream_start=map_bitstream_start;
 		this_huffman_map.rebuild(this);
 		map_bitstream_start=bitstream_start;
-		bitstream_start=bitstream_index_backup;
+		bitstream_start=bitstream_start_backup;
 		bitstream=bitstream_backup;
 		timer->pause();
 		printf("bitstream_progress=%lld/%lld, map_bitstream_progress=%lld/%lld\n",bitstream_start,bitstream_end,map_bitstream_start,map_bitstream_end);

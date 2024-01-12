@@ -10,7 +10,7 @@ def Hurricane_T():
 	#test_name="Compress"
 	#test_name="Recompress"
 	#test_name="Decompress"
-	test_name="Validate"
+	#test_name="Validate"
 	command=None
 	if test_name=="Compress":
 		command=generate_command_compress(job_type="compress"

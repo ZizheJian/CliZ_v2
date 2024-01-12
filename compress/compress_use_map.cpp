@@ -35,7 +35,7 @@ namespace cliz
 		memcpy(map_bitstream+map_bitstream_start,temp_map_bitstream,map_bitstream_end-map_bitstream_start);
 		delete_data(temp_map_bitstream);
 		timer->pause();
-		printf("bitstream_end=0, map_bitstream_progress=%lld/%lld\n",map_bitstream_start,map_bitstream_end);
+		printf("bitstream_end=%lld, map_bitstream_progress=%lld/%lld\n",bitstream_end,map_bitstream_start,map_bitstream_end);
 		////////////////Huffman Tree////////////////
 		timer->start();
 		huffman.push_back(huffman_tree_c<T>());
@@ -51,14 +51,14 @@ namespace cliz
 		bitstream_start=bitstream_start_backup;
 		bitstream=bitstream_backup;
 		timer->pause();
-		printf("bitstream_end=0, map_bitstream_progress=%lld/%lld\n",map_bitstream_start,map_bitstream_end);
+		printf("bitstream_end=%lld, map_bitstream_progress=%lld/%lld\n",bitstream_end,map_bitstream_start,map_bitstream_end);
 		////////////////Huffman Decode////////////////
 		timer->start();
 		new_data(width_map,map_num);
 		new_data(shift_map,map_num);
 		decode_map();
 		timer->pause();
-		printf("bitstream_end=0, map_bitstream_progress=%lld/%lld\n",map_bitstream_start,map_bitstream_end);
+		printf("bitstream_end=%lld, map_bitstream_progress=%lld/%lld\n",bitstream_end,map_bitstream_start,map_bitstream_end);
 		////////////////Quant Bin////////////////
 		timer->start();
 		quant_bin_num=data_num;
