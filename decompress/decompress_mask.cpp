@@ -32,23 +32,23 @@ namespace cliz
 		timer->start();
 		unsigned char *temp_bitstream=bitstream;
 		new_data(bitstream,data_num*sizeof(T),false,false);
-		bitstream_length=ZSTD_decompress(bitstream,data_num*sizeof(T),temp_bitstream,bitstream_length);
+		bitstream_end=ZSTD_decompress(bitstream,data_num*sizeof(T),temp_bitstream,bitstream_end);
 		delete_data(temp_bitstream);
 		timer->pause();
 		////////////////Huffman Tree////////////////
 		timer->start();
-		bitstream_index=0;
+		bitstream_start=0;
 		huffman.push_back(huffman_tree_c<T>());
 		huffman_tree_c<T> &this_huffman=huffman[0];
 		this_huffman.rebuild(this);
 		timer->pause();
-		printf("bitstream_progress=%lld/%lld\n",bitstream_index,bitstream_length);
+		printf("bitstream_progress=%lld/%lld\n",bitstream_start,bitstream_end);
 		////////////////Huffman Decode////////////////
 		timer->start();
 		new_data(quant_bin,quant_bin_num);
 		decode_data();
 		timer->pause();
-		printf("bitstream_progress=%lld/%lld\n",bitstream_index,bitstream_length);
+		printf("bitstream_progress=%lld/%lld\n",bitstream_start,bitstream_end);
 		////////////////Quant Bin & Irregular////////////////
 		timer->start();
 		for (long long i=0;i<data_num;i++)
@@ -57,7 +57,7 @@ namespace cliz
 		delete_data(quant_bin);
 		delete_data(pos2horiz_mapping);
 		timer->pause();
-		printf("bitstream_progress=%lld/%lld\n",bitstream_index,bitstream_length);
+		printf("bitstream_progress=%lld/%lld\n",bitstream_start,bitstream_end);
 		////////////////Anti-Transpose////////////////
 		timer->start();
 		if (best_it1->dim_seq!=NULL)

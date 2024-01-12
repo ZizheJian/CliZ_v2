@@ -9,17 +9,25 @@ namespace cliz
 	void task_c<T>::print_test_condition()
 	{
 		char *temp_string=new_data<char>(TEMP_STRING_LENGTH,true);
+		if (pert!=0)
+			if (it2->mx[pertid]==pert)
+				sprintf(temp_string,"10-");
+			else
+				sprintf(temp_string,"11-");
+		else
+			sprintf(temp_string,"00-");
 		if ((strcmp(compress_function,"compress_test")==0) || (strcmp(compress_function,"compress_mask_test")==0))
-			sprintf(temp_string,"0");
+			sprintf(temp_string+strlen(temp_string),"0-");
 		if ((strcmp(compress_function,"compress_set_map_test")==0) || (strcmp(compress_function,"compress_set_map_mask_test")==0))
-			sprintf(temp_string,"1");
+			sprintf(temp_string+strlen(temp_string),"1-");
 		if (it1->dim_seq==NULL)
 			for (int did=0;did<it2->n;did++)
 				sprintf(temp_string+strlen(temp_string),"%d",did);
 		else
 			for (int did=0;did<it2->n;did++)
 				sprintf(temp_string+strlen(temp_string),"%d",it1->dim_seq[did]);
-		sprintf(temp_string+strlen(temp_string),"%d%d",it1->dim_fission_l,it1->dim_fission_r);
+		sprintf(temp_string+strlen(temp_string),"-%d%d-",it1->dim_fission_l,it1->dim_fission_r);
+		
 		if (strcmp(fitting_function,"cubic")==0)
 			sprintf(temp_string+strlen(temp_string),"1");
 		if (strcmp(fitting_function,"linear")==0)

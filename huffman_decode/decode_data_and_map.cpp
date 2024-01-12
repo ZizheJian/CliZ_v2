@@ -11,10 +11,9 @@ namespace cliz
 		huffman_tree_c<T> &this_huffman_map=huffman[2];
 		unordered_map<int,node_c,simple_hash> &this_nodes_map=this_huffman_map.nodes;
 		unsigned char *bitstream_backup=bitstream;
-		long long bitstream_index_backup=bitstream_index;
+		long long bitstream_index_backup=bitstream_start;
 		bitstream=map_bitstream;
-		bitstream_index=map_bitstream_index;
-		align_cache<unsigned char>();
+		bitstream_start=map_bitstream_start;
 		int cache_digit=0;
 		int nid=32767+this_nodes_map.size()/2;
 		unsigned char cache=read_cache<unsigned char>();
@@ -42,18 +41,16 @@ namespace cliz
 			}
 		}
 		bitstream=bitstream_backup;
-		map_bitstream_index=bitstream_index;
-		bitstream_index=bitstream_index_backup;
+		map_bitstream_start=bitstream_start;
+		bitstream_start=bitstream_index_backup;
 
 		huffman_tree_c<T> &this_huffman_0=huffman[0];
 		huffman_tree_c<T> &this_huffman_1=huffman[1];
 		unordered_map<int,node_c,simple_hash> &this_nodes_0=this_huffman_0.nodes;
 		unordered_map<int,node_c,simple_hash> &this_nodes_1=this_huffman_1.nodes;
-		align_cache<unsigned char>();
 		cache_digit=0;
 		nid=(width_map[qb2horiz_mapping[0]]==0)?(32767+this_nodes_0.size()/2):(32767+this_nodes_1.size()/2);
 		cache=read_cache<unsigned char>();
-		printf("quant_bin_num=%lld\n",quant_bin_num);
 		for (long long i=0;i<quant_bin_num;)
 		{
 			if (cache_digit==8)

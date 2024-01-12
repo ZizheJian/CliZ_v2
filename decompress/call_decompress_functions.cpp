@@ -8,29 +8,31 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::call_decompress_functions()
 	{
+		bitstream_start=sizeof(long long);
 		in_file=fopen(in_file_path,"rb");
-		fseek(in_file,0,SEEK_END);
-		bitstream_length=ftell(in_file)/sizeof(unsigned char);
-		fseek(in_file,0,SEEK_SET);
+		long long bitstream_length;
+		fread(&bitstream_length,sizeof(long long),1,in_file);
+		bitstream_end=bitstream_length+bitstream_start;
 		new_data(bitstream,data_num*sizeof(T));
-		fread(bitstream,sizeof(unsigned char),bitstream_length,in_file);
+		fread(bitstream+bitstream_start,sizeof(unsigned char),bitstream_length,in_file);
 		fclose(in_file);
 		new_data(data,data_num);
-		if (strcmp(best_decompress_function,"decompress")==0)
+		if ((best_decompress_function==NULL) || (strcmp(best_decompress_function,"decompress")==0))
 			decompress();
-		if (strcmp(best_decompress_function,"decompress_map")==0)
+		if ((best_decompress_function!=NULL) && (strcmp(best_decompress_function,"decompress_map")==0))
 		{
+			map_bitstream_start=sizeof(long long);
 			map_file=fopen(map_file_path,"rb");
-			fseek(map_file,0,SEEK_END);
-			map_bitstream_length=ftell(map_file)/sizeof(unsigned char);
-			fseek(map_file,0,SEEK_SET);
+			long long map_bitstream_length;
+			fread(&map_bitstream_length,sizeof(long long),1,map_file);
+			map_bitstream_end=map_bitstream_length+map_bitstream_start;
 			new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid]);
-			fread(map_bitstream,sizeof(unsigned char),map_bitstream_length,map_file);
+			fread(map_bitstream+map_bitstream_start,sizeof(unsigned char),map_bitstream_length,map_file);
 			fclose(map_file);
 			decompress_map();
 			delete_data(map_bitstream);
 		}
-		if (strcmp(best_decompress_function,"decompress_mask")==0)
+		if ((best_decompress_function!=NULL) && (strcmp(best_decompress_function,"decompress_mask")==0))
 		{
 			mask_file=fopen(mask_file_path,"rb");
 			new_data(mask_data,it2->mx[latid]*it2->mx[lngid]);
@@ -39,14 +41,14 @@ namespace cliz
 			decompress_mask();
 			delete_data(mask_data);
 		}
-		if (strcmp(best_decompress_function,"decompress_map_mask")==0)
+		if ((best_decompress_function!=NULL) && (strcmp(best_decompress_function,"decompress_map_mask")==0))
 		{
 			map_file=fopen(map_file_path,"rb");
 			fseek(map_file,0,SEEK_END);
-			map_bitstream_length=ftell(map_file)/sizeof(unsigned char);
+			map_bitstream_end=ftell(map_file)/sizeof(unsigned char);
 			fseek(map_file,0,SEEK_SET);
 			new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid]);
-			fread(map_bitstream,sizeof(unsigned char),map_bitstream_length,map_file);
+			fread(map_bitstream,sizeof(unsigned char),map_bitstream_end,map_file);
 			fclose(map_file);
 			mask_file=fopen(mask_file_path,"rb");
 			new_data(mask_data,it2->mx[latid]*it2->mx[lngid]);

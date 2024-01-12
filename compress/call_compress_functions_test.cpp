@@ -66,10 +66,16 @@ namespace cliz
 		copy_iterator(best_it1,it1);
 		char *best_fitting_function_backup=best_fitting_function;
 		best_fitting_function=fitting_function;
+		bitstream_start=sizeof(long long);
+		bitstream_end=sizeof(long long);
 		if (strcmp(compress_function,"compress_test")==0)
 			compress();
 		if (strcmp(compress_function,"compress_set_map_test")==0)
+		{
+			map_bitstream_start=sizeof(long long);
+			map_bitstream_end=sizeof(long long);
 			compress_set_map();
+		}
 		if (strcmp(compress_function,"compress_mask_test")==0)
 		{
 			int *mask_data_backup=mask_data;
@@ -100,6 +106,9 @@ namespace cliz
 		delete_data(data);
 		data=data_backup;
 		
+		if (pert!=0)
+			if (it2->mx[pertid]!=pert)
+				best_CR=it2->mx[pertid]/(pert/best_pert_CR+it2->mx[pertid]/best_CR);
 		if (debug)
 			print_test_condition();
 		if (CR>best_CR)
@@ -115,9 +124,12 @@ namespace cliz
 			if (strcmp(compress_function,"compress_set_map_mask_test")==0)
 				strcpy(best_compress_function,"compress_set_map_mask");
 			strcpy(best_fitting_function,fitting_function);
+			best_pert=pert;
 		}
-		bitstream_length=0;
-		map_bitstream_length=0;
+		bitstream_start=0;
+		bitstream_end=0;
+		map_bitstream_start=0;
+		map_bitstream_end=0;
 	}
 }
 

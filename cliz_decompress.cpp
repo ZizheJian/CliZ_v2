@@ -17,6 +17,11 @@ int main(int argc,char **argv)
 	{
 		if (task_i32.cfg_file_mode!=NULL)
 			task_i32.print_best_strategy();
+		else
+		{
+			task_i32.choose_method();
+			task_i32.change_err_bound();
+		}
 		task_i32.identify_dimensions();
 		task_i32.call_decompress_functions();
 	}
@@ -24,6 +29,11 @@ int main(int argc,char **argv)
 	{
 		if (task_f32.cfg_file_mode!=NULL)
 			task_f32.print_best_strategy();
+		else
+		{
+			task_f32.choose_method();
+			task_f32.change_err_bound();
+		}
 		task_f32.identify_dimensions();
 		task_f32.call_decompress_functions();
 	}
@@ -31,6 +41,11 @@ int main(int argc,char **argv)
 	{
 		if (task_f64.cfg_file_mode!=NULL)
 			task_f64.print_best_strategy();
+		else
+		{
+			task_f64.choose_method();
+			task_f64.change_err_bound();
+		}
 		task_f64.identify_dimensions();
 		task_f64.call_decompress_functions();
 	}

@@ -23,7 +23,6 @@ int main(int argc,char **argv)
 	{
 		task_f32.identify_dimensions();
 		task_f32.change_err_bound();
-		printf("task_f32.err_bound=%lf\n",task_f32.err_bound);
 		task_f32.call_validate_functions();
 	}
 	if (task_f64.src_file_path!=NULL)

@@ -8,7 +8,6 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::encode_data()
 	{
-		align_cache<unsigned char>();
 		int cache_digit=0;
 		int code_digit=0;
 		unsigned char cache=0;

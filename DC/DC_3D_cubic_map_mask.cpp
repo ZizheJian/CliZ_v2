@@ -42,26 +42,6 @@ namespace cliz
 					{
 						if (mask_data[pos2horiz_mapping[pos+i0*weight[0]]]==0)
 							continue;
-						T pred;
-						if (i0+3*stride<mx[0])
-							if (i0-3*stride>=0)
-								pred=cubic_fitting_ddpdd_mask(pos+i0*weight[0],stride*weight[0]);
-							else
-								pred=quadratic_fitting_ddpd_mask(pos+i0*weight[0],-stride*weight[0]);
-						else
-							if (i0+stride<mx[0])
-								if (i0-3*stride>=0)
-									pred=quadratic_fitting_ddpd_mask(pos+i0*weight[0],stride*weight[0]);
-								else
-									pred=linear_fitting_dpd_mask(pos+i0*weight[0],stride*weight[0]);
-							else
-								if (i0-5*stride>=0)
-									pred=quadratic_fitting_dddp_mask(pos+i0*weight[0],stride*weight[0]);
-								else
-									if (i0-3*stride>=0)
-										pred=linear_fitting_ddp_mask(pos+i0*weight[0],stride*weight[0]);
-									else
-										pred=constant_fitting_dp_mask(pos+i0*weight[0],stride*weight[0]);
 						#ifdef JOB_TYPE_COMPRESS
 							printf("Error: DC_3D_linear_map_mask shouldn't be called during compression.\n");
 							exit(0);
@@ -80,26 +60,6 @@ namespace cliz
 					{
 						if (mask_data[pos2horiz_mapping[pos+i1*weight[1]]]==0)
 							continue;
-						T pred;
-						if (i1+3*stride<mx[1])
-							if (i1-3*stride>=0)
-								pred=cubic_fitting_ddpdd_mask(pos+i1*weight[1],stride*weight[1]);
-							else
-								pred=quadratic_fitting_ddpd_mask(pos+i1*weight[1],-stride*weight[1]);
-						else
-							if (i1+stride<mx[1])
-								if (i1-3*stride>=0)
-									pred=quadratic_fitting_ddpd_mask(pos+i1*weight[1],stride*weight[1]);
-								else
-									pred=linear_fitting_dpd_mask(pos+i1*weight[1],stride*weight[1]);
-							else
-								if (i1-5*stride>=0)
-									pred=quadratic_fitting_dddp_mask(pos+i1*weight[1],stride*weight[1]);
-								else
-									if (i1-3*stride>=0)
-										pred=linear_fitting_ddp_mask(pos+i1*weight[1],stride*weight[1]);
-									else
-										pred=constant_fitting_dp_mask(pos+i1*weight[1],stride*weight[1]);
 						#ifdef JOB_TYPE_COMPRESS
 							printf("Error: DC_3D_linear_map_mask shouldn't be called during compression.\n");
 							exit(0);
@@ -118,26 +78,6 @@ namespace cliz
 					{
 						if (mask_data[pos2horiz_mapping[pos+i2*weight[2]]]==0)
 							continue;
-						T pred;
-						if (i2+3*stride<mx[2])
-							if (i2-3*stride>=0)
-								pred=cubic_fitting_ddpdd_mask(pos+i2*weight[2],stride*weight[2]);
-							else
-								pred=quadratic_fitting_ddpd_mask(pos+i2*weight[2],-stride*weight[2]);
-						else
-							if (i2+stride<mx[2])
-								if (i2-3*stride>=0)
-									pred=quadratic_fitting_ddpd_mask(pos+i2*weight[2],stride*weight[2]);
-								else
-									pred=linear_fitting_dpd_mask(pos+i2*weight[2],stride*weight[2]);
-							else
-								if (i2-5*stride>=0)
-									pred=quadratic_fitting_dddp_mask(pos+i2*weight[2],stride*weight[2]);
-								else
-									if (i2-3*stride>=0)
-										pred=linear_fitting_ddp_mask(pos+i2*weight[2],stride*weight[2]);
-									else
-										pred=constant_fitting_dp_mask(pos+i2*weight[2],stride*weight[2]);
 						#ifdef JOB_TYPE_COMPRESS
 							printf("Error: DC_3D_linear_map_mask shouldn't be called during compression.\n");
 							exit(0);

@@ -15,6 +15,11 @@ namespace cliz
 			T abs_err=fabs(src_data[i]-dec_data[i]);
 			if (abs_err>max_err)
 				max_err=abs_err;
+			if (abs_err>err_bound*2)
+			{
+				printf("Error at %lld: %f %f\n",i,(float)src_data[i],(float)dec_data[i]);
+				getchar();
+			}
 		}
 		if (err_bound==0)
 			printf("Max absolute error=%f\n",(float)max_err);

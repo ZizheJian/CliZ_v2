@@ -10,7 +10,6 @@ namespace cliz
 	{
 		huffman_tree_c<T> &this_huffman=huffman[0];
 		unordered_map<int,node_c,simple_hash> &this_nodes=this_huffman.nodes;
-		align_cache<unsigned char>();
 		int cache_digit=0;
 		int nid=32767+this_nodes.size()/2;
 		unsigned char cache=read_cache<unsigned char>();

@@ -8,7 +8,6 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::encode_data_and_map()
 	{
-		align_cache<unsigned char>();
 		int cache_digit=0;
 		int code_digit=0;
 		unsigned char cache=0;
@@ -49,9 +48,9 @@ namespace cliz
 		huffman_tree_c<T> &this_huffman_map=huffman[2];
 		unordered_map<int,node_c,simple_hash> &this_nodes_map=this_huffman_map.nodes;
 		unsigned char *bitstream_backup=bitstream;
-		long long bitstream_length_backup=bitstream_length;
+		long long bitstream_length_backup=bitstream_end;
 		bitstream=map_bitstream;
-		bitstream_length=map_bitstream_length;
+		bitstream_end=map_bitstream_end;
 		for (long long i=0;i<map_num;)
 		{
 			node_c &this_node=this_nodes_map[width_map[i]*3+shift_map[i]+1];
@@ -81,9 +80,9 @@ namespace cliz
 			cache_digit=0;
 			cache=0;
 		}
-		map_bitstream_length=bitstream_length;
+		map_bitstream_end=bitstream_end;
 		bitstream=bitstream_backup;
-		bitstream_length=bitstream_length_backup;
+		bitstream_end=bitstream_length_backup;
 	}
 }
 

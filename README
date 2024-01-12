@@ -74,6 +74,7 @@ Type "cliz_{job_type} {something}" to start cliz compressor.
 		//If error bound is 0, cliz generally will convey a naive lossless compression.
 		//The program can get the information about error bound from the command line or the configuration file. If both of them are unavailable, the error type will be ABS and error bound will be 0.
 		//If both source of information are available, make sure that they match each other.
+		//If no configuration file is given, {error_type} must be ABS.
 	
 	I. intermediate result display (optional)
 		-debug

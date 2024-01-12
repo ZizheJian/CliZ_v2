@@ -10,7 +10,7 @@ def Hurricane_T():
 	#test_name="Compress"
 	#test_name="Recompress"
 	#test_name="Decompress"
-	#test_name="Validate"
+	test_name="Validate"
 	command=None
 	if test_name=="Compress":
 		command=generate_command_compress(job_type="compress"
@@ -18,7 +18,7 @@ def Hurricane_T():
 			,config=["set",config_path]
 			,map=["set",map_path]
 			,dimension=[["h",100],["lat",500],["lng",500]]
-			,err=["REL",1e-3]
+			,err=["REL",0.001]
 			,debug=True
 		)
 	if test_name=="Recompress":
@@ -38,7 +38,6 @@ def Hurricane_T():
 			,source_path=source_path
 			,decompressed_path=decompressed_path
 			,dimension=[["h",100],["lat",500],["lng",500]]
-			,data_type="f32"
 			,err=["REL",1e-3]
 		)
 	return command

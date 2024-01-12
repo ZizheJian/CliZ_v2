@@ -25,7 +25,7 @@ namespace cliz
 	#define FILE_NAME_LENGTH 1000
 	#define FUNC_NAME_LENGTH 100
 	#define TEMP_STRING_LENGTH 1000
-	#define SAMPLING_RATE 1e-2
+	#define SAMPLING_RATE 1
 	#define FFT_SAMPLE_NUM 10
 	#define FAST_SAMPLING false
 
@@ -122,10 +122,11 @@ namespace cliz
 			char *out_file_path=NULL;
 			FILE *out_file=NULL;
 			unsigned char *bitstream=NULL;
-			long long bitstream_length=0;
-			long long bitstream_index=0;
+			long long bitstream_start=0;
+			long long bitstream_end=0;
 			float CR=0;
 			float best_CR=0;
+			float best_pert_CR=0;
 			char *cfg_file_mode=NULL;
 			char *cfg_file_path=NULL;
 			FILE *cfg_file=NULL;
@@ -135,8 +136,8 @@ namespace cliz
 			char *mask_file_path=NULL;
 			FILE *mask_file=NULL;
 			unsigned char *map_bitstream=NULL;
-			long long map_bitstream_length=0;
-			long long map_bitstream_index=0;
+			long long map_bitstream_start=0;
+			long long map_bitstream_end=0;
 			char *src_file_path=NULL;
 			FILE *src_file=NULL;
 			char *dec_file_path=NULL;
@@ -164,16 +165,14 @@ namespace cliz
 			hyper_iterator_c *best_pert_it1=NULL;
 			hyper_iterator_c *it2=NULL;
 			hyper_iterator_c *pert_it2=NULL;
-			bool best_map=false;
 			long long *pos2horiz_mapping=NULL;
 			long long *qb2horiz_mapping=NULL;
 			long long *horiz_hist=NULL;
 			char *width_map=NULL;
 			char *shift_map=NULL;
 			long long pert=0;
+			long long best_pert=0;
 			T *avg_data=NULL;
-			double best_average_bytes=numeric_limits<double>::max();
-			double best_avg_average_bytes=numeric_limits<double>::max();
 			short *quant_bin=NULL;
 			vector<huffman_tree_c<T>> huffman;
 			vector<T> irregular_data;
@@ -195,8 +194,6 @@ namespace cliz
 			void read_cfg_fission_mapping(char *temp_string);
 			void write_cfg();
 			template<typename T2>
-			void align_cache();
-			template<typename T2>
 			void append_cache(T2 x);
 			template<typename T2>
 			void read_cache(T2 &x);
@@ -209,14 +206,6 @@ namespace cliz
 			
 			////////////////Error Bound Functions////////////////
 			void change_err_bound();
-			void change_err_bound_1D();
-			void change_err_bound_2D();
-			void change_err_bound_3D();
-			void change_err_bound_4D();
-			void change_err_bound_mask_1D();
-			void change_err_bound_mask_2D();
-			void change_err_bound_mask_3D();
-			void change_err_bound_mask_4D();
 
 			////////////////Testing Functions////////////////
 			void choose_method();
@@ -233,9 +222,10 @@ namespace cliz
 			void collect_data_3D(T *data_backup,hyper_iterator_c *it2_backup);
 			void collect_data_4D(T *data_backup,hyper_iterator_c *it2_backup);
 			void collect_data_mask(int *mask_data_backup,hyper_iterator_c *it2_backup);
+			void calc_pert();
+			void calc_pert_mask();
 			void test_pert_mask();
 			void print_test_condition();
-			void calc_pert_mask(task_c<int> *mask_subtask);
 			void calc_avg_data();
 			void test_avg_data();
 			void calc_diff_data();
@@ -245,7 +235,7 @@ namespace cliz
 			////////////////Compress Functions////////////////
 			void call_compress_functions();
 			void call_compress_functions_test();
-			char *best_compress_function=NULL,*compress_function=NULL;
+			char *best_compress_function=NULL,*best_pert_compress_function=NULL,*compress_function=NULL;
 			void compress();
 			void compress_mask();
 			void compress_set_map();
@@ -255,7 +245,7 @@ namespace cliz
 
 			////////////////Decompress Functions////////////////
 			void call_decompress_functions();
-			char *best_decompress_function=NULL;
+			char *best_decompress_function=NULL,*best_pert_decompress_function=NULL;
 			void decompress();
 			void decompress_map();
 			void decompress_mask();
@@ -360,7 +350,7 @@ namespace cliz
 			void DC_4D_cubic_data_use_map_mask();
 
 			////////////////Fitting Functions////////////////
-			char *best_fitting_function=NULL,*fitting_function=NULL;
+			char *best_fitting_function=NULL,*best_pert_fitting_function=NULL,*fitting_function=NULL;
 			T cubic_fitting_ddpdd(long long i,long long stride);
 			T quadratic_fitting_ddpd(long long i,long long stride);
 			T quadratic_fitting_dddp(long long i,long long stride);

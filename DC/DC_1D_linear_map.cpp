@@ -37,14 +37,6 @@ namespace cliz
 				long long pos=0;
 				for (long long i0=b0b+stride;i0<=b0e;i0+=2*stride)
 				{
-					T pred;
-					if (i0+stride<=b0e)
-						pred=linear_fitting_dpd(pos+i0*weight[0],stride*weight[0]);
-					else
-						if (i0-3*stride>=b0b)
-							pred=linear_fitting_ddp(pos+i0*weight[0],stride*weight[0]);
-						else
-							pred=constant_fitting_dp(pos+i0*weight[0],stride*weight[0]);
 					#ifdef JOB_TYPE_COMPRESS
 			printf("Error: DC_1D_linear_map shouldn't be called during compression.\n");
 			exit(0);

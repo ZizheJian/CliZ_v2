@@ -30,34 +30,35 @@ namespace cliz
 		////////////////Zstd////////////////
 		timer->start();
 		map_num=it2->mx[latid]*it2->mx[lngid];
-		unsigned char *temp_map_bitstream=map_bitstream;
-		new_data(map_bitstream,map_num,false,false);
-		map_bitstream_length=ZSTD_decompress(map_bitstream,map_num,temp_map_bitstream,map_bitstream_length);
+		unsigned char *temp_map_bitstream=new_data<unsigned char>(map_num);
+		map_bitstream_end=map_bitstream_start+ZSTD_decompress(temp_map_bitstream,map_num,map_bitstream+map_bitstream_start,map_bitstream_end-map_bitstream_start);
+		memcpy(map_bitstream+map_bitstream_start,temp_map_bitstream,map_bitstream_end-map_bitstream_start);
 		delete_data(temp_map_bitstream);
 		timer->pause();
+		printf("bitstream_end=0, map_bitstream_progress=%lld/%lld\n",map_bitstream_start,map_bitstream_end);
 		////////////////Huffman Tree////////////////
 		timer->start();
-		map_bitstream_index=0;
 		huffman.push_back(huffman_tree_c<T>());
 		huffman.push_back(huffman_tree_c<T>());
 		huffman.push_back(huffman_tree_c<T>());
 		huffman_tree_c<T> &this_huffman_map=huffman[2];
 		unsigned char *bitstream_backup=bitstream;
 		bitstream=map_bitstream;
-		bitstream_index=map_bitstream_index;
+		long long bitstream_start_backup=bitstream_start;
+		bitstream_start=map_bitstream_start;
 		this_huffman_map.rebuild(this);
-		map_bitstream_index=bitstream_index;
-		bitstream_index=0;
+		map_bitstream_start=bitstream_start;
+		bitstream_start=bitstream_start_backup;
 		bitstream=bitstream_backup;
 		timer->pause();
-		printf("bitstream_length=0, map_bitstream_progress=%lld/%lld\n",map_bitstream_index,map_bitstream_length);
+		printf("bitstream_end=0, map_bitstream_progress=%lld/%lld\n",map_bitstream_start,map_bitstream_end);
 		////////////////Huffman Decode////////////////
 		timer->start();
 		new_data(width_map,map_num);
 		new_data(shift_map,map_num);
 		decode_map();
 		timer->pause();
-		printf("bitstream_length=0, map_bitstream_progress=%lld/%lld\n",map_bitstream_index,map_bitstream_length);
+		printf("bitstream_end=0, map_bitstream_progress=%lld/%lld\n",map_bitstream_start,map_bitstream_end);
 		////////////////Quant Bin////////////////
 		timer->start();
 		quant_bin_num=data_num;
@@ -80,7 +81,7 @@ namespace cliz
 		this_huffman_1.generate_tree();
 		this_huffman_1.generate_code(this);
 		timer->pause();
-		printf("bitstream_length=%lld, map_bitstream_progress=%lld/%lld\n",bitstream_length,map_bitstream_index,map_bitstream_length);
+		printf("bitstream_end=%lld, map_bitstream_progress=%lld/%lld\n",bitstream_end,map_bitstream_start,map_bitstream_end);
 		////////////////Huffman Encode////////////////
 		timer->start();
 		encode_data_with_map();
@@ -93,22 +94,24 @@ namespace cliz
 		this_huffman_map.nodes.clear();
 		huffman.clear();
 		timer->pause();
-		printf("bitstream_length=%lld, map_bitstream_progress=%lld/%lld\n",bitstream_length,map_bitstream_index,map_bitstream_length);
+		printf("bitstream_end=%lld, map_bitstream_progress=%lld/%lld\n",bitstream_end,map_bitstream_start,map_bitstream_end);
 		////////////////Irregular////////////////
 		timer->start();
-		memcpy(bitstream+bitstream_length,irregular_data.data(),irregular_data.size()*sizeof(T));
+		memcpy(bitstream+bitstream_end,irregular_data.data(),irregular_data.size()*sizeof(T));
 		irregular_data.clear();
 		timer->pause();
-		printf("bitstream_length=%lld, map_bitstream_progress=%lld/%lld\n",bitstream_length,map_bitstream_index,map_bitstream_length);
+		printf("bitstream_end=%lld, map_bitstream_progress=%lld/%lld\n",bitstream_end,map_bitstream_start,map_bitstream_end);
 		////////////////Zstd////////////////
 		timer->start();
-		unsigned char *temp_bitstream=bitstream;
-		new_data(bitstream,data_num*sizeof(T),false,false);
-		bitstream_length=ZSTD_compress(bitstream,data_num*sizeof(T),temp_bitstream,bitstream_length,3);
+		unsigned char *temp_bitstream=new_data<unsigned char>(data_num*sizeof(T));
+		memcpy(temp_bitstream,bitstream+bitstream_start,bitstream_end-bitstream_start);
+		bitstream_end=bitstream_start+ZSTD_compress(bitstream+bitstream_start,data_num*sizeof(T),temp_bitstream,bitstream_end-bitstream_start,3);
 		delete_data(temp_bitstream);
+		long long bitstream_length=bitstream_end-bitstream_start;
+		memcpy(bitstream,&bitstream_length,sizeof(long long));
 		timer->pause();
-		printf("bitstream_length=%lld, map_bitstream_progress=%lld/%lld\n",bitstream_length,map_bitstream_index,map_bitstream_length);
-		CR=((float)data_num*sizeof(T))/(bitstream_length+map_bitstream_length);
+		printf("bitstream_end=%lld, map_bitstream_progress=%lld/%lld\n",bitstream_end,map_bitstream_start,map_bitstream_end);
+		CR=((float)data_num*sizeof(T))/(bitstream_end+map_bitstream_end);
 		timer->write();
 	}
 }

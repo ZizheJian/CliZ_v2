@@ -11,8 +11,8 @@ namespace cliz
 		if (quant_bin[i]==-32768)
 		{
 			T irr;
-			memcpy(&irr,bitstream+bitstream_index,sizeof(T));
-			bitstream_index+=sizeof(T);
+			memcpy(&irr,bitstream+bitstream_start,sizeof(T));
+			bitstream_start+=sizeof(T);
 			return irr;
 		}
 		else

@@ -42,14 +42,6 @@ namespace cliz
 				{
 					if (mask_data[pos2horiz_mapping[pos+i0*weight[0]]]==0)
 						continue;
-					T pred;
-					if (i0+stride<=b0e)
-						pred=linear_fitting_dpd_mask(pos+i0*weight[0],stride*weight[0]);
-					else
-						if (i0-3*stride>=b0b)
-							pred=linear_fitting_ddp_mask(pos+i0*weight[0],stride*weight[0]);
-						else
-							pred=constant_fitting_dp_mask(pos+i0*weight[0],stride*weight[0]);
 					#ifdef JOB_TYPE_COMPRESS
 			printf("Error: DC_1D_linear_map_mask shouldn't be called during compression.\n");
 			exit(0);

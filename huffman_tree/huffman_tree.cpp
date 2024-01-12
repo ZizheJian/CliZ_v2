@@ -75,9 +75,7 @@ namespace cliz
 	{
 		if (nodes.size()>=2)
 		{
-			task->template align_cache<int>();
 			task->append_cache((int)(nodes.size()-1));
-			task->template align_cache<short>();
 			auto root=*(unarranged_nodes.begin());
 			traversal(root->self,task);
 			unarranged_nodes.clear();
@@ -85,9 +83,7 @@ namespace cliz
 		else
 			if (nodes.size()==1)
 			{
-				task->template align_cache<int>();
 				task->append_cache((int)1);
-				task->template align_cache<short>();
 				auto root=*(unarranged_nodes.begin());
 				root->code=0;
 				root->length=1;
@@ -95,17 +91,13 @@ namespace cliz
 				unarranged_nodes.clear();
 			}
 			else
-			{
-				task->template align_cache<int>();
 				task->append_cache((int)0);
-			}
 	}
 
 
 	template<typename T>
 	void huffman_tree_c<T>::rebuild(task_c<T> *task)
 	{
-		task->template align_cache<int>();
 		int tree_cache_length=task->template read_cache<int>();
 		if (tree_cache_length>=2)
 		{
@@ -150,7 +142,6 @@ namespace cliz
 		else
 			if (tree_cache_length==1)
 			{
-				task->template align_cache<short>();
 				int nid=task->template read_cache<short>();
 				nodes[nid].self=nid;
 				nodes[nid].father=nid;

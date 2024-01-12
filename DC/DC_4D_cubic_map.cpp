@@ -38,26 +38,6 @@ namespace cliz
 						long long pos=i1*weight[1]+i2*weight[2]+i3*weight[3];
 						for (long long i0=stride;i0<mx[0];i0+=2*stride)
 						{
-							T pred;
-							if (i0+3*stride<mx[0])
-								if (i0-3*stride>=0)
-									pred=cubic_fitting_ddpdd(pos+i0*weight[0],stride*weight[0]);
-								else
-									pred=quadratic_fitting_ddpd(pos+i0*weight[0],-stride*weight[0]);
-							else
-								if (i0+stride<mx[0])
-									if (i0-3*stride>=0)
-										pred=quadratic_fitting_ddpd(pos+i0*weight[0],stride*weight[0]);
-									else
-										pred=linear_fitting_dpd(pos+i0*weight[0],stride*weight[0]);
-								else
-									if (i0-5*stride>=0)
-										pred=quadratic_fitting_dddp(pos+i0*weight[0],stride*weight[0]);
-									else
-										if (i0-3*stride>=0)
-											pred=linear_fitting_ddp(pos+i0*weight[0],stride*weight[0]);
-										else
-											pred=constant_fitting_dp(pos+i0*weight[0],stride*weight[0]);
 							#ifdef JOB_TYPE_COMPRESS
 								printf("Error: DC_4D_linear_map shouldn't be called during compression.\n");
 								exit(0);
@@ -75,26 +55,6 @@ namespace cliz
 						long long pos=i0*weight[0]+i2*weight[2]+i3*weight[3];
 						for (long long i1=stride;i1<mx[1];i1+=2*stride)
 						{
-							T pred;
-							if (i1+3*stride<mx[1])
-								if (i1-3*stride>=0)
-									pred=cubic_fitting_ddpdd(pos+i1*weight[1],stride*weight[1]);
-								else
-									pred=quadratic_fitting_ddpd(pos+i1*weight[1],-stride*weight[1]);
-							else
-								if (i1+stride<mx[1])
-									if (i1-3*stride>=0)
-										pred=quadratic_fitting_ddpd(pos+i1*weight[1],stride*weight[1]);
-									else
-										pred=linear_fitting_dpd(pos+i1*weight[1],stride*weight[1]);
-								else
-									if (i1-5*stride>=0)
-										pred=quadratic_fitting_dddp(pos+i1*weight[1],stride*weight[1]);
-									else
-										if (i1-3*stride>=0)
-											pred=linear_fitting_ddp(pos+i1*weight[1],stride*weight[1]);
-										else
-											pred=constant_fitting_dp(pos+i1*weight[1],stride*weight[1]);
 							#ifdef JOB_TYPE_COMPRESS
 								printf("Error: DC_4D_linear_map shouldn't be called during compression.\n");
 								exit(0);
@@ -112,26 +72,6 @@ namespace cliz
 						long long pos=i0*weight[0]+i1*weight[1]+i3*weight[3];
 						for (long long i2=stride;i2<mx[2];i2+=2*stride)
 						{
-							T pred;
-							if (i2+3*stride<mx[2])
-								if (i2-3*stride>=0)
-									pred=cubic_fitting_ddpdd(pos+i2*weight[2],stride*weight[2]);
-								else
-									pred=quadratic_fitting_ddpd(pos+i2*weight[2],-stride*weight[2]);
-							else
-								if (i2+stride<mx[2])
-									if (i2-3*stride>=0)
-										pred=quadratic_fitting_ddpd(pos+i2*weight[2],stride*weight[2]);
-									else
-										pred=linear_fitting_dpd(pos+i2*weight[2],stride*weight[2]);
-								else
-									if (i2-5*stride>=0)
-										pred=quadratic_fitting_dddp(pos+i2*weight[2],stride*weight[2]);
-									else
-										if (i2-3*stride>=0)
-											pred=linear_fitting_ddp(pos+i2*weight[2],stride*weight[2]);
-										else
-											pred=constant_fitting_dp(pos+i2*weight[2],stride*weight[2]);
 							#ifdef JOB_TYPE_COMPRESS
 								printf("Error: DC_4D_linear_map shouldn't be called during compression.\n");
 								exit(0);
@@ -149,26 +89,6 @@ namespace cliz
 						long long pos=i0*weight[0]+i1*weight[1]+i2*weight[2];
 						for (long long i3=stride;i3<mx[3];i3+=2*stride)
 						{
-							T pred;
-							if (i3+3*stride<mx[3])
-								if (i3-3*stride>=0)
-									pred=cubic_fitting_ddpdd(pos+i3*weight[3],stride*weight[3]);
-								else
-									pred=quadratic_fitting_ddpd(pos+i3*weight[3],-stride*weight[3]);
-							else
-								if (i3+stride<mx[3])
-									if (i3-3*stride>=0)
-										pred=quadratic_fitting_ddpd(pos+i3*weight[3],stride*weight[3]);
-									else
-										pred=linear_fitting_dpd(pos+i3*weight[3],stride*weight[3]);
-								else
-									if (i3-5*stride>=0)
-										pred=quadratic_fitting_dddp(pos+i3*weight[3],stride*weight[3]);
-									else
-										if (i3-3*stride>=0)
-											pred=linear_fitting_ddp(pos+i3*weight[3],stride*weight[3]);
-										else
-											pred=constant_fitting_dp(pos+i3*weight[3],stride*weight[3]);
 							#ifdef JOB_TYPE_COMPRESS
 								printf("Error: DC_4D_linear_map shouldn't be called during compression.\n");
 								exit(0);

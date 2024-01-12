@@ -33,19 +33,19 @@ namespace cliz
 		timer->pause();
 		////////////////Zstd////////////////
 		timer->start();
-		unsigned char *temp_bitstream=bitstream;
-		new_data(bitstream,data_num*sizeof(T),false,false);
-		bitstream_length=ZSTD_decompress(bitstream,data_num*sizeof(T),temp_bitstream,bitstream_length);
+		unsigned char *temp_bitstream=new_data<unsigned char>(data_num*sizeof(T));
+		bitstream_end=bitstream_start+ZSTD_decompress(temp_bitstream,data_num*sizeof(T),bitstream+bitstream_start,bitstream_end-bitstream_start);
+		memcpy(bitstream+bitstream_start,temp_bitstream,bitstream_end-bitstream_start);
 		delete_data(temp_bitstream);
-		unsigned char *temp_map_bitstream=map_bitstream;
-		new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid],false,false);
-		map_bitstream_length=ZSTD_decompress(map_bitstream,it2->mx[latid]*it2->mx[lngid],temp_map_bitstream,map_bitstream_length);
+		map_num=it2->mx[latid]*it2->mx[lngid];
+		unsigned char *temp_map_bitstream=new_data<unsigned char>(map_num);
+		map_bitstream_end=map_bitstream_start+ZSTD_decompress(temp_map_bitstream,map_num,map_bitstream+map_bitstream_start,map_bitstream_end-map_bitstream_start);
+		memcpy(map_bitstream+map_bitstream_start,temp_map_bitstream,map_bitstream_end-map_bitstream_start);
 		delete_data(temp_map_bitstream);
+		printf("bitstream_progress=%lld/%lld, map_bitstream_progress=%lld/%lld\n",bitstream_start,bitstream_end,map_bitstream_start,map_bitstream_end);
 		timer->pause();
 		////////////////Huffman Tree////////////////
 		timer->start();
-		bitstream_index=0;
-		map_bitstream_index=0;
 		huffman.push_back(huffman_tree_c<T>());
 		huffman.push_back(huffman_tree_c<T>());
 		huffman.push_back(huffman_tree_c<T>());
@@ -55,23 +55,23 @@ namespace cliz
 		this_huffman_0.rebuild(this);
 		this_huffman_1.rebuild(this);
 		unsigned char *bitstream_backup=bitstream;
-		long long bitstream_index_backup=bitstream_index;
+		long long bitstream_index_backup=bitstream_start;
 		bitstream=map_bitstream;
-		bitstream_index=map_bitstream_index;
+		bitstream_start=map_bitstream_start;
 		this_huffman_map.rebuild(this);
-		map_bitstream_index=bitstream_index;
-		bitstream_index=bitstream_index_backup;
+		map_bitstream_start=bitstream_start;
+		bitstream_start=bitstream_index_backup;
 		bitstream=bitstream_backup;
 		timer->pause();
-		printf("bitstream_progress=%lld/%lld, map_bitstream_progress=%lld/%lld\n",bitstream_index,bitstream_length,map_bitstream_index,map_bitstream_length);
+		printf("bitstream_progress=%lld/%lld, map_bitstream_progress=%lld/%lld\n",bitstream_start,bitstream_end,map_bitstream_start,map_bitstream_end);
 		////////////////Huffman Decode////////////////
 		timer->start();
 		new_data(quant_bin,quant_bin_num);
-		new_data(width_map,it2->mx[latid]*it2->mx[lngid]);
-		new_data(shift_map,it2->mx[latid]*it2->mx[lngid]);
+		new_data(width_map,map_num);
+		new_data(shift_map,map_num);
 		decode_data_and_map();
 		timer->pause();
-		printf("bitstream_progress=%lld/%lld, map_bitstream_progress=%lld/%lld\n",bitstream_index,bitstream_length,map_bitstream_index,map_bitstream_length);
+		printf("bitstream_progress=%lld/%lld, map_bitstream_progress=%lld/%lld\n",bitstream_start,bitstream_end,map_bitstream_start,map_bitstream_end);
 		////////////////Map////////////////
 		timer->start();
 		undo_apply_map();
@@ -84,7 +84,7 @@ namespace cliz
 		call_DC_functions_data();
 		delete_data(quant_bin);
 		timer->pause();
-		printf("bitstream_progress=%lld/%lld, map_bitstream_progress=%lld/%lld\n",bitstream_index,bitstream_length,map_bitstream_index,map_bitstream_length);
+		printf("bitstream_progress=%lld/%lld, map_bitstream_progress=%lld/%lld\n",bitstream_start,bitstream_end,map_bitstream_start,map_bitstream_end);
 		////////////////Anti-Transpose////////////////
 		timer->start();
 		if (best_it1->dim_seq!=NULL)

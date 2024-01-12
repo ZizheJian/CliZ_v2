@@ -11,7 +11,7 @@ def b_e11_SSH():
 	#test_name="Compress"
 	#test_name="Recompress"
 	#test_name="Decompress"
-	test_name="Validate"
+	#test_name="Validate"
 	command=None
 	if test_name=="Compress":
 		command=generate_command_compress(job_type="compress"
@@ -19,7 +19,7 @@ def b_e11_SSH():
 			,config=["set",config_path]
 			,map=["set",map_path]
 			,mask=mask_path
-			,dimension=[["t",1032],["lat",384],["lng",320]]
+			,dimension=[["pert",1032],["lat",384],["lng",320]]
 			,err=["REL",1e-3]
 			,debug=True
 		)

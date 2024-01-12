@@ -2,9 +2,5 @@
 #define __CHANGE_ERR_BOUND_HPP1__
 
 #include "change_err_bound.cpp"
-#include "change_err_bound_1D.cpp"
-#include "change_err_bound_2D.cpp"
-#include "change_err_bound_3D.cpp"
-#include "change_err_bound_4D.cpp"
 
 #endif
