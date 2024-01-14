@@ -47,6 +47,7 @@ namespace cliz
 							{
 								if (mask_value!=data[i])
 								{
+									printf("Mask value=%f, data[%lld]=%f\n",mask_value,i,data[i]);
 									printf("Error: Multiple mask value found.\n");
 									exit(0);
 								}
@@ -63,6 +64,7 @@ namespace cliz
 							if (data[i]>data_mx)
 								data_mx=data[i];
 						}
+					printf("data_mn=%f, data_mx=%f\n",data_mn,data_mx);
 					err_bound=(data_mx-data_mn)*raw_err_bound;
 					delete_data(data);
 					if (mask_file_path!=NULL)

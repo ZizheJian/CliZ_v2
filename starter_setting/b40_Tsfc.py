@@ -1,13 +1,13 @@
 from task import generate_command_compress,generate_command_validate
 
-def b_e11_SSH():
+def b40_Tsfc():
 	test_name=None
-	source_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin"
-	compressed_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.cliz"
-	decompressed_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.cliz.bin"
-	config_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.cliz.cfg"
-	map_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/SSH.bin.cliz.map"
-	mask_path="~/compress/b.e11.B20TRC5CNBDRD.f09_g16.030.pop.h.SSH.192001-200512/REGION_MASK.bin"
+	source_path="~/compress/b40.cice/Tsfc.bin"
+	compressed_path="~/compress/b40.cice/Tsfc.bin.cliz"
+	decompressed_path="~/compress/b40.cice/Tsfc.bin.cliz.bin"
+	config_path="~/compress/b40.cice/Tsfc.bin.cliz.cfg"
+	map_path="~/compress/b40.cice/Tsfc.bin.cliz.map"
+	mask_path="~/compress/b40.cice/tmask.bin"
 	err=["REL",1e-7]
 	#test_name="Compress"
 	#test_name="Recompress"
@@ -20,7 +20,7 @@ def b_e11_SSH():
 			,config=["set",config_path]
 			,map=["set",map_path]
 			,mask_path=mask_path
-			,dimension=[["pert",1032],["lat",384],["lng",320]]
+			,dimension=[["pert",360],["lat",384],["lng",320]]
 			,err=err
 			,debug=True
 		)
@@ -43,7 +43,7 @@ def b_e11_SSH():
 			,source_path=source_path
 			,decompressed_path=decompressed_path
 			,mask_path=mask_path
-			,dimension=[["t",1032],["lat",384],["lng",320]]
+			,dimension=[["t",360],["lat",384],["lng",320]]
 			,err=err
 		)
 	return command

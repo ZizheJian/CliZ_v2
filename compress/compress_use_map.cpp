@@ -98,6 +98,7 @@ namespace cliz
 		////////////////Irregular////////////////
 		timer->start();
 		memcpy(bitstream+bitstream_end,irregular_data.data(),irregular_data.size()*sizeof(T));
+		bitstream_end+=irregular_data.size()*sizeof(T);
 		irregular_data.clear();
 		timer->pause();
 		printf("bitstream_end=%lld, map_bitstream_progress=%lld/%lld\n",bitstream_end,map_bitstream_start,map_bitstream_end);

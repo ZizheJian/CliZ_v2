@@ -14,7 +14,7 @@ namespace cliz
 			char shift=shift_map[horiz];
 			if (shift==1)
 				if (quant_bin[i]==32767)
-					quant_bin[i]=-32767;
+					quant_bin[i]=-32768;
 				else
 					quant_bin[i]++;
 			if (shift==-1)

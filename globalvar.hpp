@@ -25,7 +25,7 @@ namespace cliz
 	#define FILE_NAME_LENGTH 1000
 	#define FUNC_NAME_LENGTH 100
 	#define TEMP_STRING_LENGTH 1000
-	#define SAMPLING_RATE 1e-4
+	#define SAMPLING_RATE 1e-2
 	#define FFT_SAMPLE_NUM 10
 	#define FAST_SAMPLING false
 
@@ -385,17 +385,11 @@ namespace cliz
 			////////////////Count Quant_Bin Functions////////////////
 			void count_quant_bin();
 			void count_quant_bin_map();
-			void count_quant_bin_mask(task_c<int> *mask_subtask);			
-			void count_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
 			
 			/////////////////Encode Quant_Bin Functions////////////////
 			void encode_data();
 			void encode_data_and_map();
 			void encode_data_with_map();
-			void encode_quant_bin_mask(task_c<int> *mask_subtask);
-			void encode_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
-			void decode_quant_bin_mask(task_c<int> *mask_subtask);
-			void decode_quant_bin_map_mask(task_c<int> *mask_subtask,int lngid,int latid);
 			
 			////////////////Decode Quant_Bin Functions////////////////
 			void decode_data();
@@ -405,9 +399,7 @@ namespace cliz
 			////////////////Validate Functions////////////////
 			void call_validate_functions();
 			void validate_ABS();
-
-			T linear_interp_predictor_mask(task_c<int> *mask_subtask,int direction,long long stride);
-			T cubic_interp_predictor_mask(task_c<int> *mask_subtask,int direction,long long stride);
+			void calc_PSNR();
 
 			////////////////Debug////////////////
 			void print_detail();

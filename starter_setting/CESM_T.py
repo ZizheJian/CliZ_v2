@@ -7,6 +7,7 @@ def CESM_T():
 	decompressed_path="~/compress/SDRBENCH-CESM-ATM-26x1800x3600/T/T_1_26_1800_3600.f32.cliz.bin"
 	config_path="~/compress/SDRBENCH-CESM-ATM-26x1800x3600/T/T_1_26_1800_3600.f32.cliz.cfg"
 	map_path="~/compress/SDRBENCH-CESM-ATM-26x1800x3600/T/T_1_26_1800_3600.f32.cliz.map"
+	err=["REL",1e-7]
 	#test_name="Compress"
 	#test_name="Recompress"
 	#test_name="Decompress"
@@ -18,7 +19,7 @@ def CESM_T():
 			,config=["set",config_path]
 			,map=["set",map_path]
 			,dimension=[["h",26],["lat",1800],["lng",3600]]
-			,err=["REL",1e-3]
+			,err=err
 			,debug=True
 		)
 	if test_name=="Recompress":
@@ -38,6 +39,6 @@ def CESM_T():
 			,source_path=source_path
 			,decompressed_path=decompressed_path
 			,dimension=[["h",26],["lat",1800],["lng",3600]]
-			,err=["REL",1e-3]
+			,err=err
 		)
 	return command

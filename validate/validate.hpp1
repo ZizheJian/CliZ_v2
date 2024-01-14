@@ -3,5 +3,6 @@
 
 #include "call_validate_functions.cpp"
 #include "validate_ABS.cpp"
+#include "calc_PSNR.cpp"
 
 #endif

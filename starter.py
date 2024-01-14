@@ -2,6 +2,9 @@ import os
 from starter_setting.Hurricane_T import Hurricane_T
 from starter_setting.CESM_T import CESM_T
 from starter_setting.b_e11_SSH import b_e11_SSH
+from starter_setting.b40_SOILLIQ import b40_SOILLIQ
+from starter_setting.b40_Tsfc import b40_Tsfc
+from starter_setting.b_e11_nday1_SST import b_e11_nday1_SST
 
 code_generation_list=["choose_method","DC","transform"]
 for code_generation_folder in code_generation_list:
@@ -9,7 +12,7 @@ for code_generation_folder in code_generation_list:
 	os.system("python3 code_generation.py")
 	os.chdir("..")
 
-datasets=[Hurricane_T,CESM_T,b_e11_SSH]
+datasets=[Hurricane_T,CESM_T,b_e11_SSH,b40_SOILLIQ,b40_Tsfc,b_e11_nday1_SST]
 commands=[]
 
 #testname="compress CESM_ATM_RELHUM"

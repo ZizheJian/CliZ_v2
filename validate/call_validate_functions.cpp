@@ -17,6 +17,7 @@ namespace cliz
 		fread(dec_data,sizeof(T),data_num,dec_file);
 		fclose(dec_file);
 		validate_ABS();
+		calc_PSNR();
 	}
 }
 
