@@ -39,7 +39,6 @@ namespace cliz
 			map_bitstream_end=0;
 			new_data(map_bitstream,it2->mx[latid]*it2->mx[lngid]);
 		}
-		printf("aaa\n");
 		if (best_pert!=0)
 		{
 			hyper_iterator_c *it2_backup=it2;
@@ -85,7 +84,6 @@ namespace cliz
 			}
 			bitstream_start=bitstream_end+sizeof(long long);
 			bitstream_end=bitstream_start;
-			printf("aaaa\n");
 			if (strcmp(best_pert_compress_function,"compress")==0)
 				compress();
 			if (strcmp(best_pert_compress_function,"compress_mask")==0)
@@ -121,7 +119,6 @@ namespace cliz
 				fread(map_bitstream+map_bitstream_start,sizeof(unsigned char),map_bitstream_length,map_file);
 				compress_use_map_mask();
 			}
-			printf("bbbb\n");
 			if (best_it1->dim_seq!=NULL)
 			{
 				T *data_backup=data;
@@ -152,7 +149,6 @@ namespace cliz
 			delete_data(data);
 			data=data_backup;
 		}
-		printf("bbb\n");
 		bitstream_start=bitstream_end+sizeof(long long);
 		bitstream_end=bitstream_start;
 		if (strcmp(best_compress_function,"compress")==0)
