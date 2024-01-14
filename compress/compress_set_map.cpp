@@ -95,13 +95,13 @@ namespace cliz
 		bitstream_end=bitstream_start+ZSTD_compress(bitstream+bitstream_start,data_num*sizeof(T),temp_bitstream,bitstream_end-bitstream_start,3);
 		delete_data(temp_bitstream);
 		long long bitstream_length=bitstream_end-bitstream_start;
-		memcpy(bitstream,&bitstream_length,sizeof(long long));
+		memcpy(bitstream+bitstream_start-sizeof(long long),&bitstream_length,sizeof(long long));
 		unsigned char *temp_map_bitstream=new_data<unsigned char>(map_num);
 		memcpy(temp_map_bitstream,map_bitstream+map_bitstream_start,map_bitstream_end-map_bitstream_start);
 		map_bitstream_end=map_bitstream_start+ZSTD_compress(map_bitstream+map_bitstream_start,map_num*sizeof(T),temp_map_bitstream,map_bitstream_end-map_bitstream_start,3);
 		delete_data(temp_map_bitstream);
 		long long map_bitstream_length=map_bitstream_end-map_bitstream_start;
-		memcpy(map_bitstream,&map_bitstream_length,sizeof(long long));
+		memcpy(map_bitstream+map_bitstream_start-sizeof(long long),&map_bitstream_length,sizeof(long long));
 		timer->pause();
 		printf("bitstream_end=%lld+%lld=%lld\n",bitstream_end,map_bitstream_end,bitstream_end+map_bitstream_end);
 		CR=((float)data_num*sizeof(T))/(bitstream_end+map_bitstream_end);

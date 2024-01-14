@@ -25,7 +25,7 @@ namespace cliz
 	#define FILE_NAME_LENGTH 1000
 	#define FUNC_NAME_LENGTH 100
 	#define TEMP_STRING_LENGTH 1000
-	#define SAMPLING_RATE 1
+	#define SAMPLING_RATE 1e-2
 	#define FFT_SAMPLE_NUM 10
 	#define FAST_SAMPLING false
 
@@ -192,6 +192,13 @@ namespace cliz
 			void read_cfg_it1_max(char *temp_string);
 			void read_cfg_seq_mapping(char *temp_string);
 			void read_cfg_fission_mapping(char *temp_string);
+			void read_cfg_best_pert(char *temp_string);
+			void read_cfg_best_pert_compress_function(char *temp_string);
+			void read_cfg_best_pert_decompress_function(char *temp_string);
+			void read_cfg_best_pert_fitting_function(char *temp_string);
+			void read_cfg_pert_it1_max(char *temp_string);
+			void read_cfg_pert_seq_mapping(char *temp_string);
+			void read_cfg_pert_fission_mapping(char *temp_string);
 			void write_cfg();
 			template<typename T2>
 			void append_cache(T2 x);

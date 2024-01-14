@@ -202,6 +202,7 @@ namespace cliz
 				data_remain[pos]=data_backup[pos]-data[pos_high+pos_pert+pos_low];
 		}
 		delete_data(data);
+		delete_data(pert_it2);
 		data=data_remain;
 		if (mask_file_path!=NULL)
 			delete_data(mask_data);

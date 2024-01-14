@@ -47,6 +47,8 @@ namespace cliz
 		timer->start();
 		new_data(quant_bin,quant_bin_num);
 		decode_data();
+		this_huffman.nodes.clear();
+		huffman.clear();
 		timer->pause();
 		printf("bitstream_progress=%lld/%lld\n",bitstream_start,bitstream_end);
 		////////////////Quant Bin & Irregular////////////////

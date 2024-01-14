@@ -72,6 +72,10 @@ namespace cliz
 		new_data(width_map,map_num);
 		new_data(shift_map,map_num);
 		decode_data_and_map();
+		this_huffman_0.nodes.clear();
+		this_huffman_1.nodes.clear();
+		this_huffman_map.nodes.clear();
+		huffman.clear();
 		timer->pause();
 		printf("bitstream_progress=%lld/%lld, map_bitstream_progress=%lld/%lld\n",bitstream_start,bitstream_end,map_bitstream_start,map_bitstream_end);
 		////////////////Map////////////////

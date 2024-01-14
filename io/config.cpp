@@ -25,7 +25,7 @@ namespace cliz
 			fprintf(cfg_file,"Best compress function=%s\n",best_compress_function);
 		if ((strcmp(best_compress_function,"compress_set_map")==0) || (strcmp(best_compress_function,"compress_use_map")==0))
 			fprintf(cfg_file,"Best compress function=compress_map\n");
-		if (strcmp(best_compress_function,"compress mask")==0)
+		if (strcmp(best_compress_function,"compress_mask")==0)
 			fprintf(cfg_file,"Best compress function=compress_mask\n");
 		if ((strcmp(best_compress_function,"compress_set_map_mask")==0) || (strcmp(best_compress_function,"compress_use_map_mask")==0))
 			fprintf(cfg_file,"Best compress function=compress_map_mask\n");
@@ -40,17 +40,20 @@ namespace cliz
 				fprintf(cfg_file,"Mask value=%la\n",(double)mask_value);
 		}
 		best_it1->write(cfg_file);
-		// if (pert!=0)
-		// {
-		//	 fprintf(cfg_file,"Best avg decompress framework=de%s\n",best_avg_compress_framework.name);
-		//	 fprintf(cfg_file,"Best avg predictor=%s\n",best_avg_predictor.name);
-		// }
-		// if (pert!=0)
-		//	 fprintf(cfg_file,"Pert=%lld\n",pert);
-		// fprintf(cfg_file,"\n");
-	
-		// if (pert!=0)
-		//	 best_avg_it1->write(cfg_file);
+		if (best_pert!=0)
+		{
+			fprintf(cfg_file,"Best pert=%lld\n",best_pert);
+			if (strcmp(best_pert_compress_function,"compress")==0)
+				fprintf(cfg_file,"Best pert compress function=%s\n",best_pert_compress_function);
+			if ((strcmp(best_pert_compress_function,"compress_set_map")==0) || (strcmp(best_pert_compress_function,"compress_use_map")==0))
+				fprintf(cfg_file,"Best pert compress function=compress_map\n");
+			if (strcmp(best_pert_compress_function,"compress_mask")==0)
+				fprintf(cfg_file,"Best pert compress function=compress_mask\n");
+			if ((strcmp(best_pert_compress_function,"compress_set_map_mask")==0) || (strcmp(best_pert_compress_function,"compress_use_map_mask")==0))
+				fprintf(cfg_file,"Best pert compress function=compress_map_mask\n");
+			fprintf(cfg_file,"Best pert fitting function=%s\n",best_pert_fitting_function);
+			best_pert_it1->write(cfg_file);
+		}
 		fclose(cfg_file);
 	}
 
@@ -116,7 +119,46 @@ namespace cliz
 				read_cfg_fission_mapping(temp_string+18);
 				continue;
 			}
+			if (strncmp(temp_string,"Best pert=",10)==0)
+			{
+				read_cfg_best_pert(temp_string+10);
+				break;
+			}
 		}
+		if (best_pert!=0)
+			while (fscanf(cfg_file,"%[^\n]",temp_string)==1)
+			{
+				fseek(cfg_file,1,SEEK_CUR);
+				if (strncmp(temp_string,"Best pert compress function=",28)==0)
+				{
+					#ifdef JOB_TYPE_COMPRESS
+						read_cfg_best_pert_compress_function(temp_string+28);
+					#elif defined JOB_TYPE_DECOMPRESS
+						read_cfg_best_pert_decompress_function(temp_string+28);
+					#endif
+					continue;
+				}
+				if (strncmp(temp_string,"Best pert fitting function=",27)==0)
+				{
+					read_cfg_best_pert_fitting_function(temp_string+27);
+					continue;
+				}
+				if (strncmp(temp_string,"Max=",4)==0)
+				{
+					read_cfg_pert_it1_max(temp_string+4);
+					continue;
+				}
+				if (strncmp(temp_string,"Dimension sequence=",19)==0)
+				{
+					read_cfg_pert_seq_mapping(temp_string+19);
+					continue;
+				}
+				if (strncmp(temp_string,"Dimension fission=",18)==0)
+				{
+					read_cfg_pert_fission_mapping(temp_string+18);
+					continue;
+				}
+			}
 	}
 
 	template<typename T>
@@ -344,6 +386,107 @@ namespace cliz
 		sscanf(s.c_str(),"%d",&best_it1->dim_fission_l);
 		iss>>s;
 		sscanf(s.c_str(),"%d",&best_it1->dim_fission_r);
+	}
+
+	template<typename T>
+	void task_c<T>::read_cfg_best_pert(char *temp_string)
+	{
+		sscanf(temp_string,"%lld",&best_pert);
+	}
+
+	template<typename T>
+	void task_c<T>::read_cfg_best_pert_compress_function(char *temp_string)
+	{
+		new_data(best_pert_compress_function,strlen(temp_string)+1);
+		sscanf(temp_string,"%s",best_pert_compress_function);
+	}
+
+	template<typename T>
+	void task_c<T>::read_cfg_best_pert_decompress_function(char *temp_string)
+	{
+		new_data(best_pert_decompress_function,strlen(temp_string)+3);
+		sprintf(best_pert_decompress_function,"de%s",temp_string);
+	}
+
+	template<typename T>
+	void task_c<T>::read_cfg_best_pert_fitting_function(char *temp_string)
+	{
+		new_data(best_pert_fitting_function,strlen(temp_string)+1);
+		sscanf(temp_string,"%s",best_pert_fitting_function);
+	}
+
+	template<typename T>
+	void task_c<T>::read_cfg_pert_it1_max(char *temp_string)
+	{
+		istringstream iss(temp_string);
+		string s;
+		int temp_n=0;
+		while (iss>>s)
+			temp_n++;
+		new_data(best_pert_it1,temp_n);
+		iss.clear();
+		iss.seekg(0,ios::beg);
+		for (int did=0;iss>>s;did++)
+			sscanf(s.c_str(),"%lld",&best_pert_it1->mx[did]);
+		for (int did=best_pert_it1->n-1;did>=0;did--)
+		{
+			if (did==best_pert_it1->n-1)
+				best_pert_it1->weight[did]=1;
+			else
+				best_pert_it1->weight[did]=best_pert_it1->weight[did+1]*best_pert_it1->mx[did+1];
+		}
+	}
+
+	template<typename T>
+	void task_c<T>::read_cfg_pert_seq_mapping(char *temp_string)
+	{
+		if (best_pert_it1==NULL)
+		{
+			printf("Error: Defining mapping before definning iterators.\n");
+			exit(0);
+		}
+		istringstream iss(temp_string);
+		string s;
+		int temp_n=0;
+		while (iss>>s)
+			temp_n++;
+		iss.clear();
+		iss.seekg(0,ios::beg);
+		if (dimension_num!=0)
+			if (temp_n!=dimension_num)
+			{
+				printf("Error: Length of dimension sequence != dimension num.\n");
+				exit(0);
+			}
+		new_data(best_pert_it1->dim_seq,dimension_num);
+		for (int did=0;iss>>s;did++)
+			sscanf(s.c_str(),"%d",&best_pert_it1->dim_seq[did]);
+	}
+
+	template<typename T>
+	void task_c<T>::read_cfg_pert_fission_mapping(char *temp_string)
+	{
+		if (best_pert_it1==NULL)
+		{
+			printf("Error: Defining mapping before definning iterators.\n");
+			exit(0);
+		}
+		istringstream iss(temp_string);
+		string s;
+		int temp_n=0;
+		while (iss>>s)
+			temp_n++;
+		iss.clear();
+		iss.seekg(0,ios::beg);
+		if (temp_n!=2)
+		{
+			printf("Error: Length of dimension fission != 2.\n");
+			exit(0);
+		}
+		iss>>s;
+		sscanf(s.c_str(),"%d",&best_pert_it1->dim_fission_l);
+		iss>>s;
+		sscanf(s.c_str(),"%d",&best_pert_it1->dim_fission_r);
 	}
 }
 

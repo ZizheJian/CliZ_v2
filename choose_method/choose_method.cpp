@@ -69,6 +69,7 @@ namespace cliz
 								strcpy(best_compress_function,"compress_use_map_mask");
 				}
 				else
+				{
 					if (map_file_mode==NULL)
 					{
 						if (strcmp(best_compress_function,"compress")==0);
@@ -119,6 +120,58 @@ namespace cliz
 								else
 									strcpy(best_compress_function,"compress_use_map_mask");
 					}
+					if (best_pert!=0)
+						if (map_file_mode==NULL)
+						{
+							if (strcmp(best_pert_compress_function,"compress")==0);
+							if (strcmp(best_pert_compress_function,"compress_map")==0)
+							{
+								printf("Error: Configuration file indicates that a map file is required, but no map file is specified.\n");
+								exit(0);
+							}
+							if (strcmp(best_pert_compress_function,"compress_mask")==0)
+								if (mask_file_path==NULL)
+								{
+									printf("Error: Configuration file indicates that a mask file is required, but no mask file is specified.\n");
+									exit(0);
+								}
+								else
+									strcpy(best_pert_compress_function,"compress_mask");
+							if (strcmp(best_pert_compress_function,"compress_map_mask")==0)
+							{
+								printf("Error: Configuration file indicates that a map file is required, but no map file is specified.\n");
+								exit(0);
+							}
+						}
+						else
+						{
+							if (strcmp(best_pert_compress_function,"compress")==0);
+							if (strcmp(best_pert_compress_function,"compress_map")==0)
+								if (strcmp(map_file_mode,"set")==0)
+									strcpy(best_pert_compress_function,"compress_set_map");
+								else
+									strcpy(best_pert_compress_function,"compress_use_map");
+							if (strcmp(best_pert_compress_function,"compress_mask")==0)
+								if (mask_file_path==NULL)
+								{
+									printf("Error: Configuration file indicates that a mask file is required, but no mask file is specified.\n");
+									exit(0);
+								}
+								else
+									strcpy(best_pert_compress_function,"compress_mask");
+							if (strcmp(best_pert_compress_function,"compress_map_mask")==0)
+								if (mask_file_path==NULL)
+								{
+									printf("Error: Configuration file indicates that a mask file is required, but no mask file is specified.\n");
+									exit(0);
+								}
+								else
+									if (strcmp(map_file_mode,"set")==0)
+										strcpy(best_pert_compress_function,"compress_set_map_mask");
+									else
+										strcpy(best_pert_compress_function,"compress_use_map_mask");
+						}
+				}
 			else
 			{
 				new_data(best_compress_function,FUNC_NAME_LENGTH);

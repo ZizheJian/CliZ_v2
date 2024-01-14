@@ -111,7 +111,7 @@ namespace cliz
 		bitstream_end=bitstream_start+ZSTD_compress(bitstream+bitstream_start,data_num*sizeof(T),temp_bitstream,bitstream_end-bitstream_start,3);
 		delete_data(temp_bitstream);
 		long long bitstream_length=bitstream_end-bitstream_start;
-		memcpy(bitstream,&bitstream_length,sizeof(long long));
+		memcpy(bitstream+bitstream_start-sizeof(long long),&bitstream_length,sizeof(long long));
 		timer->pause();
 		printf("bitstream_end=%lld, map_bitstream_progress=%lld/%lld\n",bitstream_end,map_bitstream_start,map_bitstream_end);
 		CR=((float)data_num*sizeof(T))/(bitstream_end+map_bitstream_end);
