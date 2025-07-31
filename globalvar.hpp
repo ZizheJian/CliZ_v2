@@ -93,7 +93,7 @@ namespace cliz
 
 	struct node_compare
 	{
-		bool operator()(const node_c *a,const node_c *b)
+		bool operator()(const node_c *a,const node_c *b) const
 		{
 			return a->count<b->count;
 		}

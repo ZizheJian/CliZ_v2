@@ -7,7 +7,7 @@
 #include "../hyper_iterator.cpp"
 #include "../DC/DC.hpp1"
 #include "../timer.cpp"
-#include "../zstd/zstd.h"
+#include "../zstd/lib/zstd.h"
 #include "../transform/transform.hpp1"
 
 #endif
