@@ -8,350 +8,463 @@
 # You may select, at your option, one of the above-listed licenses.
 # ################################################################
 
-# Modules
-ZSTD_LIB_COMPRESSION ?= 1
-ZSTD_LIB_DECOMPRESSION ?= 1
-ZSTD_LIB_DICTBUILDER ?= 1
-ZSTD_LIB_DEPRECATED ?= 0
+# verbose mode (print commands) on V=1 or VERBOSE=1
+Q = $(if $(filter 1,$(V) $(VERBOSE)),,@)
 
-# Input variables for libzstd.mk
-ifeq ($(ZSTD_LIB_COMPRESSION), 0)
-  ZSTD_LIB_DICTBUILDER = 0
-  ZSTD_LIB_DEPRECATED = 0
-endif
+PRGDIR   = programs
+ZSTDDIR  = lib
+BUILDIR  = build
+ZWRAPDIR = zlibWrapper
+TESTDIR  = tests
+FUZZDIR  = $(TESTDIR)/fuzz
 
-ifeq ($(ZSTD_LIB_DECOMPRESSION), 0)
-  ZSTD_LEGACY_SUPPORT = 0
-  ZSTD_LIB_DEPRECATED = 0
-endif
+# Define nul output
+VOID = /dev/null
 
-include libzstd.mk
-
-ZSTD_FILES := $(ZSTD_COMMON_FILES) $(ZSTD_LEGACY_FILES)
-
-ifneq ($(ZSTD_LIB_COMPRESSION), 0)
-  ZSTD_FILES += $(ZSTD_COMPRESS_FILES)
-endif
-
-ifneq ($(ZSTD_LIB_DECOMPRESSION), 0)
-  ZSTD_FILES += $(ZSTD_DECOMPRESS_FILES)
-endif
-
-ifneq ($(ZSTD_LIB_DEPRECATED), 0)
-  ZSTD_FILES += $(ZSTD_DEPRECATED_FILES)
-endif
-
-ifneq ($(ZSTD_LIB_DICTBUILDER), 0)
-  ZSTD_FILES += $(ZSTD_DICTBUILDER_FILES)
-endif
-
-ZSTD_LOCAL_SRC := $(notdir $(ZSTD_FILES))
-ZSTD_LOCAL_OBJ0 := $(ZSTD_LOCAL_SRC:.c=.o)
-ZSTD_LOCAL_OBJ := $(ZSTD_LOCAL_OBJ0:.S=.o)
-
-VERSION := $(ZSTD_VERSION)
-
-# Note: by default, the static library is built single-threaded and dynamic library is built
-# multi-threaded. It is possible to force multi or single threaded builds by appending
-# -mt or -nomt to the build target (like lib-mt for multi-threaded, lib-nomt for single-threaded).
-.PHONY: default
-default: lib-release
-
-CPPFLAGS_DYNLIB  += -DZSTD_MULTITHREAD # dynamic library build defaults to multi-threaded
-LDFLAGS_DYNLIB   += -pthread
-CPPFLAGS_STATLIB +=                    # static library build defaults to single-threaded
-
-
-ifeq ($(findstring GCC,$(CCVER)),GCC)
-decompress/zstd_decompress_block.o : CFLAGS+=-fno-tree-vectorize
-endif
-
-
-# macOS linker doesn't support -soname, and use different extension
-# see : https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/DynamicLibraries/100-Articles/DynamicLibraryDesignGuidelines.html
-ifeq ($(UNAME), Darwin)
-  SHARED_EXT = dylib
-  SHARED_EXT_MAJOR = $(LIBVER_MAJOR).$(SHARED_EXT)
-  SHARED_EXT_VER = $(LIBVER).$(SHARED_EXT)
-  SONAME_FLAGS = -install_name $(LIBDIR)/libzstd.$(SHARED_EXT_MAJOR) -compatibility_version $(LIBVER_MAJOR) -current_version $(LIBVER)
-else
-  ifeq ($(UNAME), AIX)
-    SONAME_FLAGS =
-  else
-    SONAME_FLAGS = -Wl,-soname=libzstd.$(SHARED_EXT).$(LIBVER_MAJOR)
-  endif
-  SHARED_EXT = so
-  SHARED_EXT_MAJOR = $(SHARED_EXT).$(LIBVER_MAJOR)
-  SHARED_EXT_VER = $(SHARED_EXT).$(LIBVER)
-endif
-
-
-.PHONY: all
-all: lib
-
-
-.PHONY: libzstd.a  # must be run every time
-libzstd.a: CPPFLAGS += $(CPPFLAGS_STATLIB)
-
-SET_CACHE_DIRECTORY = \
-   +$(MAKE) --no-print-directory $@ \
-    BUILD_DIR=obj/$(HASH_DIR) \
-    CPPFLAGS="$(CPPFLAGS)" \
-    CFLAGS="$(CFLAGS)" \
-    LDFLAGS="$(LDFLAGS)"
-
-ifndef BUILD_DIR
-# determine BUILD_DIR from compilation flags
-
-libzstd.a:
-	$(SET_CACHE_DIRECTORY)
-
-else
-# BUILD_DIR is defined
-
-ZSTD_STATLIB_DIR := $(BUILD_DIR)/static
-ZSTD_STATLIB := $(ZSTD_STATLIB_DIR)/libzstd.a
-ZSTD_STATLIB_OBJ := $(addprefix $(ZSTD_STATLIB_DIR)/,$(ZSTD_LOCAL_OBJ))
-$(ZSTD_STATLIB): ARFLAGS = rcs
-$(ZSTD_STATLIB): | $(ZSTD_STATLIB_DIR)
-$(ZSTD_STATLIB): $(ZSTD_STATLIB_OBJ)
-  # Check for multithread flag at target execution time
-	$(if $(filter -DZSTD_MULTITHREAD,$(CPPFLAGS)),\
-    @echo compiling multi-threaded static library $(LIBVER),\
-    @echo compiling single-threaded static library $(LIBVER))
-	$(AR) $(ARFLAGS) $@ $^
-
-libzstd.a: $(ZSTD_STATLIB)
-	cp -f $< $@
-
-endif
+# When cross-compiling from linux to windows, you might
+# need to specify this as "Windows." Fedora build fails
+# without it.
+#
+# Note: mingw-w64 build from linux to windows does not
+# fail on other tested distros (ubuntu, debian) even
+# without manually specifying the TARGET_SYSTEM.
+TARGET_SYSTEM ?= $(OS)
+CP ?= cp
 
 ifneq (,$(filter Windows%,$(TARGET_SYSTEM)))
-
-LIBZSTD = dll/libzstd.dll
-$(LIBZSTD): $(ZSTD_FILES)
-	@echo compiling dynamic library $(LIBVER)
-	$(CC) $(FLAGS) -DZSTD_DLL_EXPORT=1 -Wl,--out-implib,dll/libzstd.dll.a -shared $^ -o $@
-
-else  # not Windows
-
-LIBZSTD = libzstd.$(SHARED_EXT_VER)
-.PHONY: $(LIBZSTD)  # must be run every time
-$(LIBZSTD): CPPFLAGS += $(CPPFLAGS_DYNLIB)
-$(LIBZSTD): CFLAGS   += -fPIC -fvisibility=hidden
-$(LIBZSTD): LDFLAGS  += -shared $(LDFLAGS_DYNLIB)
-
-ifndef BUILD_DIR
-# determine BUILD_DIR from compilation flags
-
-$(LIBZSTD):
-	$(SET_CACHE_DIRECTORY)
-
+  EXT =.exe
 else
-# BUILD_DIR is defined
+  EXT =
+endif
 
-ZSTD_DYNLIB_DIR := $(BUILD_DIR)/dynamic
-ZSTD_DYNLIB := $(ZSTD_DYNLIB_DIR)/$(LIBZSTD)
-ZSTD_DYNLIB_OBJ := $(addprefix $(ZSTD_DYNLIB_DIR)/,$(ZSTD_LOCAL_OBJ))
+## default: Build lib-release and zstd-release
+.PHONY: default
+default: lib-release zstd-release
 
-$(ZSTD_DYNLIB): | $(ZSTD_DYNLIB_DIR)
-$(ZSTD_DYNLIB): $(ZSTD_DYNLIB_OBJ)
-# Check for multithread flag at target execution time
-	$(if $(filter -DZSTD_MULTITHREAD,$(CPPFLAGS)),\
-    @echo compiling multi-threaded dynamic library $(LIBVER),\
-    @echo compiling single-threaded dynamic library $(LIBVER))
-	$(CC) $(FLAGS) $^ $(LDFLAGS) $(SONAME_FLAGS) -o $@
-	@echo creating versioned links
-	ln -sf $@ libzstd.$(SHARED_EXT_MAJOR)
-	ln -sf $@ libzstd.$(SHARED_EXT)
+.PHONY: all
+all: allmost examples manual contrib
 
-$(LIBZSTD): $(ZSTD_DYNLIB)
-	cp -f $< $@
+.PHONY: allmost
+allmost: allzstd zlibwrapper
 
-endif  # ifndef BUILD_DIR
-endif  # if windows
+# skip zwrapper, can't build that on alternate architectures without the proper zlib installed
+.PHONY: allzstd
+allzstd: lib
+	$(Q)$(MAKE) -C $(PRGDIR) all
+	$(Q)$(MAKE) -C $(TESTDIR) all
 
-.PHONY: libzstd
-libzstd : $(LIBZSTD)
+.PHONY: all32
+all32:
+	$(MAKE) -C $(PRGDIR) zstd32
+	$(MAKE) -C $(TESTDIR) all32
 
-.PHONY: lib
-lib : libzstd.a libzstd
+.PHONY: lib lib-release lib-mt lib-nomt
+lib lib-release lib-mt lib-nomt:
+	$(Q)$(MAKE) -C $(ZSTDDIR) $@
 
+.PHONY: zstd zstd-release
+zstd zstd-release:
+	$(Q)$(MAKE) -C $(PRGDIR) $@
+	$(Q)ln -sf $(PRGDIR)/zstd$(EXT) zstd$(EXT)
 
-# note : do not define lib-mt or lib-release as .PHONY
-# make does not consider implicit pattern rule for .PHONY target
+.PHONY: zstdmt
+zstdmt:
+	$(Q)$(MAKE) -C $(PRGDIR) $@
+	$(Q)$(CP) $(PRGDIR)/zstd$(EXT) ./zstdmt$(EXT)
 
-%-mt : CPPFLAGS_DYNLIB  := -DZSTD_MULTITHREAD
-%-mt : CPPFLAGS_STATLIB := -DZSTD_MULTITHREAD
-%-mt : LDFLAGS_DYNLIB   := -pthread
-%-mt : %
-	@echo multi-threaded build completed
+.PHONY: zlibwrapper
+zlibwrapper: lib
+	$(MAKE) -C $(ZWRAPDIR) all
 
-%-nomt : CPPFLAGS_DYNLIB  :=
-%-nomt : LDFLAGS_DYNLIB   :=
-%-nomt : CPPFLAGS_STATLIB :=
-%-nomt : %
-	@echo single-threaded build completed
+## test: run long-duration tests
+.PHONY: test
+DEBUGLEVEL ?= 1
+test: MOREFLAGS += -g -Werror
+test:
+	DEBUGLEVEL=$(DEBUGLEVEL) MOREFLAGS="$(MOREFLAGS)" $(MAKE) -j -C $(PRGDIR) allVariants
+	$(MAKE) -C $(TESTDIR) $@
+	ZSTD=../../programs/zstd $(MAKE) -C doc/educational_decoder $@
 
-%-release : DEBUGFLAGS :=
-%-release : %
-	@echo release build completed
+## check: run basic tests for `zstd` cli
+.PHONY: check
+check:
+	$(Q)$(MAKE) -C $(TESTDIR) $@
 
+.PHONY: automated_benchmarking
+automated_benchmarking:
+	$(MAKE) -C $(TESTDIR) $@
 
-# Generate .h dependencies automatically
+.PHONY: benchmarking
+benchmarking: automated_benchmarking
 
-DEPFLAGS = -MT $@ -MMD -MP -MF
+## examples: build all examples in `examples/` directory
+.PHONY: examples
+examples: lib
+	$(MAKE) -C examples all
 
-$(ZSTD_DYNLIB_DIR)/%.o : %.c $(ZSTD_DYNLIB_DIR)/%.d | $(ZSTD_DYNLIB_DIR)
-	@echo CC $@
-	$(COMPILE.c) $(DEPFLAGS) $(ZSTD_DYNLIB_DIR)/$*.d $(OUTPUT_OPTION) $<
+## manual: generate API documentation in html format
+.PHONY: manual
+manual:
+	$(MAKE) -C contrib/gen_html $@
 
-$(ZSTD_STATLIB_DIR)/%.o : %.c $(ZSTD_STATLIB_DIR)/%.d | $(ZSTD_STATLIB_DIR)
-	@echo CC $@
-	$(COMPILE.c) $(DEPFLAGS) $(ZSTD_STATLIB_DIR)/$*.d $(OUTPUT_OPTION) $<
+## man: generate man page
+.PHONY: man
+man:
+	$(MAKE) -C programs $@
 
-$(ZSTD_DYNLIB_DIR)/%.o : %.S | $(ZSTD_DYNLIB_DIR)
-	@echo AS $@
-	$(COMPILE.S) $(OUTPUT_OPTION) $<
+## contrib: build all supported projects in `/contrib` directory
+.PHONY: contrib
+contrib: lib
+	$(MAKE) -C contrib/pzstd all
+	$(MAKE) -C contrib/seekable_format/examples all
+	$(MAKE) -C contrib/seekable_format/tests test
+	$(MAKE) -C contrib/largeNbDicts all
+	$(MAKE) -C contrib/externalSequenceProducer all
+	cd build/single_file_libs/ ; ./build_decoder_test.sh
+	cd build/single_file_libs/ ; ./build_library_test.sh
 
-$(ZSTD_STATLIB_DIR)/%.o : %.S | $(ZSTD_STATLIB_DIR)
-	@echo AS $@
-	$(COMPILE.S) $(OUTPUT_OPTION) $<
-
-MKDIR ?= mkdir
-$(BUILD_DIR) $(ZSTD_DYNLIB_DIR) $(ZSTD_STATLIB_DIR):
-	$(MKDIR) -p $@
-
-DEPFILES := $(ZSTD_DYNLIB_OBJ:.o=.d) $(ZSTD_STATLIB_OBJ:.o=.d)
-$(DEPFILES):
-
-include $(wildcard $(DEPFILES))
-
-
-# Special case : building library in single-thread mode _and_ without zstdmt_compress.c
-ZSTDMT_FILES = compress/zstdmt_compress.c
-ZSTD_NOMT_FILES = $(filter-out $(ZSTDMT_FILES),$(ZSTD_FILES))
-libzstd-nomt: CFLAGS += -fPIC -fvisibility=hidden
-libzstd-nomt: LDFLAGS += -shared
-libzstd-nomt: $(ZSTD_NOMT_FILES)
-	@echo compiling single-thread dynamic library $(LIBVER)
-	@echo files : $(ZSTD_NOMT_FILES)
-	$(CC) $(FLAGS) $^ $(LDFLAGS) $(SONAME_FLAGS) -o $@
+.PHONY: cleanTabs
+cleanTabs:
+	cd contrib; ./cleanTabs
 
 .PHONY: clean
 clean:
-	$(RM) -r *.dSYM   # macOS-specific
-	$(RM) core *.o *.a *.gcda *.$(SHARED_EXT) *.$(SHARED_EXT).* libzstd.pc
-	$(RM) dll/libzstd.dll dll/libzstd.lib libzstd-nomt*
-	$(RM) -r obj/*
-	@echo Cleaning library completed
+	$(Q)$(MAKE) -C $(ZSTDDIR) $@ > $(VOID)
+	$(Q)$(MAKE) -C $(PRGDIR) $@ > $(VOID)
+	$(Q)$(MAKE) -C $(TESTDIR) $@ > $(VOID)
+	$(Q)$(MAKE) -C $(ZWRAPDIR) $@ > $(VOID)
+	$(Q)$(MAKE) -C examples/ $@ > $(VOID)
+	$(Q)$(MAKE) -C contrib/gen_html $@ > $(VOID)
+	$(Q)$(MAKE) -C contrib/pzstd $@ > $(VOID)
+	$(Q)$(MAKE) -C contrib/seekable_format/examples $@ > $(VOID)
+	$(Q)$(MAKE) -C contrib/seekable_format/tests $@ > $(VOID)
+	$(Q)$(MAKE) -C contrib/largeNbDicts $@ > $(VOID)
+	$(Q)$(MAKE) -C contrib/externalSequenceProducer $@ > $(VOID)
+	$(Q)$(RM) zstd$(EXT) zstdmt$(EXT) tmp*
+	$(Q)$(RM) -r lz4 cmakebuild mesonbuild install
+	@echo Cleaning completed
 
-#-----------------------------------------------------------------------------
-# make install is validated only for below listed environments
-#-----------------------------------------------------------------------------
-ifneq (,$(filter $(UNAME),Linux Darwin GNU/kFreeBSD GNU OpenBSD FreeBSD NetBSD DragonFly SunOS Haiku AIX MSYS_NT CYGWIN_NT))
+LIBZSTD_MK_DIR = $(ZSTDDIR)
+include $(LIBZSTD_MK_DIR)/install_oses.mk # UNAME, INSTALL_OS_LIST
 
-lib: libzstd.pc
+#------------------------------------------------------------------------------
+# make install is validated only for Linux, macOS, Hurd and some BSD targets
+#------------------------------------------------------------------------------
+ifneq (,$(filter $(INSTALL_OS_LIST),$(UNAME)))
 
-HAS_EXPLICIT_EXEC_PREFIX := $(if $(or $(EXEC_PREFIX),$(exec_prefix)),1,)
+HOST_OS = POSIX
 
-DESTDIR     ?=
-# directory variables : GNU conventions prefer lowercase
-# see https://www.gnu.org/prep/standards/html_node/Makefile-Conventions.html
-# support both lower and uppercase (BSD), use uppercase in script
-prefix      ?= /usr/local
-PREFIX      ?= $(prefix)
-exec_prefix ?= $(PREFIX)
-EXEC_PREFIX ?= $(exec_prefix)
-libdir      ?= $(EXEC_PREFIX)/lib
-LIBDIR      ?= $(libdir)
-includedir  ?= $(PREFIX)/include
-INCLUDEDIR  ?= $(includedir)
+MKDIR ?= mkdir -p
 
-PCINCDIR := $(patsubst $(PREFIX)%,%,$(INCLUDEDIR))
-PCLIBDIR := $(patsubst $(EXEC_PREFIX)%,%,$(LIBDIR))
-
-# If we successfully stripped off a prefix, we'll add a reference to the
-# relevant pc variable.
-PCINCPREFIX := $(if $(findstring $(INCLUDEDIR),$(PCINCDIR)),,$${prefix})
-PCLIBPREFIX := $(if $(findstring $(LIBDIR),$(PCLIBDIR)),,$${exec_prefix})
-
-# If no explicit EXEC_PREFIX was set by the caller, write it out as a reference
-# to PREFIX, rather than as a resolved value.
-PCEXEC_PREFIX := $(if $(HAS_EXPLICIT_EXEC_PREFIX),$(EXEC_PREFIX),$${prefix})
-
-ifneq (,$(filter $(UNAME),FreeBSD NetBSD DragonFly))
-  PKGCONFIGDIR ?= $(PREFIX)/libdata/pkgconfig
-else
-  PKGCONFIGDIR ?= $(LIBDIR)/pkgconfig
+HAVE_COLORNEVER = $(shell echo a | egrep --color=never a > /dev/null 2> /dev/null && echo 1 || echo 0)
+EGREP_OPTIONS ?=
+ifeq ($(HAVE_COLORNEVER), 1)
+EGREP_OPTIONS += --color=never
 endif
+EGREP = egrep $(EGREP_OPTIONS)
 
-ifneq (,$(filter $(UNAME),SunOS))
-  INSTALL ?= ginstall
-else
-  INSTALL ?= install
-endif
+# Print a two column output of targets and their description. To add a target description, put a
+# comment in the Makefile with the format "## <TARGET>: <DESCRIPTION>".  For example:
+#
+## list: Print all targets and their descriptions (if provided)
+.PHONY: list
+list:
+	$(Q)TARGETS=$$($(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null \
+		| awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
+		| $(EGREP) -v  -e '^[^[:alnum:]]' | sort); \
+	{ \
+	    printf "Target Name\tDescription\n"; \
+	    printf "%0.s-" {1..16}; printf "\t"; printf "%0.s-" {1..40}; printf "\n"; \
+	    for target in $$TARGETS; do \
+	        line=$$($(EGREP) "^##[[:space:]]+$$target:" $(lastword $(MAKEFILE_LIST))); \
+	        description=$$(echo $$line | awk '{i=index($$0,":"); print substr($$0,i+1)}' | xargs); \
+	        printf "$$target\t$$description\n"; \
+	    done \
+	} | column -t -s $$'\t'
 
-INSTALL_PROGRAM ?= $(INSTALL)
-INSTALL_DATA    ?= $(INSTALL) -m 644
-
-
-libzstd.pc: libzstd.pc.in
-	@echo creating pkgconfig
-	@sed \
-	        -e 's|@PREFIX@|$(PREFIX)|' \
-	        -e 's|@EXEC_PREFIX@|$(PCEXEC_PREFIX)|' \
-	        -e 's|@INCLUDEDIR@|$(PCINCPREFIX)$(PCINCDIR)|' \
-	        -e 's|@LIBDIR@|$(PCLIBPREFIX)$(PCLIBDIR)|' \
-	        -e 's|@VERSION@|$(VERSION)|' \
-	        -e 's|@LIBS_PRIVATE@|$(LDFLAGS_DYNLIB)|' \
-	        $< >$@
-
-.PHONY: install
-install: install-pc install-static install-shared install-includes
-	@echo zstd static and shared library installed
-
-.PHONY: install-pc
-install-pc: libzstd.pc
-	[ -e $(DESTDIR)$(PKGCONFIGDIR) ] || $(INSTALL) -d -m 755 $(DESTDIR)$(PKGCONFIGDIR)/
-	$(INSTALL_DATA) libzstd.pc $(DESTDIR)$(PKGCONFIGDIR)/
-
-.PHONY: install-static
-install-static:
-	# only generate libzstd.a if it's not already present
-	[ -e libzstd.a ] || $(MAKE) libzstd.a-release
-	[ -e $(DESTDIR)$(LIBDIR) ] || $(INSTALL) -d -m 755 $(DESTDIR)$(LIBDIR)/
-	@echo Installing static library
-	$(INSTALL_DATA) libzstd.a $(DESTDIR)$(LIBDIR)
-
-.PHONY: install-shared
-install-shared:
-	# only generate libzstd.so if it's not already present
-	[ -e $(LIBZSTD) ] || $(MAKE) libzstd-release
-	[ -e $(DESTDIR)$(LIBDIR) ] || $(INSTALL) -d -m 755 $(DESTDIR)$(LIBDIR)/
-	@echo Installing shared library
-	$(INSTALL_PROGRAM) $(LIBZSTD) $(DESTDIR)$(LIBDIR)
-	ln -sf $(LIBZSTD) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_MAJOR)
-	ln -sf $(LIBZSTD) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT)
-
-.PHONY: install-includes
-install-includes:
-	[ -e $(DESTDIR)$(INCLUDEDIR) ] || $(INSTALL) -d -m 755 $(DESTDIR)$(INCLUDEDIR)/
-	@echo Installing includes
-	$(INSTALL_DATA) zstd.h $(DESTDIR)$(INCLUDEDIR)
-	$(INSTALL_DATA) zstd_errors.h $(DESTDIR)$(INCLUDEDIR)
-	$(INSTALL_DATA) zdict.h $(DESTDIR)$(INCLUDEDIR)
+.PHONY: install armtest usan asan uasan msan asan32
+install:
+	$(Q)$(MAKE) -C $(ZSTDDIR) $@
+	$(Q)$(MAKE) -C $(PRGDIR) $@
 
 .PHONY: uninstall
 uninstall:
-	$(RM) $(DESTDIR)$(LIBDIR)/libzstd.a
-	$(RM) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT)
-	$(RM) $(DESTDIR)$(LIBDIR)/libzstd.$(SHARED_EXT_MAJOR)
-	$(RM) $(DESTDIR)$(LIBDIR)/$(LIBZSTD)
-	$(RM) $(DESTDIR)$(PKGCONFIGDIR)/libzstd.pc
-	$(RM) $(DESTDIR)$(INCLUDEDIR)/zstd.h
-	$(RM) $(DESTDIR)$(INCLUDEDIR)/zstd_errors.h
-	$(RM) $(DESTDIR)$(INCLUDEDIR)/zdict.h
-	@echo zstd libraries successfully uninstalled
+	$(Q)$(MAKE) -C $(ZSTDDIR) $@
+	$(Q)$(MAKE) -C $(PRGDIR) $@
 
+.PHONY: travis-install
+travis-install:
+	$(MAKE) install PREFIX=~/install_test_dir
+
+.PHONY: clangbuild-darwin-fat
+clangbuild-darwin-fat: clean
+	clang -v
+	CXX=clang++ CC=clang CFLAGS+="-Werror -Wconversion -Wno-sign-conversion -Wdocumentation -arch arm64" $(MAKE) zstd-release
+	mv programs/zstd programs/zstd_arm64
+	CXX=clang++ CC=clang CFLAGS+="-Werror -Wconversion -Wno-sign-conversion -Wdocumentation -arch x86_64" $(MAKE) zstd-release
+	mv programs/zstd programs/zstd_x64
+	lipo -create programs/zstd_x64 programs/zstd_arm64 -output programs/zstd
+
+.PHONY: gcc5build gcc6build gcc7build clangbuild m32build armbuild aarch64build ppcbuild ppc64build
+gcc5build: clean
+	gcc-5 -v
+	CC=gcc-5 $(MAKE) all MOREFLAGS="-Werror $(MOREFLAGS)"
+
+gcc6build: clean
+	gcc-6 -v
+	CC=gcc-6 $(MAKE) all MOREFLAGS="-Werror $(MOREFLAGS)"
+
+gcc7build: clean
+	gcc-7 -v
+	CC=gcc-7 $(MAKE) all MOREFLAGS="-Werror $(MOREFLAGS)"
+
+clangbuild: clean
+	clang -v
+	CXX=clang++ CC=clang CFLAGS="-Werror -Wconversion -Wno-sign-conversion -Wdocumentation" $(MAKE) all
+
+m32build: clean
+	gcc -v
+	$(MAKE) all32
+
+armbuild: clean
+	CC=arm-linux-gnueabi-gcc CFLAGS="-Werror" $(MAKE) allzstd
+
+aarch64build: clean
+	CC=aarch64-linux-gnu-gcc CFLAGS="-Werror -O0" $(MAKE) allzstd
+
+ppcbuild: clean
+	CC=powerpc-linux-gnu-gcc CFLAGS="-m32 -Wno-attributes -Werror" $(MAKE) -j allzstd
+
+ppc64build: clean
+	CC=powerpc-linux-gnu-gcc CFLAGS="-m64 -Werror" $(MAKE) -j allzstd
+
+.PHONY: armfuzz aarch64fuzz ppcfuzz ppc64fuzz
+armfuzz: clean
+	CC=arm-linux-gnueabi-gcc QEMU_SYS=qemu-arm-static MOREFLAGS="-static $(MOREFLAGS)" FUZZER_FLAGS="--no-big-tests $(FUZZER_FLAGS)" $(MAKE) -C $(TESTDIR) fuzztest
+
+aarch64fuzz: clean
+	ld -v
+	CC=aarch64-linux-gnu-gcc QEMU_SYS=qemu-aarch64-static MOREFLAGS="-static $(MOREFLAGS)" FUZZER_FLAGS="--no-big-tests $(FUZZER_FLAGS)" $(MAKE) -C $(TESTDIR) fuzztest
+
+ppcfuzz: clean
+	CC=powerpc-linux-gnu-gcc QEMU_SYS=qemu-ppc-static MOREFLAGS="-static $(MOREFLAGS)" FUZZER_FLAGS="--no-big-tests $(FUZZER_FLAGS)" $(MAKE) -C $(TESTDIR) fuzztest
+
+ppc64fuzz: clean
+	CC=powerpc-linux-gnu-gcc QEMU_SYS=qemu-ppc64-static MOREFLAGS="-m64 -static $(MOREFLAGS)" FUZZER_FLAGS="--no-big-tests $(FUZZER_FLAGS)" $(MAKE) -C $(TESTDIR) fuzztest
+
+.PHONY: cxxtest gcc5test gcc6test armtest aarch64test ppctest ppc64test
+cxxtest: CXXFLAGS += -Wall -Wextra -Wundef -Wshadow -Wcast-align -Werror
+cxxtest: clean
+	$(MAKE) -C $(PRGDIR) all CC="$(CXX) -Wno-deprecated" CFLAGS="$(CXXFLAGS)"   # adding -Wno-deprecated to avoid clang++ warning on dealing with C files directly
+
+gcc5test: clean
+	gcc-5 -v
+	$(MAKE) all CC=gcc-5 MOREFLAGS="-Werror $(MOREFLAGS)"
+
+gcc6test: clean
+	gcc-6 -v
+	$(MAKE) all CC=gcc-6 MOREFLAGS="-Werror $(MOREFLAGS)"
+
+armtest: clean
+	$(MAKE) -C $(TESTDIR) datagen   # use native, faster
+	$(MAKE) -C $(TESTDIR) test CC=arm-linux-gnueabi-gcc QEMU_SYS=qemu-arm-static ZSTDRTTEST= MOREFLAGS="-Werror -static $(MOREFLAGS)" FUZZER_FLAGS="--no-big-tests $(FUZZER_FLAGS)"
+
+aarch64test:
+	$(MAKE) -C $(TESTDIR) datagen   # use native, faster
+	$(MAKE) -C $(TESTDIR) test CC=aarch64-linux-gnu-gcc QEMU_SYS=qemu-aarch64-static ZSTDRTTEST= MOREFLAGS="-Werror -static $(MOREFLAGS)" FUZZER_FLAGS="--no-big-tests $(FUZZER_FLAGS)"
+
+ppctest: clean
+	$(MAKE) -C $(TESTDIR) datagen   # use native, faster
+	$(MAKE) -C $(TESTDIR) test CC=powerpc-linux-gnu-gcc QEMU_SYS=qemu-ppc-static ZSTDRTTEST= MOREFLAGS="-Werror -Wno-attributes -static $(MOREFLAGS)" FUZZER_FLAGS="--no-big-tests $(FUZZER_FLAGS)"
+
+ppc64test: clean
+	$(MAKE) -C $(TESTDIR) datagen   # use native, faster
+	$(MAKE) -C $(TESTDIR) test CC=powerpc-linux-gnu-gcc QEMU_SYS=qemu-ppc64-static ZSTDRTTEST= MOREFLAGS="-m64 -static $(MOREFLAGS)" FUZZER_FLAGS="--no-big-tests $(FUZZER_FLAGS)"
+
+.PHONY: arm-ppc-compilation
+arm-ppc-compilation:
+	$(MAKE) -C $(PRGDIR) clean zstd CC=arm-linux-gnueabi-gcc QEMU_SYS=qemu-arm-static ZSTDRTTEST= MOREFLAGS="-Werror -static $(MOREFLAGS)"
+	$(MAKE) -C $(PRGDIR) clean zstd CC=aarch64-linux-gnu-gcc QEMU_SYS=qemu-aarch64-static ZSTDRTTEST= MOREFLAGS="-Werror -static $(MOREFLAGS)"
+	$(MAKE) -C $(PRGDIR) clean zstd CC=powerpc-linux-gnu-gcc QEMU_SYS=qemu-ppc-static ZSTDRTTEST= MOREFLAGS="-Werror -Wno-attributes -static $(MOREFLAGS)"
+	$(MAKE) -C $(PRGDIR) clean zstd CC=powerpc-linux-gnu-gcc QEMU_SYS=qemu-ppc64-static ZSTDRTTEST= MOREFLAGS="-m64 -static $(MOREFLAGS)"
+
+regressiontest:
+	$(MAKE) -C $(FUZZDIR) regressiontest
+
+uasanregressiontest:
+	$(MAKE) -C $(FUZZDIR) regressiontest CC=clang CXX=clang++ CFLAGS="-O3 -fsanitize=address,undefined -Werror" CXXFLAGS="-O3 -fsanitize=address,undefined -Werror"
+
+msanregressiontest:
+	$(MAKE) -C $(FUZZDIR) regressiontest CC=clang CXX=clang++ CFLAGS="-O3 -fsanitize=memory -Werror" CXXFLAGS="-O3 -fsanitize=memory -Werror"
+
+update_regressionResults : REGRESS_RESULTS_DIR := /tmp/regress_results_dir/
+update_regressionResults:
+	$(MAKE) -j -C programs zstd
+	$(MAKE) -j -C tests/regression test
+	$(RM) -r $(REGRESS_RESULTS_DIR)
+	$(MKDIR) $(REGRESS_RESULTS_DIR)
+	./tests/regression/test                         \
+        --cache  tests/regression/cache             \
+        --output $(REGRESS_RESULTS_DIR)/results.csv \
+        --zstd   programs/zstd
+	echo "Showing results differences"
+	! diff tests/regression/results.csv $(REGRESS_RESULTS_DIR)/results.csv
+	echo "Updating results.csv"
+	$(CP) $(REGRESS_RESULTS_DIR)/results.csv tests/regression/results.csv
+
+
+# run UBsan with -fsanitize-recover=pointer-overflow
+# this only works with recent compilers such as gcc 8+
+usan: clean
+	$(MAKE) test CC=clang MOREFLAGS="-g -fno-sanitize-recover=all -fsanitize=undefined -Werror $(MOREFLAGS)"
+
+asan: clean
+	$(MAKE) test CC=clang MOREFLAGS="-g -fsanitize=address -Werror $(MOREFLAGS)"
+
+asan-%: clean
+	LDFLAGS=-fuse-ld=gold MOREFLAGS="-g -fno-sanitize-recover=all -fsanitize=address -Werror $(MOREFLAGS)" $(MAKE) -C $(TESTDIR) $*
+
+msan: clean
+	$(MAKE) test CC=clang MOREFLAGS="-g -fsanitize=memory -fno-omit-frame-pointer -Werror $(MOREFLAGS)" HAVE_LZMA=0   # datagen.c fails this test for no obvious reason
+
+msan-%:
+	$(MAKE) clean
+	LDFLAGS=-fuse-ld=gold MOREFLAGS="-g -fno-sanitize-recover=all -fsanitize=memory -fno-omit-frame-pointer -Werror $(MOREFLAGS)" FUZZER_FLAGS="--no-big-tests $(FUZZER_FLAGS)" $(MAKE) -j -C $(TESTDIR) HAVE_LZMA=0 $*
+
+asan32: clean
+	$(MAKE) -C $(TESTDIR) test32 CC=clang MOREFLAGS="-g -fsanitize=address $(MOREFLAGS)"
+
+uasan: clean
+	$(MAKE) test CC=clang MOREFLAGS="-g -fno-sanitize-recover=all -fsanitize=address,undefined -Werror $(MOREFLAGS)"
+
+uasan-%: clean
+	LDFLAGS=-fuse-ld=gold MOREFLAGS="-g -fno-sanitize-recover=all -fsanitize=address,undefined -Werror $(MOREFLAGS)" $(MAKE) -C $(TESTDIR) $*
+
+tsan-%: clean
+	LDFLAGS=-fuse-ld=gold MOREFLAGS="-g -fno-sanitize-recover=all -fsanitize=thread -Werror $(MOREFLAGS)" $(MAKE) -C $(TESTDIR) $* FUZZER_FLAGS="--no-big-tests $(FUZZER_FLAGS)"
+
+.PHONY: apt-install
+apt-install:
+	# TODO: uncomment once issue 3011 is resolved and remove hack from Github Actions .yml
+	# sudo apt-get update
+	sudo apt-get -yq --no-install-suggests --no-install-recommends --force-yes install $(APT_PACKAGES)
+
+.PHONY: apt-add-repo
+apt-add-repo:
+	sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+	sudo apt-get update -y -qq
+
+.PHONY: ppcinstall arminstall valgrindinstall libc6install gcc6install gcc7install gcc8install gpp6install clang38install
+ppcinstall:
+	APT_PACKAGES="qemu-system-ppc qemu-user-static gcc-powerpc-linux-gnu" $(MAKE) apt-install
+
+arminstall:
+	APT_PACKAGES="qemu-system-arm qemu-user-static gcc-arm-linux-gnueabi libc6-dev-armel-cross gcc-aarch64-linux-gnu libc6-dev-arm64-cross" $(MAKE) apt-install
+
+valgrindinstall:
+	APT_PACKAGES="valgrind" $(MAKE) apt-install
+
+libc6install:
+	APT_PACKAGES="libc6-dev-i386 gcc-multilib" $(MAKE) apt-install
+
+gcc6install: apt-add-repo
+	APT_PACKAGES="libc6-dev-i386 gcc-multilib gcc-6 gcc-6-multilib" $(MAKE) apt-install
+
+gcc7install: apt-add-repo
+	APT_PACKAGES="libc6-dev-i386 gcc-multilib gcc-7 gcc-7-multilib" $(MAKE) apt-install
+
+gcc8install: apt-add-repo
+	APT_PACKAGES="libc6-dev-i386 gcc-multilib gcc-8 gcc-8-multilib" $(MAKE) apt-install
+
+gpp6install: apt-add-repo
+	APT_PACKAGES="libc6-dev-i386 g++-multilib gcc-6 g++-6 g++-6-multilib" $(MAKE) apt-install
+
+clang38install:
+	APT_PACKAGES="clang-3.8" $(MAKE) apt-install
+
+endif
+
+
+ifneq (,$(filter MSYS%,$(shell sh -c 'MSYSTEM="MSYS" uname') ))
+HOST_OS = MSYS
+endif
+
+#------------------------------------------------------------------------
+# target specific tests
+#------------------------------------------------------------------------
+ifneq (,$(filter MSYS POSIX,$(HOST_OS)))
+
+CMAKE ?= cmake
+CMAKE_PARAMS = -DZSTD_BUILD_CONTRIB:BOOL=ON -DZSTD_BUILD_STATIC:BOOL=ON -DZSTD_BUILD_TESTS:BOOL=ON -DZSTD_ZLIB_SUPPORT:BOOL=ON -DZSTD_LZMA_SUPPORT:BOOL=ON
+
+ifneq (,$(filter MSYS%,$(shell sh -c 'MSYSTEM="MSYS" uname')))
+CMAKE_PARAMS = -G"MSYS Makefiles" -DZSTD_MULTITHREAD_SUPPORT:BOOL=OFF -DZSTD_BUILD_STATIC:BOOL=ON -DZSTD_BUILD_TESTS:BOOL=ON
+endif
+
+.PHONY: cmakebuild
+cmakebuild:
+	$(CMAKE) --version
+	$(RM) -r cmakebuild install
+	$(MKDIR) cmakebuild install
+	cd cmakebuild; $(CMAKE) -Wdev -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_FLAGS="-Werror -O0" -DCMAKE_INSTALL_PREFIX=install $(CMAKE_PARAMS) ../build/cmake
+	$(CMAKE) --build cmakebuild --target install -- -j V=1
+	cd cmakebuild; ctest -V -L Medium
+
+MESON ?= meson
+NINJA ?= ninja
+
+.PHONY: mesonbuild
+mesonbuild:
+	$(MESON) setup \
+		--buildtype=debugoptimized \
+		-Db_lundef=false \
+		-Dauto_features=enabled \
+		-Dbin_programs=true \
+		-Dbin_tests=true \
+		-Dbin_contrib=true \
+		-Ddefault_library=both \
+		build/meson mesonbuild
+	$(NINJA) -C mesonbuild/
+	$(MESON) test -C mesonbuild/ --print-errorlogs
+	$(MESON) install -C mesonbuild --destdir staging/
+
+.PHONY: c89build gnu90build c99build gnu99build c11build bmix64build bmix32build bmi32build staticAnalyze
+c89build: clean
+	$(CC) -v
+	CFLAGS="-std=c89 -Werror -Wno-attributes -Wpedantic -Wno-long-long -Wno-variadic-macros -O0" $(MAKE) lib zstd
+
+gnu90build: clean
+	$(CC) -v
+	CFLAGS="-std=gnu90 -Werror -O0" $(MAKE) allmost
+
+c99build: clean
+	$(CC) -v
+	CFLAGS="-std=c99 -Werror -O0" $(MAKE) allmost
+
+gnu99build: clean
+	$(CC) -v
+	CFLAGS="-std=gnu99 -Werror -O0" $(MAKE) allmost
+
+c11build: clean
+	$(CC) -v
+	CFLAGS="-std=c11 -Werror -O0" $(MAKE) allmost
+
+bmix64build: clean
+	$(CC) -v
+	CFLAGS="-O3 -mbmi -Werror" $(MAKE) -C $(TESTDIR) test
+
+bmix32build: clean
+	$(CC) -v
+	CFLAGS="-O3 -mbmi -mx32 -Werror" $(MAKE) -C $(TESTDIR) test
+
+bmi32build: clean
+	$(CC) -v
+	CFLAGS="-O3 -mbmi -m32 -Werror" $(MAKE) -C $(TESTDIR) test
+
+# static analyzer test uses clang's scan-build
+# does not analyze zlibWrapper, due to detected issues in zlib source code
+staticAnalyze: SCANBUILD ?= scan-build
+staticAnalyze:
+	$(CC) -v
+	CC=$(CC) CPPFLAGS=-g $(SCANBUILD) --status-bugs -v $(MAKE) zstd
 endif

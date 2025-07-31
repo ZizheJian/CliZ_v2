@@ -1,10 +1,10 @@
 import os
 from starter_setting.Hurricane_T import Hurricane_T
-from starter_setting.CESM_T import CESM_T
-from starter_setting.b_e11_SSH import b_e11_SSH
-from starter_setting.b40_SOILLIQ import b40_SOILLIQ
-from starter_setting.b40_Tsfc import b40_Tsfc
-from starter_setting.b_e11_nday1_SST import b_e11_nday1_SST
+# from starter_setting.CESM_T import CESM_T
+# from starter_setting.b_e11_SSH import b_e11_SSH
+# from starter_setting.b40_SOILLIQ import b40_SOILLIQ
+# from starter_setting.b40_Tsfc import b40_Tsfc
+# from starter_setting.b_e11_nday1_SST import b_e11_nday1_SST
 
 code_generation_list=["choose_method","DC","transform"]
 for code_generation_folder in code_generation_list:
@@ -12,34 +12,37 @@ for code_generation_folder in code_generation_list:
 	os.system("python3 code_generation.py")
 	os.chdir("..")
 
-datasets=[Hurricane_T,CESM_T,b_e11_SSH,b40_SOILLIQ,b40_Tsfc,b_e11_nday1_SST]
 commands=[]
+commands.append("make -j16")
+Hurricane_T_compress=Hurricane_T()
+commands.append(Hurricane_T_compress.get_compress_command())
+Hurricane_T_recompress=Hurricane_T()
+Hurricane_T_recompress.config_path[0]="use"
+Hurricane_T_recompress.map_path[0]="use"
+commands.append(Hurricane_T_recompress.get_compress_command())
+Hurricane_T_decompress=Hurricane_T()
+Hurricane_T_decompress.config_path[0]="use"
+Hurricane_T_decompress.map_path[0]="use"
+commands.append(Hurricane_T_decompress.get_decompress_command())
+Hurricane_T_validate=Hurricane_T()
+commands.append(Hurricane_T_validate.get_validate_command())
+commands.append(Hurricane_T_decompress.get_ssim_command())
+for command in commands:
+	print("command=",command)
 
-#testname="compress CESM_ATM_RELHUM"
-#testname="decompress CESM_ATM_RELHUM"
-#testname="compress SOILLIQ+mask"
-#testname="decompress SOILLIQ+mask"
-#testname="compress CLOUDf48.log10"
-#testname="decompress CLOUDf48.log10"
-#testname="compress CESM-ATM-CLDLOW_2D"
-#testname="decompress CESM-ATM-CLDLOW_2D"
-#testname="compress b.nday1.SST"
-#testname="compress b.SST+mask"
-#testname="compress b.nday1.SST+mask"
 
-for dataset in datasets:
-	command=dataset()
-	if command!=None:
-		commands.append(command)
-if (len(commands)==0):
-	print("Error: No task is selected.")
-	exit()
-if (len(commands)>1):
-	print("Error: More than one tasks are selected.")
-	exit()
-os.system("make -j16")
-print("command=",commands[0])
-os.system(commands[0])
+# for dataset in datasets:
+# 	commands.append(dataset.get_compress_command())
+# 	commands.append(dataset.get_decompress_command())
+# if (len(commands)==0):
+# 	print("Error: No task is selected.")
+# 	exit()
+# if (len(commands)>1):
+# 	print("Error: More than one tasks are selected.")
+# 	exit()
+# os.system("make -j16")
+# print("command=",commands[0])
+# os.system(commands[0])
 
 # if testname=="compress CESM_ATM_RELHUM":
 # 	task.set_job("compress")
