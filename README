@@ -18,128 +18,82 @@ CliZ is mainly written in C. We also provide a starter.py script to simplify the
 
 Please refer to the comments in starter.py for details on how to use it.
 
-1. Use python to start cliz
-Follow the instructions in "starter.py".
+To invoke the cliz_compress and cliz_decompress from the command line, you can add the following command:
+1. -in {input_file_path}
+   When compressing, this is the path to the original data file.
+   When decompressing, this is the path to the compressed file.
+2. -out {output_file_path}
+   When compressing, this is the path to the compressed file.
+   When decompressing, this is the path to the decompressed file.
+3. -set-cfg {config_file_path} or -use-cfg {config_file_path} (optional)
+   Configuration file contains the information about how data is interpreted and what compression algorithm is used.
+   Besides, some other information, including dimensions, data type and error bound will also be stored.
+   When decompressing, only -use-cfg is allowed.
+   If a configuration file is not given, CliZ won't try any optional optimizations.
+4. -set-map {map_file_path} or -use-map {map_file_path} (optional)
+   Map file is a table indicating quantization bin classification used in Huffman encoding.
+   If given "-set-map", the program will test and decide whether to generate a map file.
+   If given "-use-map", the program will use the given map file in case the compression algorithm specified in the configuration file requires it.
+   When decompressing, only -use-map is allowed.
+   If a map file is not given, CliZ won't try this optimization.
+5. -mask {mask_file_path} (optional)
+   Mask file indicates the validness of data on horizontal positions.
+   If given, the program will use the mask file to determine which data is valid and which is not.
+   If a mask file is not given, CliZ won't use this optimization.
+6. -dim{dimension_num} {dimension_name}{dimension_length} {dimension_name}{dimension_length} ...
+   This indicates the dimensions of the data.
+   {dimension_name} indicates the physical meaning of this dimension.
+   Current supported dimension names:
+   - t (time)
+   - h (height)
+   - lat (latitude)
+   - lng (longitude)
+   - /*leave out dimension name*/ (no meaning)
+   E.g. if given "-dim 12 t120 lat180 lng360", data[i0][i1][i2][i3]=data[i0*120*180*360+i1*180*360+i2*360+i3].
+   The program can get the information about dimensions from the command line or the configuration file. At least one of them should be available.
+   If both are available, make sure that they match each other.
+7. -type {typename} (optional)
+   Here inputs the data type.
+   Current supported {typename}:
+   - f32
+   - /*leave out data type*/ (f32)
+   The program can get the information about data type from the command line or the configuration file.
+   If both of them are unavailable, the data type will be set as f32.
+   If both are available, make sure that they match each other.
+8. -err {error_type} {error_bound}
+   This indicates the error bound for the compression.
+   Current supported error type:
+   - ABS (absolute error)
+   - REL (relative error)
+   - /*leave out error type*/ (ABS)
+   {error_bound} should be a value larger than 0.
+   The program can get the information about error bound from the command line or the configuration file.
+   If both source of information are available, make sure that they match each other.
 
-2. Use CLI to start cliz compressor
-Type "cliz_{job_type} {something}" to start cliz compressor.
-{job_type} can be "compress" or "decompress".
-{something} includes some of the following arguments:
-	A. input file path (necessary)
-		-in {input_file_path}
-		//E.g. "-in ~/compress/data.bin"
-	
-	B. output file path (optional)
-		-out {output_file_path}
-		//If output file is not given, the program will use "{input_file_path}.cliz" as the output file path.
-
-	C. configuration file path (optional)
-		//Configuration file contains the information about how data is interpreted and what compression algorithm is used. It can be set in the following form:
-		-set-cfg {config_file_path} (only for compressing)
-		-use-cfg {config_file_path}
-		//During compression, if given "-set-cfg", the program will choose the best algorithm, and store the information in the configuration file.
-		//Besides, some other information, including dimensions, data type and error bound will also be stored.
-		//If given "-use-cfg", the program will read the given file and use the specified algorithm to compress or decompress.
-		//If no command is provided, the program will simply use a cubic interpolation.
-	
-	D. map file (optional)
-		//Map is a table indicating quantization bin classification used in Huffman encoding. It can be set in the following form:
-			-set-map {map_file_path} (only for compressing)
-			-use-map {map_file_path}
-		//During compressing, if given "-set-map", the program will test and decide whether to generate a map file.
-		//During compressing, if given "-use-map", the program will use the given map file.
-		//During decompressing, if given "-use-map", the program will use the given map file.
-		//If given "-use-map", configuration file must be missing or provided with "-use-cfg".
-		//If no command is provided, the program will not try this optimization.
-	
-	E. mask file (optional)
-		//Mask file indicates the validness of data on horizontal positions.
-		-mask {mask_file_name}
-		//The program can get the information about mask file from the command line or the configuration file.
-		//If both are available, make sure that they match each other.
-	
-	F. dimension (optional)
-		-dim {dimension_name}{dimansion_length} {dimension_name}{dimension_length} ...
-		//Here inputs the dimensions indicating how the data should be interpreted.
-		//{dimension_name} indicates the physical meaning of this dimension.
-		//Current supported dimension names:
-		//	t (time)
-		//	h (height)
-		//	lat (latitude)
-		//	lng (longitude)
-		//	/*leave out dimension name*/ (no meaning)
-		//E.g. if given "-dim 12 t120 lat180 lng360", data[i0][i1][i2][i3]=data[i0*120*180*360+i1*180*360+i2*360+i3].
-		//The program can get the information about dimensions from the command line or the configuration file. At least one of them should be available.
-		//If both are available, make sure that they match each other.
-
-	G. data type (optional)
-		-type {typename}
-		//Here inputs the data type.
-		//current supported {typename}:
-		//	i32
-		//	f32
-		//	f64
-		//	/*leave out data type*/ (f32)
-		//The program can get the information about data type from the command line or the configuration file. If both of them are unavailable, the data type will be set as f32.
-		//If both are available, make sure that they match each other.
-	
-	H. error bound (optional when compressing)
-		-err {error_type} {error_bound}
-		//Current supported error type:
-		//	ABS
-		//	REL
-		//	LOCAL
-		//	/*leave out error type*/ (ABS)
-		//{error_bound} should be a value larger or equal to 0.
-		//If error bound is 0, cliz generally will convey a naive lossless compression.
-		//The program can get the information about error bound from the command line or the configuration file. If both of them are unavailable, the error type will be ABS and error bound will be 0.
-		//If both source of information are available, make sure that they match each other.
-		//If no configuration file is given, {error_type} must be ABS.
-	
-	I. intermediate result display (optional)
-		-debug
-		//This is a flag indicating whether cliz will output some additional file containing some intermediate results.
-		//If omited, the program won't generate these additional file.
-
-3. Use CLI to start cliz validator
-Type "cliz_validate {something}" to start cliz validator.
-{something} includes some of the following arguments:
-	A. source file path (necessary)
-		-src {source_file_path}
-		//E.g. "-src ~/compress/data.bin"
-	
-	B. decompressed file path (optional)
-		-dec {decompressed_file_path}
-		//If decompressed file is not given, the program will use "{source_file_path}.cliz.bin" as the decompressed file path.
-	
-	C. dimension (optional)
-		-dim {dimension_name}{dimansion_length} {dimension_name}{dimension_length} ...
-		//Here inputs the dimensions indicating how the data should be interpreted.
-		//{dimension_name} indicates the physical meaning of this dimension.
-		//Current supported dimension names:
-		//	t (time)
-		//	h (height)
-		//	lat (latitude)
-		//	lng (longitude)
-		//	/*leave out dimension name*/ (no meaning)
-		//E.g. if given "-dim 12 t120 lat180 lng360", data[i0][i1][i2][i3]=data[i0*120*180*360+i1*180*360+i2*360+i3]
-		//If the dimension is not given, the program will deduce the amount of data from the source file size and data type.
-
-	D. data type (optional)
-		-type {typename}
-		//Here inputs the data type.
-		//current supported {typename}:
-		//	i32
-		//	f32
-		//	f64
-		//	/*leave out data type*/ (f32)
-
-	E. error bound (optional)
-		-err {error_type} {error_bound}
-		//Current supported error type:
-		//	ABS
-		//	REL
-		//	LOCAL
-		//	/*leave out error type*/ (ABS)
-		//{error_bound} should be a value larger or equal to 0.
-		//If error bound is 0 or not given, cliz validator will output the maximum absolute error.
+To invoke the cliz_validate from the command line, you can use the following command:
+1. -src {source_file_path}
+   This is the path to the original data file.
+2. -dec {decompressed_file_path}
+   This is the path to the decompressed file.
+3. -dim{dimension_num} {dimension_name}{dimension_length} {dimension_name}{dimension_length} ...
+   This indicates the dimensions of the data.
+   {dimension_name} indicates the physical meaning of this dimension.
+   Current supported dimension names:
+   - t (time)
+   - h (height)
+   - lat (latitude)
+   - lng (longitude)
+   - /*leave out dimension name*/ (no meaning)
+   E.g. if given "-dim 12 t120 lat180 lng360", data[i0][i1][i2][i3]=data[i0*120*180*360+i1*180*360+i2*360+i3].
+4. -type {typename} (optional)
+   Here inputs the data type.
+   Current supported {typename}:
+   - f32
+   - /*leave out data type*/ (f32)
+5. -err {error_type} {error_bound}
+   This indicates the error bound for the validation.
+   Current supported error type:
+   - ABS (absolute error)
+   - REL (relative error)
+   - /*leave out error type*/ (ABS)
+   {error_bound} should be a value larger than 0.

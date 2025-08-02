@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-O3 -Wno-unused-result -lfftw3f -lzstd
+CXXFLAGS=-O3 -Wno-unused-result -lfftw3f -lzstd -std=c++17
 
 all: zstd fftw cliz_compress cliz_decompress cliz_validate
 

@@ -8,7 +8,6 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::call_decompress_functions()
 	{
-		printf("In call_decompress_functions()\n");
 		if ((strcmp(best_decompress_function,"decompress_mask")==0) || (strcmp(best_decompress_function,"decompress_map_mask")==0) || ((best_pert_decompress_function!=NULL)
 			&& ((strcmp(best_pert_decompress_function,"decompress_mask")==0) || (strcmp(best_pert_decompress_function,"decompress_map_mask")==0))))
 		{
@@ -24,7 +23,6 @@ namespace cliz
 			map_bitstream_start=0;
 			map_bitstream_end=0;
 		}
-		printf("aaa\n");
 		bitstream_start=0;
 		bitstream_end=0;
 		in_file=fopen(in_file_path,"rb");
@@ -95,12 +93,9 @@ namespace cliz
 		long long bitstream_length;
 		fread(&bitstream_length,sizeof(long long),1,in_file);
 		bitstream_end=bitstream_length+bitstream_start;
-		printf("bitstream_start=%lld, bitstream_end=%lld\n",bitstream_start,bitstream_end);
 		fread(bitstream+bitstream_start,sizeof(unsigned char),bitstream_length,in_file);
-		printf("bbb\n");
 		if ((best_decompress_function==NULL) || (strcmp(best_decompress_function,"decompress")==0))
 			decompress();
-		printf("ccc\n");
 		if ((best_decompress_function!=NULL) && (strcmp(best_decompress_function,"decompress_map")==0))
 		{
 			map_bitstream_start=map_bitstream_end+sizeof(long long);
@@ -111,10 +106,8 @@ namespace cliz
 			decompress_map();
 			delete_data(map_bitstream);
 		}
-		printf("ddd\n");
 		if ((best_decompress_function!=NULL) && (strcmp(best_decompress_function,"decompress_mask")==0))
 			decompress_mask();
-		printf("eee\n");
 		if ((best_decompress_function!=NULL) && (strcmp(best_decompress_function,"decompress_map_mask")==0))
 		{
 			map_bitstream_start=map_bitstream_end+sizeof(long long);
@@ -124,7 +117,6 @@ namespace cliz
 			fread(map_bitstream+map_bitstream_start,sizeof(unsigned char),map_bitstream_length,map_file);
 			decompress_map_mask();
 		}
-		printf("fff\n");
 		if (best_pert!=0)
 			for (long long pos=0;pos<data_num;pos++)
 			{
@@ -137,13 +129,11 @@ namespace cliz
 				pos_high=(pos_high/it2->mx[pertid])*pert_it2->mx[pertid];
 				data[pos]+=avg_data[pos_high+pos_pert+pos_low];				
 			}
-		printf("ggg\n");
 		out_file=fopen(out_file_path,"wb");
 		fwrite(data,data_num,sizeof(T),out_file);
 		fclose(out_file);
 		delete_data(data);
 		delete_data(bitstream);
-		printf("hhh\n");
 	}
 }
 

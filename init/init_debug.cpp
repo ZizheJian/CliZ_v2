@@ -10,6 +10,7 @@ namespace cliz
 	void read_debug_command(task_c<float> &task_f32,int argc,char **argv,int &i)
 	{
 		task_f32.debug=true;
+		std::filesystem::create_directory("result");
 	}
 }
 
