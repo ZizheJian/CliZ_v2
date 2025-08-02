@@ -8,6 +8,8 @@ ZSTD_LIB=$(ZSTD_LIB_DIR)/libzstd.a
 
 $(ZSTD_LIB):
 	make -j16 -C zstd
+	
+zstd: $(ZSTD_LIB)
 
 FFTW_DIR=$(abspath fftw-3.3.10)
 FFTW_INSTALL_DIR=$(FFTW_DIR)/install

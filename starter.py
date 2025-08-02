@@ -1,48 +1,64 @@
-import os
-from starter_setting.Hurricane_T import Hurricane_T
-# from starter_setting.CESM_T import CESM_T
-# from starter_setting.b_e11_SSH import b_e11_SSH
-# from starter_setting.b40_SOILLIQ import b40_SOILLIQ
-# from starter_setting.b40_Tsfc import b40_Tsfc
-# from starter_setting.b_e11_nday1_SST import b_e11_nday1_SST
+# starter.py is a easy tool for running CliZ. It can be moved to any directory.
+# Some modifications are required to run starter.py.
+# 1. Create a file to store the information of your dataset.
+# 2. Modify the "project root" variable to the root directory of CliZ.
+# 3. Write your own compression procedures.
 
+import os
+from pathlib import Path
+# Here is an example of how to import your dataset settings.
+# You can copy "Hurricane_T.py" and rename it to your own dataset settings file.
+# Make sure the file is in the "starter_setting" directory.
+# And don't forget to import it here.
+from starter_setting.Hurricane_T import Hurricane_T
+
+# "project root" is the root directory of CliZ.
+# Change it to where you put CliZ.
+project_root="/home/x-zjian1/CliZ_v2"
+
+# Run some code_generation.py scripts. No need to modify.
 code_generation_list=["choose_method","DC","transform"]
 for code_generation_folder in code_generation_list:
-	os.chdir(code_generation_folder)
-	os.system("python3 code_generation.py")
-	os.chdir("..")
+	code_generation_path=os.path.join(project_root,code_generation_folder)
+	py_path=os.path.join(code_generation_path,"code_generation.py")
+	stamp_path=os.path.join(code_generation_path,"code_generation.stamp")
+	if not os.path.exists(stamp_path) or Path(py_path).stat().st_mtime>Path(stamp_path).stat().st_mtime:
+		print(f"Generating code for {code_generation_folder} ...")
+		current_path=os.getcwd()
+		os.chdir(code_generation_path)
+		os.system(f"python3 code_generation.py")
+		os.system(f"touch {stamp_path}")
+		os.chdir(current_path)
 
-commands=[]
-commands.append("make -j16")
-Hurricane_T_compress=Hurricane_T()
-commands.append(Hurricane_T_compress.get_compress_command())
-Hurricane_T_recompress=Hurricane_T()
-Hurricane_T_recompress.config_path[0]="use"
-Hurricane_T_recompress.map_path[0]="use"
-commands.append(Hurricane_T_recompress.get_compress_command())
-Hurricane_T_decompress=Hurricane_T()
-Hurricane_T_decompress.config_path[0]="use"
-Hurricane_T_decompress.map_path[0]="use"
-commands.append(Hurricane_T_decompress.get_decompress_command())
-Hurricane_T_validate=Hurricane_T()
-commands.append(Hurricane_T_validate.get_validate_command())
-commands.append(Hurricane_T_decompress.get_ssim_command())
-for command in commands:
+# Compile CliZ using makefile. No need to modify.
+compile_commands=[]
+compile_commands.append("make -j16")
+for command in compile_commands:
 	print("command=",command)
 	os.system(command)
 
-# for dataset in datasets:
-# 	commands.append(dataset.get_compress_command())
-# 	commands.append(dataset.get_decompress_command())
-# if (len(commands)==0):
-# 	print("Error: No task is selected.")
-# 	exit()
-# if (len(commands)>1):
-# 	print("Error: More than one tasks are selected.")
-# 	exit()
-# os.system("make -j16")
-# print("command=",commands[0])
-# os.system(commands[0])
+# Here you can write your own compression procedures.
+execute_commands=[]
+# Example: Compressing Hurricane_T
+Hurricane_T_compress=Hurricane_T(project_root)
+execute_commands.append(Hurricane_T_compress.get_compress_command())
+# Example: Using an existing configuration and map file to compress Hurricane_T
+Hurricane_T_recompress=Hurricane_T(project_root)
+Hurricane_T_recompress.config_path[0]="use"
+Hurricane_T_recompress.map_path[0]="use"
+execute_commands.append(Hurricane_T_recompress.get_compress_command())
+# Example: Decompressing Hurricane_T
+Hurricane_T_decompress=Hurricane_T(project_root)
+Hurricane_T_decompress.config_path[0]="use"
+Hurricane_T_decompress.map_path[0]="use"
+execute_commands.append(Hurricane_T_decompress.get_decompress_command())
+# Example: Validating the decompressed file
+Hurricane_T_validate=Hurricane_T(project_root)
+execute_commands.append(Hurricane_T_validate.get_validate_command())
+execute_commands.append(Hurricane_T_decompress.get_ssim_command())
+for command in execute_commands:
+	print("command=",command)
+	os.system(command)
 
 # if testname=="compress CESM_ATM_RELHUM":
 # 	task.set_job("compress")

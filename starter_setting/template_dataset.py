@@ -2,8 +2,8 @@ import os
 from typing import Dict,List
 
 class template_dataset():
-    def __init__(self):
-        self.cliz_path="/home/x-zjian1/CliZ_v2" # the directory of the CliZ executables
+    def __init__(self,project_root:str):
+        self.project_root:str=project_root
         self.source_path:str=None
         self.compressed_path:str=None
         self.decompressed_path:str=None
@@ -15,7 +15,7 @@ class template_dataset():
         self.err:List[str,float]=None
         self.debug:bool=False
     def get_compress_command(self):
-        command=os.path.join(self.cliz_path,"cliz_compress")
+        command=os.path.join(self.project_root,"cliz_compress")
         if (self.source_path!=None):
             command+=f" -in {self.source_path}"
         else:
@@ -42,7 +42,7 @@ class template_dataset():
             command+=" -debug"
         return command
     def get_decompress_command(self):
-        command=os.path.join(self.cliz_path,"cliz_decompress")
+        command=os.path.join(self.project_root,"cliz_decompress")
         if (self.compressed_path!=None):
             command+=f" -in {self.compressed_path}"
         else:
@@ -65,7 +65,7 @@ class template_dataset():
             command+=f" -type {self.data_type}"
         return command
     def get_validate_command(self):
-        command=os.path.join(self.cliz_path,"cliz_validate")
+        command=os.path.join(self.project_root,"cliz_validate")
         if (self.source_path!=None):
             command+=f" -src {self.source_path}"
         else:

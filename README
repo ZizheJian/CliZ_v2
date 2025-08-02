@@ -1,3 +1,23 @@
+CliZ is an adaptive compressor designed for tensor-structured meteorological data. It includes three executables: cliz_compress, cliz_decompress, and cliz_validate.
+
+Compressing and decompressing a single data file:
+1. Use cliz_compress to compress the data. Depending on the parameters, it may generate a .cfg file and a .map file.
+2. Use cliz_decompress to decompress the data, using the previously generated .cfg and .map files.
+3. (Optional) If the original data is available, use cliz_validate to verify the quality of the compression.
+
+Compressing and decompressing multiple similar data files:
+1. Prepare a .cfg file and a .map file using cliz_compress on one of the data files.
+2. Use the same .cfg and .map files to compress the remaining data files. These will not generate new .cfg or .map files.
+3. Use cliz_decompress to decompress all files using the same .cfg and .map files.
+4. (Optional) If the original data is available, use cliz_validate to verify compression quality.
+
+CliZ is mainly written in C. We also provide a starter.py script to simplify the build and execution process. The starter.py script can:
+1. Run several code_generation.py scripts to generate C source code (this step is skipped if those scripts haven't changed),
+2. Invokes "make -j16" to compile the code,
+3. Runs the compression and decompression routines.
+
+Please refer to the comments in starter.py for details on how to use it.
+
 1. Use python to start cliz
 Follow the instructions in "starter.py".
 
