@@ -9,6 +9,7 @@ namespace cliz
 	void task_c<T>::validate_ABS()
 	{
 		//TODO: add i32 condition
+		printf("In validate_ABS()\n");
 		T max_err=0;
 		for (long long i=0;i<data_num;i++)
 		{

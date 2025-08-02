@@ -105,7 +105,7 @@ namespace cliz
 					read_mask_file_command(task_f32,argc,argv,i);
 					continue;
 				}
-			if (strcmp(argv[i],"-dim")==0)
+			if (strncmp(argv[i],"-dim",4)==0)
 			{
 				read_dimension_command(task_f32,argc,argv,i);
 				continue;

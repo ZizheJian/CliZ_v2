@@ -8,6 +8,7 @@ namespace cliz
 	template<typename T>
 	void task_c<T>::call_validate_functions()
 	{
+		printf("In call_validate_functions()\n");
 		new_data(src_data,data_num);
 		src_file=fopen(src_file_path,"rb");
 		fread(src_data,sizeof(T),data_num,src_file);

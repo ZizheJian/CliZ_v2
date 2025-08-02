@@ -16,18 +16,6 @@ class template_dataset():
         self.debug:bool=False
     def get_compress_command(self):
         command=os.path.join(self.cliz_path,"cliz_compress")
-        command+=self._get_compress_command()
-        return command
-    def get_decompress_command(self):
-        command=os.path.join(self.cliz_path,"cliz_decompress")
-        command+=self._get_compress_command() # same as compress command
-        return command
-    def get_validate_command(self):
-        command=os.path.join(self.cliz_path,"cliz_validate")
-        command+=self._get_validate_command()
-        return command
-    def _get_compress_command(self):
-        command=""
         if (self.source_path!=None):
             command+=f" -in {self.source_path}"
         else:
@@ -53,8 +41,31 @@ class template_dataset():
         if self.debug:
             command+=" -debug"
         return command
-    def _get_validate_command(self):
-        command=""
+    def get_decompress_command(self):
+        command=os.path.join(self.cliz_path,"cliz_decompress")
+        if (self.compressed_path!=None):
+            command+=f" -in {self.compressed_path}"
+        else:
+            raise ValueError("compressed_path is not set.")
+        if (self.decompressed_path!=None):
+            command+=f" -out {self.decompressed_path}"
+        if (self.config_path!=None):
+            command+=f" -{self.config_path[0]}-cfg {self.config_path[1]}"
+        if (self.map_path!=None):
+            command+=f" -{self.map_path[0]}-map {self.map_path[1]}"
+        if (self.mask_path!=None):
+            command+=f" -mask {self.mask_path}"
+        if (self.dimension!=None):
+            command+=f" -dim{len(self.dimension)}"
+            for key,value in self.dimension.items():
+                command+=f" {key}{value}"
+        else:
+            raise ValueError("dimension is not set.")
+        if self.data_type!=None:
+            command+=f" -type {self.data_type}"
+        return command
+    def get_validate_command(self):
+        command=os.path.join(self.cliz_path,"cliz_validate")
         if (self.source_path!=None):
             command+=f" -src {self.source_path}"
         else:

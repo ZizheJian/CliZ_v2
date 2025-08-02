@@ -13,28 +13,15 @@ namespace cliz
 			exit(0);
 		}
 		i++;
-		if (i>=argc)
+		if (i+1>=argc)
 		{
 			printf("Error: Error bound missing.\n");
 			exit(0);
 		}
-		for (int j=0;j<strlen(argv[i]);j++)
-			if ((argv[i][j]<'A') || (argv[i][j]>'Z'))
-			{
-				if (j==0)
-				{
-					new_data(task_f32.err_type,4);
-					strcpy(task_f32.err_type,"ABS");
-				}
-				else
-				{
-					new_data(task_f32.err_type,j+1);
-					strncpy(task_f32.err_type,argv[i],j);
-					task_f32.err_type[j]=0;
-				}
-				task_f32.raw_err_bound=stod(argv[i]+j);
-				break;
-			}
+		new_data(task_f32.err_type,strlen(argv[i])+1);
+		strcpy(task_f32.err_type,argv[i]);
+		task_f32.raw_err_bound=stod(argv[i+1]);
+		i++;
 	}
 
 	void check_err_bound(task_c<float> &task_f32)

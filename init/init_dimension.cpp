@@ -12,41 +12,37 @@ namespace cliz
 			printf("Error: Dimension redefined.\n");
 			exit(0);
 		}
+		task_f32.dimension_num=atoi(argv[i]+4);
+		i++;
+		if (i+task_f32.dimension_num>=argc)
+		{
+			printf("Error: Insufficient number of dimensions provided.\n");
+			exit(0);
+		}
 		vector<int> vec1;
 		vector<char*> vec2;
-		for (i++;(i<argc) && (argv[i][0]!='-');i++)
+		for (int j=0;j<task_f32.dimension_num;j++)
 		{
-			vec1.push_back(0);
-			int weight=1;
-			int type_len=0;
-			for (int k=strlen(argv[i])-1;k>=0;k--)
-				if ((argv[i][k]>='0') && (argv[i][k]<='9'))
-				{
-					vec1.back()+=(argv[i][k]-'0')*weight;
-					weight*=10;
-				}
-				else
-				{
-					type_len=k+1;
-					break;
-				}
-			if (type_len==0)
+			int pos=0;
+			while (pos<strlen(argv[i+j]) && std::isalpha(argv[i+j][pos]))
+				pos++;
+			vec1.push_back(atoi(argv[i+j]+pos));
+			if (pos==0)
 				vec2.push_back(NULL);
 			else
 			{
-				vec2.push_back(new_data<char>(type_len+1));
-				strncpy(vec2.back(),argv[i],type_len);
-				vec2.back()[type_len]=0;
+				vec2.push_back(new_data<char>(pos+1));
+				strncpy(vec2.back(),argv[i+j],pos);
+				vec2.back()[pos]=0;
 			}
 		}
-		task_f32.dimension_num=vec1.size();
 		new_data(task_f32.dimension,task_f32.dimension_num);
 		for (int j=0;j<task_f32.dimension_num;j++)
 			task_f32.dimension[j]=vec1[j];
 		new_data(task_f32.dimension_type,task_f32.dimension_num);
 		for (int j=0;j<task_f32.dimension_num;j++)
 			task_f32.dimension_type[j]=vec2[j];
-		i--;
+		i+=task_f32.dimension_num-1;
 	}
 
 	void check_dimension(task_c<float> &task_f32)

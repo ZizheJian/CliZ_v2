@@ -29,7 +29,7 @@ commands.append(Hurricane_T_validate.get_validate_command())
 commands.append(Hurricane_T_decompress.get_ssim_command())
 for command in commands:
 	print("command=",command)
-
+	os.system(command)
 
 # for dataset in datasets:
 # 	commands.append(dataset.get_compress_command())
