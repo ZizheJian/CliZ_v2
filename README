@@ -97,3 +97,19 @@ To invoke the cliz_validate from the command line, you can use the following com
    - REL (relative error)
    - /*leave out error type*/ (ABS)
    {error_bound} should be a value larger than 0.
+
+-------------------------------
+
+Citations:
+Z. Jian et al., "CliZ: Optimizing Lossy Compression for Climate Datasets with Adaptive Fine-tuned Data Prediction," 2024 IEEE International Parallel and Distributed Processing Symposium (IPDPS), San Francisco, CA, USA, 2024, pp. 417-429, doi: 10.1109/IPDPS57955.2024.00044. keywords: {Distributed processing;Costs;Distributed databases;Predictive models;Data transfer;Encoding;Compressors;error-controlled lossy compression;climate datasets;distributed data repository/database},
+
+@INPROCEEDINGS{10579165,
+  author={Jian, Zizhe and Di, Sheng and Liu, Jinyang and Zhao, Kai and Liang, Xin and Xu, Haiying and Underwood, Robert and Wu, Shixun and Huang, Jiajun and Chen, Zizhong and Cappello, Franck},
+  booktitle={2024 IEEE International Parallel and Distributed Processing Symposium (IPDPS)}, 
+  title={CliZ: Optimizing Lossy Compression for Climate Datasets with Adaptive Fine-tuned Data Prediction}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={417-429},
+  keywords={Distributed processing;Costs;Distributed databases;Predictive models;Data transfer;Encoding;Compressors;error-controlled lossy compression;climate datasets;distributed data repository/database},
+  doi={10.1109/IPDPS57955.2024.00044}}
